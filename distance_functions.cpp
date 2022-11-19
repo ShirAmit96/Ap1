@@ -22,3 +22,17 @@ float chebyshev_dis(vector<float> x, vector<float> y)
     }
     return max;
 }
+
+float canberra_dis(vector<float> x, vector<float> y)
+{
+    float sub_abs = 0;
+    float sum_abs = 0;
+    float sigma = 0;
+    for (int i = 0; i < x.size(); ++i)
+    {
+        sub_abs = abs(x[i] - y[i]);
+        sum_abs = abs(x[i]) + abs(y[i]);
+        sigma += (sub_abs / sum_abs);
+        return sigma;
+    }
+}
