@@ -1,13 +1,14 @@
 #include <cmath>
 #include <iostream>
+#include <vector>
 using namespace std;
 
-float general_dist_func(float vector1[], float vector2[],int array_size, int p){
-    int x = 0;
+float general_dist_func(vector<float> x, vector<float> y, float p){
+    int z = 0;
     // add a for loop that adds zero to the smaller array in case of not equal len. 
     //int len = min(sizeof(vector1),sizeof(vector2));
-    for (int i = 0 ; i<array_size;i++){
-        x += ((vector1[i]-vector2[i])  );
+    for (int i = 0 ; i<x.size();i++){
+        z += pow((abs(x[i]-y[i])),p);
     }
-    return pow(pow(x,p),(1/p));
+    return pow(z,(1/p));
 }

@@ -35,4 +35,21 @@ float canberra_dis(vector<float> x, vector<float> y)
         sigma += (sub_abs / sum_abs);
         return sigma;
     }
+
+
+}
+
+int main()
+{
+    vector<float> x_vector{};
+    vector<float> y_vector{};
+    for (int i = 1; i < 4; i++)
+    {
+        x_vector.push_back(i);
+        y_vector.push_back(4 - i);
+    }
+
+    cout << chebyshev_dis(x_vector, y_vector);
+
+    return 1;
 }
