@@ -33,10 +33,8 @@ float canberra_dis(vector<float> x, vector<float> y)
         sub_abs = abs(x[i] - y[i]);
         sum_abs = abs(x[i]) + abs(y[i]);
         sigma += (sub_abs / sum_abs);
-        return sigma;
     }
-
-
+    return sigma;
 }
 
 int main()
