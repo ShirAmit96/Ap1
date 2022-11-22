@@ -4,33 +4,37 @@
 
 using namespace std;
 
-float general_dist_func(vector<float> x, vector<float> y, float p){
-    int z = 0;
-    // add a for loop that adds zero to the smaller array in case of not equal len. 
-    //int len = min(sizeof(vector1),sizeof(vector2));
-    for (int i = 0 ; i<x.size();i++){
-        z += pow((abs(x[i]-y[i])),p);
-    }
-    return pow(z,(1/p));
-}
-
-float euclidean_distance(vector<float> x, vector<float> y){
-    return general_dist_func(x,y,2);
-}
-
-float manhattan_distance(vector<float> x, vector<float> y){
-    return general_dist_func(x,y,1);
-}
-
-float minkowsky_distance(vector<float> x, vector<float> y){
-    return general_dist_func(x,y,3);
-}
-
-
-float chebyshev_dis(vector<float> x, vector<float> y)
+double general_dist_func(vector<double> x, vector<double> y, double p)
 {
-    float max = 0;
-    float sub_abs = 0;
+    int z = 0;
+    // add a for loop that adds zero to the smaller array in case of not equal len.
+    // int len = min(sizeof(vector1),sizeof(vector2));
+    for (int i = 0; i < x.size(); i++)
+    {
+        z += pow((abs(x[i] - y[i])), p);
+    }
+    return pow(z, (1 / p));
+}
+
+double euclidean_distance(vector<double> x, vector<double> y)
+{
+    return general_dist_func(x, y, 2);
+}
+
+double manhattan_distance(vector<double> x, vector<double> y)
+{
+    return general_dist_func(x, y, 1);
+}
+
+double minkowsky_distance(vector<double> x, vector<double> y)
+{
+    return general_dist_func(x, y, 3);
+}
+
+double chebyshev_dis(vector<double> x, vector<double> y)
+{
+    double max = 0;
+    double sub_abs = 0;
     for (int i = 0; i < x.size(); ++i)
     {
         sub_abs = abs(x[i] - y[i]);
@@ -46,11 +50,11 @@ float chebyshev_dis(vector<float> x, vector<float> y)
     return max;
 }
 
-float canberra_dis(vector<float> x, vector<float> y)
+double canberra_dis(vector<double> x, vector<double> y)
 {
-    float sub_abs = 0;
-    float sum_abs = 0;
-    float sigma = 0;
+    double sub_abs = 0;
+    double sum_abs = 0;
+    double sigma = 0;
     for (int i = 0; i < x.size(); ++i)
     {
         sub_abs = abs(x[i] - y[i]);
@@ -62,8 +66,8 @@ float canberra_dis(vector<float> x, vector<float> y)
 
 int main()
 {
-    vector<float> x_vector{};
-    vector<float> y_vector{};
+    vector<double> x_vector{};
+    vector<double> y_vector{};
     for (int i = 1; i < 4; i++)
     {
         x_vector.push_back(i);
