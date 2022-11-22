@@ -1,14 +1,12 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
-
+#include "header.h"
 using namespace std;
 
 double general_dist_func(vector<double> x, vector<double> y, double p)
 {
     int z = 0;
-    // add a for loop that adds zero to the smaller array in case of not equal len.
-    // int len = min(sizeof(vector1),sizeof(vector2));
     for (int i = 0; i < x.size(); i++)
     {
         z += pow((abs(x[i] - y[i])), p);
