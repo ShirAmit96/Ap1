@@ -97,7 +97,7 @@ bool vectors_check(vector<double> x, vector<double> y)
         return false;
     }
 }
-void get_input()
+void get_input(vector<double> &x_vector, vector<double> &y_vector)
 {
     string x, y;
     cout << "Please enter the first vector: ";
@@ -106,9 +106,14 @@ void get_input()
     getline(cin, y);
     vector<string> str_vec1 = seperate_string(x);
     vector<string> str_vec2 = seperate_string(y);
-    vector<double> num_vec1 = nums_check(str_vec1);
-    vector<double> num_vec2 = nums_check(str_vec2);
-    if (vectors_check(num_vec1, num_vec2))
+    x_vector = nums_check(str_vec1);
+    y_vector = nums_check(str_vec2);
+
+    // vector<string> str_vec1 = seperate_string(x);
+    // vector<string> str_vec2 = seperate_string(y);
+    // vector<double> num_vec1 = nums_check(str_vec1);
+    // vector<double> num_vec2 = nums_check(str_vec2);
+    if (vectors_check(x_vector, y_vector))
     {
         cout << "yay";
     }
@@ -117,10 +122,3 @@ void get_input()
         return;
     }
 }
-
-// int main()
-// {
-//     get_input();
-
-//     return 1;
-// }
