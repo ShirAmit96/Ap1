@@ -29,7 +29,7 @@ double minkowsky_distance(vector<double> x, vector<double> y)
     return general_dist_func(x, y, 3);
 }
 
-double chebyshev_dis(vector<double> x, vector<double> y)
+double chebyshev_distance(vector<double> x, vector<double> y)
 {
     double max = 0;
     double sub_abs = 0;
@@ -48,7 +48,7 @@ double chebyshev_dis(vector<double> x, vector<double> y)
     return max;
 }
 
-double canberra_dis(vector<double> x, vector<double> y)
+double canberra_distance(vector<double> x, vector<double> y)
 {
     double sub_abs = 0;
     double sum_abs = 0;
@@ -57,7 +57,10 @@ double canberra_dis(vector<double> x, vector<double> y)
     {
         sub_abs = abs(x[i] - y[i]);
         sum_abs = abs(x[i]) + abs(y[i]);
-        sigma += (sub_abs / sum_abs);
+        if (sum_abs != 0)
+        {
+            sigma += (sub_abs / sum_abs);
+        }
     }
     return sigma;
 }
@@ -72,7 +75,8 @@ int main()
         y_vector.push_back(4 - i);
     }
 
-    cout << chebyshev_dis(x_vector, y_vector);
+    cout << canberra_distance(x_vector, y_vector);
+   
 
     return 1;
 }

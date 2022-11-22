@@ -1,9 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <string>
-/*#include <ctype.h>
-#include <sstream>
-#include <iterator>*/
 
 using namespace std;
 
@@ -121,9 +118,9 @@ void get_input()
     }
 }
 
-int main()
-{
-    get_input();
+// int main()
+// {
+//     get_input();
 
-    return 1;
-}
+//     return 1;
+// }
