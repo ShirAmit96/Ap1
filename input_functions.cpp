@@ -1,9 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <string>
-/*#include <ctype.h>
-#include <sstream>
-#include <iterator>*/
 
 using namespace std;
 
@@ -34,10 +31,6 @@ vector<double> nums_check(vector<string> x_vector)
             num_vector.push_back(num);
             continue;
         }
-        if (!isdigit(x[0]))
-        {
-            continue;
-        }
         else if (x[0] == '0' && x[1] != '.')
         {
             continue;
@@ -52,6 +45,14 @@ vector<double> nums_check(vector<string> x_vector)
             }
             else if (isdigit(x[i]))
             {
+                continue;
+            }
+            else if (x[0] == '-' && x.length() > 1)
+            {
+                if (x[1] == '-')
+                {
+                    break;
+                }
                 continue;
             }
             else if (x[i] == '.')
@@ -87,12 +88,12 @@ bool vectors_check(vector<double> x, vector<double> y)
     }
     if (x.size() == y.size() && x.size() != 0)
     {
-        cout << "input is valid";
+        cout << "Input is valid";
         return true;
     }
     else
     {
-        cout << "input is not valid, exiting progrem";
+        cout << "Input is not valid, exiting program";
         return false;
     }
 }
@@ -112,7 +113,7 @@ void get_input(vector<double> &x_vector, vector<double> &y_vector)
     // vector<string> str_vec2 = seperate_string(y);
     // vector<double> num_vec1 = nums_check(str_vec1);
     // vector<double> num_vec2 = nums_check(str_vec2);
-    if (vectors_check(num_vec1, num_vec2))
+    if (vectors_check(x_vector, y_vector))
     {
         cout << "yay";
     }
