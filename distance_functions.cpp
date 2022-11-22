@@ -62,17 +62,17 @@ double canberra_dis(vector<double> x, vector<double> y)
     return sigma;
 }
 
-int main()
-{
-    vector<double> x_vector{};
-    vector<double> y_vector{};
-    for (int i = 1; i < 4; i++)
-    {
-        x_vector.push_back(i);
-        y_vector.push_back(4 - i);
-    }
+// int main()
+// {
+//     vector<double> x_vector{};
+//     vector<double> y_vector{};
+//     for (int i = 1; i < 4; i++)
+//     {
+//         x_vector.push_back(i);
+//         y_vector.push_back(4 - i);
+//     }
 
-    cout << chebyshev_dis(x_vector, y_vector);
+//     cout << chebyshev_dis(x_vector, y_vector);
 
-    return 1;
-}
+//     return 1;
+// }
