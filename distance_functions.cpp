@@ -1,7 +1,6 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
-#include "header.h"
 using namespace std;
 
 double general_dist_func(vector<double> x, vector<double> y, double p)

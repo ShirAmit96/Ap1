@@ -78,17 +78,8 @@ vector<double> nums_check(vector<string> x_vector)
 
 bool vectors_check(vector<double> x, vector<double> y)
 {
-    for (auto a : x)
-    {
-        cout << a << endl;
-    }
-    for (auto b : y)
-    {
-        cout << b << endl;
-    }
     if (x.size() == y.size() && x.size() != 0)
     {
-        cout << "Input is valid";
         return true;
     }
     else
@@ -97,28 +88,12 @@ bool vectors_check(vector<double> x, vector<double> y)
         return false;
     }
 }
-void get_input(vector<double> &x_vector, vector<double> &y_vector)
+vector<double> get_input()
 {
-    string x, y;
-    cout << "Please enter the first vector: ";
+    string x;
+    cout << "Please enter vector: ";
     getline(cin, x);
-    cout << "Please enter the second vector: ";
-    getline(cin, y);
     vector<string> str_vec1 = seperate_string(x);
-    vector<string> str_vec2 = seperate_string(y);
-    x_vector = nums_check(str_vec1);
-    y_vector = nums_check(str_vec2);
-
-    // vector<string> str_vec1 = seperate_string(x);
-    // vector<string> str_vec2 = seperate_string(y);
-    // vector<double> num_vec1 = nums_check(str_vec1);
-    // vector<double> num_vec2 = nums_check(str_vec2);
-    if (vectors_check(x_vector, y_vector))
-    {
-        cout << "yay";
-    }
-    else
-    {
-        return;
-    }
+    vector<double> num_vec1 = nums_check(str_vec1);
+    return num_vec1;
 }
