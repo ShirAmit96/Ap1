@@ -23,14 +23,14 @@ vector<string> seperate_string(string input)
     return sub_input;
 }
 
-vector<float> nums_check(vector<string> x_vector)
+vector<double> nums_check(vector<string> x_vector)
 {
-    vector<float> num_vector{};
+    vector<double> num_vector{};
     for (auto x : x_vector)
     {
         if (isdigit(x[0]) && x.length() == 1)
         {
-            float num = stof(x);
+            double num = stof(x);
             num_vector.push_back(num);
             continue;
         }
@@ -47,7 +47,7 @@ vector<float> nums_check(vector<string> x_vector)
         {
             if (isdigit(x[i]) && (i == x.length() - 1))
             {
-                float num = stof(x);
+                double num = stod(x);
                 num_vector.push_back(num);
             }
             else if (isdigit(x[i]))
@@ -75,7 +75,7 @@ vector<float> nums_check(vector<string> x_vector)
     return num_vector;
 }
 
-bool vectors_check(vector<float> x, vector<float> y)
+bool vectors_check(vector<double> x, vector<double> y)
 {
     for (auto a : x)
     {
@@ -105,8 +105,8 @@ void get_input()
     getline(cin, y);
     vector<string> str_vec1 = seperate_string(x);
     vector<string> str_vec2 = seperate_string(y);
-    vector<float> num_vec1 = nums_check(str_vec1);
-    vector<float> num_vec2 = nums_check(str_vec2);
+    vector<double> num_vec1 = nums_check(str_vec1);
+    vector<double> num_vec2 = nums_check(str_vec2);
     if (vectors_check(num_vec1, num_vec2))
     {
         cout << "yay";
