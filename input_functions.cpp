@@ -28,6 +28,12 @@ vector<float> nums_check(vector<string> x_vector)
     vector<float> num_vector{};
     for (auto x : x_vector)
     {
+        if (isdigit(x[0]) && x.length() == 1)
+        {
+            float num = stof(x);
+            num_vector.push_back(num);
+            continue;
+        }
         if (!isdigit(x[0]))
         {
             continue;
@@ -39,7 +45,7 @@ vector<float> nums_check(vector<string> x_vector)
         bool dot_flag = false;
         for (int i = 0; i < x.length(); i++)
         {
-            if ((isdigit(x[0]) && x.length() == 1) || (isdigit(x[i]) && (i == x.length() - 1)))
+            if (isdigit(x[i]) && (i == x.length() - 1))
             {
                 float num = stof(x);
                 num_vector.push_back(num);
