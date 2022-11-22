@@ -12,4 +12,4 @@ double canberra_distance(vector<double> x, vector<double> y);
 vector<string> seperate_string(string input);
 vector<double> nums_check(vector<string> x_vector);
 bool vectors_check(vector<double> x, vector<double> y);
-void get_input(vector<double>& x_vector, vector<double>& y_vector);
+vector<double> get_input();
