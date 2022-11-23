@@ -7,8 +7,8 @@ Log in to "planet" server and write the following commands:
 2. git clone https://github.com/ShirAmit96/Ap1.git
 3. cd Ap1 
 4. g++ header.h
-5. g++ -std-c++ *.cpp
-6. ./a/out
+5. g++ -std=c++ *.cpp
+6. ./a.out
 
 our code include 4 files: 
 1. main.cpp - this is the main file of the program. The main handles the calls of the other functions. In the main we create a vectors that will be filled by the user through other function, and later the vectors (if valids) passed to the different distance functions and the returned results printed through the functions in the file output_functions.cpp.
