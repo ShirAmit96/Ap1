@@ -2,7 +2,7 @@
 
 /*This function is a generalized compute distance function and it'll
 compute different distance depends on the p value that is passed -
-if p=1 isthe distance is manhattan, if p=2 the distance is euclidean and for p>3 the distance is minkowsky*/
+if p=1 isthe distance is manhattan, if p=2 the distance is euclidean and for all the other p values the distance is minkowsky*/
 double generalDistFunc(vector<double> x, vector<double> y, double p)
 {
     int z = 0;
