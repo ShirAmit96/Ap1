@@ -7,7 +7,7 @@ Log in to "planet" server and write the following commands:
 2. git clone https://github.com/ShirAmit96/Ap1.git
 3. cd Ap1 
 4. g++ header.h
-5. g++ -std=c++ *.cpp
+5. g++ -std=c++11 *.cpp
 6. ./a.out
 
 our code include 4 files: 
