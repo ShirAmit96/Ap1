@@ -5,12 +5,12 @@ compute different distance depends on the p value that is passed -
 if p=1 isthe distance is manhattan, if p=2 the distance is euclidean and for all the other p values the distance is minkowsky*/
 double generalDistFunc(vector<double> x, vector<double> y, double p)
 {
-    int z = 0;
+    double z = 0;
     for (int i = 0; i < x.size(); i++)
     {
         z += pow((abs(x[i] - y[i])), p);
     }
-    return pow(z, (1 / p));
+    return pow(z, (1.0 / p));
 }
 /*This function gets two vectors of double and returns the euclidean distance between them*/
 double euclideanDistance(vector<double> x, vector<double> y)
