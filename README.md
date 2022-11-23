@@ -1,8 +1,9 @@
 # Ap1
 Manual for the second part of ex1: 
 
-Instructions for compiling and runing the code:
-Log in to "planet" server and write the following commands:
+Instructions for compiling and runing the code: 
+
+Log in to "planet" server and run the following commands:
 1. git init
 2. git clone https://github.com/ShirAmit96/Ap1.git
 3. cd Ap1 
