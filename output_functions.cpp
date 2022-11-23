@@ -9,7 +9,7 @@ void print_double(double num)
     }
     else
     {
-        cout.precision(16);
+        cout.precision(5);
         cout << fixed << num << endl;
     }
 }
