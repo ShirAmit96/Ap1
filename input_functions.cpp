@@ -1,9 +1,5 @@
-#include <iostream>
-#include <vector>
-#include <string>
 
-using namespace std;
-
+#include "header.h"
 vector<string> seperate_string(string input)
 {
     string delim = " ";
@@ -23,6 +19,7 @@ vector<string> seperate_string(string input)
 vector<double> nums_check(vector<string> x_vector)
 {
     vector<double> num_vector{};
+    vector<double> empty_vector{};
     for (auto x : x_vector)
     {
         if (isdigit(x[0]) && x.length() == 1)
@@ -33,7 +30,7 @@ vector<double> nums_check(vector<string> x_vector)
         }
         else if (x[0] == '0' && x[1] != '.')
         {
-            continue;
+            return empty_vector;
         }
         bool dot_flag = false;
         for (int i = 0; i < x.length(); i++)
@@ -51,9 +48,8 @@ vector<double> nums_check(vector<string> x_vector)
             {
                 if (x[1] == '-')
                 {
-                    break;
+                    return empty_vector;
                 }
-                continue;
             }
             else if (x[i] == '.')
             {
@@ -64,12 +60,12 @@ vector<double> nums_check(vector<string> x_vector)
                 }
                 else
                 {
-                    break;
+                    return empty_vector;
                 }
             }
             else
             {
-                break;
+                return empty_vector;
             }
         }
     }
@@ -84,7 +80,7 @@ bool vectors_check(vector<double> x, vector<double> y)
     }
     else
     {
-        cout << "Input is not valid, exiting program";
+        cout << "Input is not valid, exiting program" << endl;
         return false;
     }
 }
