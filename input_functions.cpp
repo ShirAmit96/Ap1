@@ -2,7 +2,7 @@
 #include "header.h"
 
 /*This function seperates the input string into sub strings by space delimiter and returns a vector of these sub strings */
-vector<string> seperate_string(string input)
+vector<string> seperateString(string input)
 {
     /*define space to be the delimiter and initialize the sub strings vector:*/
     string delim = " ";
@@ -26,7 +26,7 @@ vector<string> seperate_string(string input)
 }
 /*This function checks if the vector includes only numbers and returns a doubles vector.
  if it includes a non number type it returns an empty vector.*/
-vector<double> nums_check(vector<string> x_vector)
+vector<double> numsCheck(vector<string> x_vector)
 {
     /*This vector will be the returned vector if all the strings in the input are valid:*/
     vector<double> num_vector{};
@@ -100,7 +100,7 @@ vector<double> nums_check(vector<string> x_vector)
     return num_vector;
 }
 /*This function check if 2 vectors are not empty and if they are in the same size*/
-bool vectors_check(vector<double> x, vector<double> y)
+bool vectorsCheck(vector<double> x, vector<double> y)
 {
     if (x.size() == y.size() && x.size() != 0)
     {
@@ -114,16 +114,16 @@ bool vectors_check(vector<double> x, vector<double> y)
 }
 /*This function gets an input fro the user and send the input to validation check functions.
 the function returns a doubles vector. */
-vector<double> get_input()
+vector<double> getInput()
 {
     /*Get input from the user:*/
     string x;
     cout << "Please enter vector: ";
     getline(cin, x);
     /*Seperate the input string into sub strings by space delimiter:*/
-    vector<string> str_vec1 = seperate_string(x);
+    vector<string> str_vec1 = seperateString(x);
     /*Check that all the strings are valid and convert them into numbers:*/
-    vector<double> num_vec1 = nums_check(str_vec1);
+    vector<double> num_vec1 = numsCheck(str_vec1);
     /*Return the numbers vector:*/
     return num_vec1;
 }
