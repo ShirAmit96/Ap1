@@ -28,3 +28,6 @@ The output of the program should be a result of the following distances(in this 
 3. chebyshev_distance
 4. canberra_distance
 5. minkowsky_distance
+
+![image](https://user-images.githubusercontent.com/90501635/203612685-596cc257-043b-44f2-a7a8-28a727b0addd.png)
+
