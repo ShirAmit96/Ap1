@@ -22,6 +22,7 @@ You will be requested to insert input(twice).
 each time you should enter a seires of number sepertaed by space(one or more).
 A valid input is a any 2 seires of numbers(negative/positive/with decimal point) and the two seires should be in the same length and not empty.
 If the input won't be valid, the program will be terminated.
+
 ![image](https://user-images.githubusercontent.com/90501635/203612938-ca8c5233-b5fd-4c2d-aedf-94f10dbfbf3f.png)
 
 The output of the program should be a result of the following distances(in this order):
@@ -30,6 +31,7 @@ The output of the program should be a result of the following distances(in this 
 3. chebyshev
 4. canberra
 5. minkowsky
+
 ![image](https://user-images.githubusercontent.com/90501635/203612993-2ef00671-1ec5-47d8-926a-decb0e942784.png)
 
 
