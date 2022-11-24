@@ -14,7 +14,7 @@ double minkowskyDistance(vector<double> x, vector<double> y);
 double chebyshevDistance(vector<double> x, vector<double> y);
 double canberraDistance(vector<double> x, vector<double> y);
 vector<string> seperateString(string input);
-vector<double> numsCheck(vector<string> x_vector);
+vector<double> numsCheck(vector<string> xVector);
 bool vectorsCheck(vector<double> x, vector<double> y);
 vector<double> getInput();
 void printDouble(double num);
