@@ -5,18 +5,18 @@ int main()
 {
     /*Get input of two vectors from the user and
      create number's vectors from the input:*/
-    vector<double> x_vector{};
-    x_vector = getInput();
-    vector<double> y_vector{};
-    y_vector = getInput();
+    vector<double> xVector{};
+    xVector = getInput();
+    vector<double> yVector{};
+    yVector = getInput();
     /*If the 2 vectors are valid print the result of all the distance functions:*/
-    if (vectorsCheck(x_vector, y_vector) == true)
+    if (vectorsCheck(xVector, yVector) == true)
     {
-        printDouble(euclideanDistance(x_vector, y_vector));
-        printDouble(manhattanDistance(x_vector, y_vector));
-        printDouble(chebyshevDistance(x_vector, y_vector));
-        printDouble(canberraDistance(x_vector, y_vector));
-        printDouble(minkowskyDistance(x_vector, y_vector));
+        printDouble(euclideanDistance(xVector, yVector));
+        printDouble(manhattanDistance(xVector, yVector));
+        printDouble(chebyshevDistance(xVector, yVector));
+        printDouble(canberraDistance(xVector, yVector));
+        printDouble(minkowskyDistance(xVector, yVector));
     }
     return 1;
 }
