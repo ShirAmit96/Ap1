@@ -1,4 +1,3 @@
-// Name: Guy Leib and Shir Amit
 #include <iostream>
 #include <cmath>
 #include <vector>
