@@ -2,11 +2,10 @@
 #include "InputCheck.h"
 
 class InputCheck{
-private:
-    string input;
+;
 public:
-    InputCheck(string i){
-        this->input=i;
+    InputCheck(){
+
     }
 private:
     vector<string> seperateString(string input) {
@@ -137,5 +136,10 @@ private:
         }
         return numVector;
     }
-};
+    vector<double> createNumbersVec(string input){
+        vector<string> inputVec=this.seperateString(input);
+        vector<double> finalVec=this.vectorValidation(inputVec);
+        return finalVec;
+    }
+}
 
