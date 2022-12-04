@@ -1,4 +1,5 @@
 #include "header.h"
+#include "distance_metric.cpp"
 using namespace std;
 
 int main()
