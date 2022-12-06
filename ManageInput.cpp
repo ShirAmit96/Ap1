@@ -5,8 +5,9 @@ class ManageInput{
 public:
     ManageInput(){
     }
+
 private:
-    vector<string> getFirstInput(string [] input){
+    vector<string> getFirstInput(char [] input){
         vector <string> inputVec {};
         vecor <string> finalVec{};
         for(int i=1;i<input.length()){
@@ -24,5 +25,6 @@ private:
         return finalVec;
 
     }
+
 
 }

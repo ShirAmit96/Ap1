@@ -17,4 +17,5 @@ vector<double> numsCheck(vector<string> xVector);
 bool vectorsCheck(vector<double> x, vector<double> y);
 vector<double> getInput();
 void printDouble(double num);
-class InputCheck();
+class InputCheck;
+class ManageInput;

@@ -2,32 +2,11 @@
 #include "InputCheck.h"
 
 class InputCheck{
-;
 public:
     InputCheck(){
 
     }
 private:
-    vector<string> seperateString(string input) {
-    /*define space to be the delimiter and initialize the sub strings vector:*/
-    string delim = " ";
-    size_t delimIndex = 0;
-    vector<string> subStrVec{};
-    string subStr;
-    /*Loop over the input string and each time you find a space do the following:*/
-    while ((delimIndex = input.find(delim)) != string::npos) {
-        /*Define a sub string that goes from index 0 of the input string until the space index:*/
-        subStr = input.substr(0, delimIndex);
-        /*Erase the substring that we just saved from the input string:*/
-        input.erase(0, delimIndex + delim.length());
-        /*Push the sub string into the sub strings vector:*/
-        subStrVec.push_back(subStr);
-        }
-    /*Push the last sub string to the sub strings vector:*/
-    subStrVec.push_back(input);
-    /*Return the sub strings vector: */
-    return subStrVec;
-    }
     vector<string> stringsValidation( vector<string> inputVec){
         vector<string> finalVec{};
         vector<string> emptyVec{};
