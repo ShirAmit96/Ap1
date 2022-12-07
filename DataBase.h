@@ -7,14 +7,15 @@ using namespace std;
 
 class DataBase {
 private:
+
+public:
     struct object{
         string label;
         int size;
         vector<double> values;
-
     };
     vector<object> db{};
-public:
+
     DataBase(vector<vector<string>> readOutput);
     void createDataBase(vector<vector<string>>readOutput);
 

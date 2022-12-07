@@ -1,6 +1,6 @@
 #include "distance_metric.h"
 using namespace std;
-
+    //constructor that gets a string that will indicate which distance metric to use.
     DistanceMetric::DistanceMetric(string distanceMetric) {
         metric = distanceMetric;
     };
