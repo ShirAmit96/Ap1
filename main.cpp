@@ -1,5 +1,5 @@
 #include "main.h"
-using namespace std;
+#include "knn.h"
 
 int main(int argc, char *argv[])
 {
@@ -10,18 +10,20 @@ int main(int argc, char *argv[])
 
     ManageInput MngInput;
     vector<string>  firstInput=MngInput.getFirstInput(inputVec);
-    vector <double> numsVector=MngInput.getSecondInput();
+    //vector <double> numsVector=MngInput.getSecondInput();
+    vector <double> numsVector={6.9,3.1,4.9,1.5};
     if(firstInput.size()!=0 && numsVector.size()!=0) {
         int k =stoi(firstInput[0]);
         string fileName = firstInput[1];
         string distanceMet = firstInput[2];
         ReaderClass read(fileName);
         DataBase db=read.readCsv();
-        //guy: you should call here to knn and  enter to Knn-> "k","distanceMet", "db",  and "numsVector"
+        Knn k_model = Knn(distanceMet,k,db.db);
+        string label =k_model.predict(numsVector);
+        cout << label <<endl;
     }else{
         cout<<"Exiting program...";
         return 0;
     }
-
     return 1;
 }
