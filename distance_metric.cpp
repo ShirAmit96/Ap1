@@ -4,6 +4,9 @@ using namespace std;
     DistanceMetric::DistanceMetric(string distanceMetric) {
         metric = distanceMetric;
     };
+    //This method calculate the distance between two vectors.
+    //The distance metric that the calculation will be executed by is determined
+    //by the metric string given by the user.
     double DistanceMetric::calculate(vector<double> x, vector<double> y){
         if (metric == "AUC") {
             return DistanceMetric::euclideanDistance(x,y);
@@ -21,7 +24,7 @@ using namespace std;
             return DistanceMetric::minkowskyDistance(x,y);
         }
     };
-    /*This function is a generalized compute distance function and it'll
+    /*This function is a generalized compute distance function, and it'll
     compute different distance depends on the p value that is passed -
     if p=1 is the distance is manhattan, if p=2 the distance is euclidean and for all the other p values the distance is minkowsky*/
     double DistanceMetric::generalDistFunc(vector<double> x, vector<double> y, double p)
