@@ -1,15 +1,10 @@
-#include <functional>
-#include "header.h"
-#include "iostream"
+#include "distance_metric.h"
 using namespace std;
-class DistanceMetric{
-private:
-    string metric;
-public:
-    DistanceMetric(string distanceMetric) {
+
+    DistanceMetric::DistanceMetric(string distanceMetric) {
         metric = distanceMetric;
     };
-    double calculate(vector<double> x, vector<double> y){
+    double DistanceMetric::calculate(vector<double> x, vector<double> y){
         if (metric == "AUC") {
             return DistanceMetric::euclideanDistance(x,y);
         }
@@ -29,7 +24,7 @@ public:
     /*This function is a generalized compute distance function and it'll
     compute different distance depends on the p value that is passed -
     if p=1 is the distance is manhattan, if p=2 the distance is euclidean and for all the other p values the distance is minkowsky*/
-    double generalDistFunc(vector<double> x, vector<double> y, double p)
+    double DistanceMetric::generalDistFunc(vector<double> x, vector<double> y, double p)
     {
         double z = 0;
         for (int i = 0; i < x.size(); i++)
@@ -39,22 +34,22 @@ public:
         return pow(z, (1.0 / p));
     }
     /*This function gets two vectors of double and returns the euclidean distance between them*/
-    double euclideanDistance(vector<double> x, vector<double> y)
+    double DistanceMetric::euclideanDistance(vector<double> x, vector<double> y)
     {
         return generalDistFunc(x, y, 2);
     }
     /*This function gets two vectors of double and returns the manhattan distance between them*/
-    double manhattanDistance(vector<double> x, vector<double> y)
+    double DistanceMetric::manhattanDistance(vector<double> x, vector<double> y)
     {
         return generalDistFunc(x, y, 1);
     }
     /*This function gets two vectors of double and returns the minikowsky distance between them*/
-    double minkowskyDistance(vector<double> x, vector<double> y)
+    double DistanceMetric::minkowskyDistance(vector<double> x, vector<double> y)
     {
         return generalDistFunc(x, y, 3);
     }
     /*This function gets two vectors of double and returns the chebyshev distance between them*/
-    double chebyshevDistance(vector<double> x, vector<double> y)
+    double DistanceMetric::chebyshevDistance(vector<double> x, vector<double> y)
     {
         double max = 0;
         double subAbs = 0;
@@ -75,7 +70,7 @@ public:
         return max;
     }
     /*This function gets two vectors of double and returns the canberra distance between them*/
-    double canberraDistance(vector<double> x, vector<double> y)
+    double DistanceMetric::canberraDistance(vector<double> x, vector<double> y)
     {
         double subAbs = 0;
         double sumAbs = 0;
@@ -96,5 +91,4 @@ public:
         }
         return sigma;
     }
-};
 
