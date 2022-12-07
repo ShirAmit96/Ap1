@@ -6,5 +6,6 @@
 using namespace std;
 #include "ReaderClass.h"
 #include "ManageInput.h"
+#include "DataBase.h"
 int main(int argc, char *argv[]);
 #endif //AP1_MAIN_H

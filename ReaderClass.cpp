@@ -20,7 +20,7 @@ void ReaderClass::setFilesNames(string name){
 void ReaderClass::setFilePath(){
     path="../"+dataSets+"/"+dataType+"/"+fileName;
 }
-void ReaderClass::readCsv(){
+DataBase ReaderClass::readCsv(){
     vector<vector<string>> content;
     vector<string> row;
     string line,word;
@@ -36,18 +36,15 @@ void ReaderClass::readCsv(){
             stringstream str(line);
             while(getline(str, word, ',')) {
                 row.push_back(word);
-                content.push_back(row);
+
             }
+            content.push_back(row);
         }
+        DataBase db=DataBase(content);
+        return db;
     }
+
     else
         cout<<"Could not open the file\n";
-    for(int i=0;i<content.size();i++)
-    {
-        for(int j=0;j<content[i].size();j++)
-        {
-            cout<<content[i][j]<<" ";
-        }
-        cout<<"\n";
-    }
+
 }

@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include "DataBase.h"
 using namespace std;
 
 
@@ -19,7 +20,7 @@ public:
     ReaderClass(string name);
     void setFilesNames(string name);
     void setFilePath();
-    void readCsv();
+    DataBase readCsv();
 
 };
 #endif //AP1_READERCLASS_H
