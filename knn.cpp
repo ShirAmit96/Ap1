@@ -32,9 +32,9 @@ vector<pair<double,string>> Knn::distance(vector<DataBase::object> database, vec
         return labels;
     }
     //helper method to compare between two values in a map.
-    bool Knn::compare(const pair<string, int>&a, const pair<string, int>&b)
+    bool Knn::compare(const pair<string, int>&topLabel, const pair<string, int>&bottomLabel)
     {
-        return a.second<b.second;
+        return topLabel.second<bottomLabel.second;
     }
     //This method create a map-> label:occurrences.
     //After that the method finds the max element using the compare method.
@@ -53,5 +53,4 @@ vector<pair<double,string>> Knn::distance(vector<DataBase::object> database, vec
         vector<string> labels = nearestKNeighbors(distancesAndLabels,this->k);
         string label = mostCommonLabel(labels);
         return label;
-
     }
