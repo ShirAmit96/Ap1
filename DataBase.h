@@ -6,8 +6,6 @@
 using namespace std;
 
 class DataBase {
-private:
-
 public:
     struct object{
         string label;

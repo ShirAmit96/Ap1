@@ -30,6 +30,8 @@ DataBase ReaderClass::readCsv(){
     fstream file (path, ios::in);
     if(file.is_open())
     {
+        int counter=0;
+        int rowSize=0;
         while(getline(file, line))
         {
             row.clear();
@@ -38,10 +40,21 @@ DataBase ReaderClass::readCsv(){
                 row.push_back(word);
 
             }
-            content.push_back(row);
+            if(counter==0){
+                rowSize=row.size();
+            }
+            if(rowSize!=row.size()){
+              cout<<"Invalid classification file, exiting program..."<<endl;
+              exit(0);
+            }else {
+                content.push_back(row);
+                counter++;
+            }
         }
+
         DataBase db=DataBase(content);
         return db;
+
     }
 
     else
