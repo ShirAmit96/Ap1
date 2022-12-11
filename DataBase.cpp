@@ -11,7 +11,7 @@ void DataBase::createDataBase(vector<vector<string>> readOutput) {
         {
 
             if (j!=readOutput[i].size()-1){
-                double num=stod(readOutput[i][j]);
+                double num=doubleValidation(readOutput[i][j]);
                 obj.values.push_back(num);
             }else{
                 obj.label=readOutput[i][j];

@@ -2,12 +2,11 @@
 #define AP1_DATABASE_H
 #include <vector>
 #include <string>
+#include "input_managment.h"
 
 using namespace std;
 
 class DataBase {
-private:
-
 public:
     struct object{
         string label;
