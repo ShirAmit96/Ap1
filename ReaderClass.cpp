@@ -4,7 +4,6 @@ ReaderClass::ReaderClass(string name){
     setFilesNames(name);
     setFilePath();
 }
-
 void ReaderClass::setFilesNames(string name){
     fileName=name;
     dataSets="DataSets";
