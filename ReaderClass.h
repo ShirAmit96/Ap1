@@ -9,8 +9,6 @@
 #include "DataBase.h"
 using namespace std;
 
-
-
 class ReaderClass {
 private:
     string fileName;
