@@ -1,7 +1,7 @@
 #ifndef AP1_INPUT_MANAGMENT_H
 #define AP1_INPUT_MANAGMENT_H
 #include "dataBase.h"
-#include "ReaderClass.h"
+#include "reader_class.h"
 #include "input_validation.h"
 #include <string>
 #include <vector>

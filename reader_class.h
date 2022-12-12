@@ -1,5 +1,5 @@
 #ifndef AP1_READERCLASS_H
-#define AP1_READERCLASS_H
+#define AP1_READER_CLASS_H
 #include <fstream>
 #include <iostream>
 #include <string>

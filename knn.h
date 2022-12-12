@@ -1,7 +1,7 @@
 #ifndef AP1_KNN_H
 #define AP1_KNN_H
 #include "distance_metric.h"
-#include "DataBase.h"
+#include "database.h"
 #include<bits/stdc++.h>
 using namespace std;
 class Knn {

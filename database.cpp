@@ -1,4 +1,4 @@
-#include "dataBase.h"
+#include "database.h"
 
 
 DataBase::DataBase(vector<vector<string>> readOutput){
