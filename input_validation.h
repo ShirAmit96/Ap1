@@ -6,7 +6,6 @@
 #include <vector>
 #include <iostream>
 using namespace std;
-#include "input_validation.h"
 vector<string> seperateString(string input);
 vector<string> stringsValidation( vector<string> inputVec);
 double doubleValidation(string s);
