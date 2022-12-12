@@ -1,4 +1,4 @@
-#include "ReaderClass.h"
+#include "readerClass.h"
 
 ReaderClass::ReaderClass(string name){
     setFilesNames(name);

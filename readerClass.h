@@ -6,7 +6,7 @@
 #include <vector>
 #include <sstream>
 #include <stdlib.h>
-#include "DataBase.h"
+#include "dataBase.h"
 using namespace std;
 
 class ReaderClass {

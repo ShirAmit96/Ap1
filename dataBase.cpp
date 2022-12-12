@@ -1,4 +1,5 @@
-#include "DataBase.h"
+#include "dataBase.h"
+
 
 DataBase::DataBase(vector<vector<string>> readOutput){
     createDataBase(readOutput);

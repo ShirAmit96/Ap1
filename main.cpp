@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
         string label =k_model.predict(secondInput);
         cout << label <<endl;
     }else{
-        cout<<"Error: vector's size does not match the DataBase,Exiting program..."<<endl;
+        cout<<"Error: the inserted vector is not valid,Exiting program..."<<endl;
         exit(1);
     }
     return 1;
