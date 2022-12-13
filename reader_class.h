@@ -12,13 +12,8 @@ using namespace std;
 class ReaderClass {
 private:
     string fileName;
-    string dataType;
-    string dataSets;
-    string path;
 public:
     ReaderClass(string name);
-    void setFilesNames(string name);
-    void setFilePath();
     DataBase readCsv();
 
 };

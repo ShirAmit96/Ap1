@@ -1,7 +1,6 @@
 
 #ifndef AP1_INPUT_VALIDATION_H
 #define AP1_INPUT_VALIDATION_H
-
 #include <string>
 #include <vector>
 #include <iostream>
