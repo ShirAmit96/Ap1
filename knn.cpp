@@ -24,7 +24,7 @@ vector<pair<double,string>> Knn::distance(vector<DataBase::object> database, vec
     return distancesAndLabels;
 }
     //create a vector with the labels of the k nearest neighbors.
-    vector<string> Knn::nearestKNeighbors(vector<pair<double,string>> distancesAndLabels, int k){
+    vector<string> Knn::nearestKNeighbors(vector<pair<double,string> > distancesAndLabels, int k){
         vector<string> labels = {};
         for(int i = 0; i<k;i++){
             labels.push_back(distancesAndLabels[i].second);
