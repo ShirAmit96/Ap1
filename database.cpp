@@ -6,7 +6,7 @@ DataBase::DataBase(vector<vector<string> > readOutput){
     createDataBase(readOutput);
 }
 /*This function create the class's members:  */
-void DataBase::createDataBase(vector<vector<string>> readOutput) {
+void DataBase::createDataBase(vector<vector<string> > readOutput) {
     //loop over the 2D vector that contains the file's data:
     for(int i=0;i<readOutput.size();i++)
     {
