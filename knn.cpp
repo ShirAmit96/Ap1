@@ -2,10 +2,9 @@
 
 // the Knn constructor.
 Knn::Knn(string metric_input, int k, vector<DataBase::object> db)
-        : metric(nullptr),db(db){
+        : metric(metric_input),db(db){
     this->distanceMetric=metric_input;
     this->k = k;
-    metric = new DistanceMetric(this->distanceMetric);
 }
 // compute the distance between the given vectors to all the vectors in the database.
 vector<pair<double,string>> Knn::distance(vector<DataBase::object> database, vector<double> x){
@@ -13,7 +12,7 @@ vector<pair<double,string>> Knn::distance(vector<DataBase::object> database, vec
     double distance = 0;
     string label = "";
     for(int i =0;i<database.size();i++){
-        distance=(this->metric->calculate(database[i].values,x));
+        distance=(this->metric.calculate(database[i].values,x));
         label = database[i].label;
         //pushing to the vector distance between unknown vector and a vector from the database
         //with the corresponding label.

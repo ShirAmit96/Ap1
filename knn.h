@@ -5,7 +5,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 class Knn {
-    DistanceMetric* metric;
+    DistanceMetric metric;
     int k;
     string distanceMetric;
     vector<DataBase::object> db;
