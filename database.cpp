@@ -2,7 +2,7 @@
 #include "database.h"
 
 /*contractor:*/
-DataBase::DataBase(vector<vector<string>> readOutput){
+DataBase::DataBase(vector<vector<string> > readOutput){
     createDataBase(readOutput);
 }
 /*This function create the class's members:  */
