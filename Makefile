@@ -1,1 +1,2 @@
-g++ -std=c++11 *.cpp *.h
+make:
+  g++ -std=c++11 *.cpp *.h
