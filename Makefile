@@ -25,4 +25,4 @@ target: dependencies
 	action
 
 clean:
-	rm *.o a.out
+	rm *.o *h.gch a.out
