@@ -5,6 +5,7 @@ Knn::Knn(string metric_input, int k, vector<DataBase::object> db)
         : metric(metric_input),db(db){
     this->distanceMetric=metric_input;
     this->k = k;
+
 }
 // compute the distance between the given vectors to all the vectors in the database.
 vector<pair<double,string>> Knn::distance(vector<DataBase::object> database, vector<double> x){

@@ -5,6 +5,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 class Knn {
+
     DistanceMetric metric;
     int k;
     string distanceMetric;
