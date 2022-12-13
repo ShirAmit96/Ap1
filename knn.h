@@ -11,7 +11,7 @@ class Knn {
     string distanceMetric;
     vector<DataBase::object> db;
 
-    vector<pair<double,string>> distance(vector<DataBase::object> database, vector<double> x);
+    vector<pair<double,string> > distance(vector<DataBase::object> database, vector<double> x);
 
     vector<string> nearestKNeighbors(vector<pair<double,string> > distancesAndLabels,int k);
 
