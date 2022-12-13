@@ -13,7 +13,7 @@ class Knn {
 
     vector<pair<double,string>> distance(vector<DataBase::object> database, vector<double> x);
 
-    vector<string> nearestKNeighbors(vector<pair<double,string>> distancesAndLabels,int k);
+    vector<string> nearestKNeighbors(vector<pair<double,string> > distancesAndLabels,int k);
 
     string mostCommonLabel(const vector<string> &labels);
 
