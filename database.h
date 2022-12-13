@@ -15,7 +15,7 @@ public:
     };
     vector<object> db{};
 
-   DataBase(vector<vector<string>> readOutput);
+   DataBase(vector<vector<string> > readOutput);
     void createDataBase(vector<vector<string>>readOutput);
 
 };
