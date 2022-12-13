@@ -26,15 +26,15 @@ vector<string> seperateString(string input)
 /*This function checks if the args input is valid.
  if so, it returns a vector of the given args.*/
 vector<string> stringsValidation( vector<string> inputVec){
-    vector<string> finalVec{};
-    string k=inputVec[1];
-    string file=inputVec[2];
-    string distanceMet=inputVec[3];
-    //if args size!=4, terminate program:
+	   //if args size!=4, terminate program:
     if (inputVec.size()!=4){
         cout<<"Error: invalid number of arguments, exiting program..."<<endl;
         exit(0);
     }
+    vector<string> finalVec{};
+    string k=inputVec[1];
+    string file=inputVec[2];
+    string distanceMet=inputVec[3];
     //check that  k is  a positive int:
     if(k[0]!='0'&& isdigit(k[0])){
         for(auto c:k){
