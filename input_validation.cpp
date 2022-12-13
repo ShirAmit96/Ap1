@@ -40,7 +40,7 @@ vector<string> stringsValidation( vector<string> inputVec){
         }
         finalVec.push_back(k);
     }
-    if(file=="iris_classified.csv"||file=="beans_classified.csv"||file=="wine_classified.csv"){
+    if(file=="iris_classified.csv"||file=="beans_Classified.csv"||file=="wine_Classified.csv"){
         finalVec.push_back(file);
     }else{
         cout<<"Error: file name is invalid,exiting program..."<<endl;
@@ -86,6 +86,10 @@ double doubleValidation(string  s){
             /*If the char in index i is a digit-continue to the next one: */
         else if (isdigit(s[i]))
         {
+            continue;
+        }
+        else if(i!=0 && i!=s.length()-1 && s[i]=='E' &&s[i+1]=='-' &&isdigit(s[i+2])){
+            i+=2;
             continue;
         }
             /*Handle a negative number case:*/

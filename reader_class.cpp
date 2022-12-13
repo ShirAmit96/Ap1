@@ -9,15 +9,16 @@ void ReaderClass::setFilesNames(string name){
     dataSets="DataSets";
     if(fileName=="iris_classified.csv"){
         dataType="iris";
-    }else if(fileName=="beans_classified.csv"){
+    }else if(fileName=="beans_Classified.csv"){
         dataType="beans";
     }else{
         dataType="wine";
-    }
+	}
+ 
 
 }
 void ReaderClass::setFilePath(){
-    path="../"+dataSets+"/"+dataType+"/"+fileName;
+    path=fileName;
 }
 DataBase ReaderClass::readCsv(){
     vector<vector<string>> content;
