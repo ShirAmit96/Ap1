@@ -4,7 +4,7 @@ Manual for ex2:
 Instructions for compiling and runing the code: 
 
 Log in to "planet" server and run the following commands:
-1. git clone https://github.com/ShirAmit96/Ap1.git
+1. git clone -b ex2 https://github.com/ShirAmit96/Ap1.git
 3. cd Ap1 
 4. put "iris_classified.csv", "beans_Classified.csv" and "wine_Classified.csv" inside Ap1 directory.
 5. make
@@ -12,13 +12,13 @@ Log in to "planet" server and run the following commands:
 
 *** k is a number , file name is one of the above files and distance metric can be: AUC, MAN, CHB, CAN, MIN.
 
-our code include 7 files: 
+our code includes 7 files: 
 1. main.cpp - this is the main file of the program. The main handles the calls of the other functions. first, the main will get the first input via args and later, after validation check of the first input, the second input will be inserted.If everything is valid, a predicted label will be printed.
-2. input_managment.cpp - This file contain the functions that arrange the input and the send it to input_validation class.if everything is valid, the input will be returned to the main.
-3. input_validation.cpp -
+2. input_managment.cpp - This file contains the functions that arrange the input and the send it to input_validation class.if everything is valid, the input will be returned to the main.
+3. input_validation.cpp -This file contains the functions which perform valdiation checks on the inserted data. 
 4. distance_metric.cpp -
-5. database.cpp-
-6.reader_class.cpp-
+5. database.cpp-This class represents a database that holds a vector of structs and each struct contains size(=numbers of columns), vector of numbers and a matching label.
+6.reader_class.cpp-This class reads a given csv file and creates a database class that holds the file content.
 7.knn.cpp-
 
 Insturctions for using the program:
