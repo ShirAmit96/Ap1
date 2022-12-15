@@ -16,11 +16,11 @@ our code includes 7 files:
 1. main.cpp - this is the main file of the program. The main handles the calls of the other functions. first, the main will get the first input via args and later, after validation check of the first input, the second input will be inserted.If everything is valid, a predicted label will be printed.
 2. input_managment.cpp - This file contains the functions that arrange the input and the send it to input_validation class.if everything is valid, the input will be returned to the main.
 3. input_validation.cpp -This file contains the functions which perform valdiation checks on the inserted data. 
-4. distance_metric.cpp -
+4. distance_metric.cpp - This class represent a distance metric object, the object can calculate distance between two vectors in 5 different distance metrics: Eucldiean, Manhattan, Minkowsky, Chevyshev and Canberra. The choosen metric is given by the an abbreviation given by the user.
 5. database.cpp-This class represents a database that holds a vector of structs and each struct contains size(=numbers of columns), vector of numbers and a matching label.
 6. reader_class.cpp-This class reads a given csv file and creates a database class that holds the file content.
-7. knn.cpp- This class implements the K nearest Neighbors algorithm. 
-8. distance_metric.cpp - This class represent a distance metric object, the object can calculate distance between two vectors in 5 different distance metrics: Eucldiean, Manhattan, Minkowsky, Chevyshev and Canberra. The choosen metric is given by the an abbreviation given by the user.
+7. knn.cpp- This class implements the K Nearest Neighbors algorithm. When the predict method is called, first distances between given vector to all the vectors in the databse are computed by the distnace metric according to the metric given by the user. After that the labels of the K nearest neighbors are saved to a vector, and in the end we return the most common label in the vector as the predicted label to the given vector. 
+
 
 Insturctions for using the program:
 
