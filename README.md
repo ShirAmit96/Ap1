@@ -28,6 +28,7 @@ Insturctions for using the program:
 ![image](https://user-images.githubusercontent.com/90501635/207836295-0e3f1fcc-14c3-4eab-a5c9-c881981ccad4.png)
 
 2. The program will return the predicted label of the vector using knn algorithm.
+  
 ![image](https://user-images.githubusercontent.com/90501635/207836336-f5cf731a-fe74-4df3-91df-16e9b85ef765.png)
 
 3. You can continue inserting numbers and predict more vectors from the same category.
