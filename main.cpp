@@ -16,17 +16,17 @@ int main(int argc, char *argv[])
     //Read the requested input file:
     ReaderClass read=ReaderClass(fileName);
     DataBase db=read.readCsv();
-    int columnsSize=db.db[0].size;
-	//create a knn class :
-	 Knn k_model = Knn(distanceMet, k, db.db);
     //check if k is not too big:
     if(k>db.db.size()){
         cout<<"Error: k value is bigger than data's size, exiting program..."<<endl;
         exit(-1);
     }
+    //create a knn class :
+    Knn k_model = Knn(distanceMet, k, db.db);
 	while(true){
 		//get vector from the user and check if it is valid:
 		vector <double> secondInput= getSecondInput();
+        int columnsSize=db.db[0].size;
 		//Check if the inserted vector corresponds in size to the number of columns:
 		if(columnsSize==secondInput.size()){
 			//predict the label using knn class:  

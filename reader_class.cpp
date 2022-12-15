@@ -9,8 +9,6 @@ DataBase ReaderClass::readCsv(){
     vector<vector<string>> content;
     vector<string> row;
     string line,word;
-
-
     //ios::in allows input (read operations) from a stream:
     fstream file (fileName, ios::in);
     if(file.is_open())
@@ -31,22 +29,29 @@ DataBase ReaderClass::readCsv(){
             if(counter==0){
                 rowSize=row.size();
             }
+            if(row.size()==0){
+                cout<<"Error:Invalid classification file,exiting program..."<<endl;
+                exit(-1);
+            }
             //If there is a line with a different number of columns than the rest of the file-exit:
             if(rowSize!=row.size()){
-              cout<<"Invalid classification file, exiting program..."<<endl;
-              exit(0);
+              cout<<"Error:Invalid classification file, exiting program..."<<endl;
+              exit(-1);
             }else {
                 //if the number of columns is fine-insert the "row" vector into "content" vector:
                 content.push_back(row);
                 counter++;
             }
         }
+        file.close();
+        //check if file is empty:
+        if(content.size()==0){
+            cout<<"Invalid classification file, exiting program..."<<endl;
+            exit(-1);
+        }
         //create a DataBase class that contains the content of the file:
         DataBase db=DataBase(content);
-        file.close();
         return db;
-
-
     }
 
     else

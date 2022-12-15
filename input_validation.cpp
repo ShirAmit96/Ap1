@@ -148,7 +148,12 @@ double doubleValidation(string  s){
 /*This function gets a string vector,
  checks if all the items in the vector are doubles and return a double vector*/
 vector<double> vectorValidation( vector<string> inputVec){
-    /*This vector will be the returned vector if all the strings in the input are valid:*/
+    //check if vector is empty:
+    if (inputVec.size()==0){
+        cout<<"Error: an invalid data was found, exiting program..."<<endl;
+        exit(-1);
+    }
+    //This vector will be the returned vector if all the strings in the input are valid:
     vector<double> numVector{};
     /*Iterate over all the vector's strings:*/
     for (auto x : inputVec)
