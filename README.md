@@ -19,12 +19,19 @@ our code includes 7 files:
 4. distance_metric.cpp -
 5. database.cpp-This class represents a database that holds a vector of structs and each struct contains size(=numbers of columns), vector of numbers and a matching label.
 6. reader_class.cpp-This class reads a given csv file and creates a database class that holds the file content.
-7. knn.cpp-
+7. knn.cpp- This class implements the K nearest Neighbors algorithm. 
+8. distance_metric.cpp - This class represent a distance metric object, the object can calculate distance between two vectors in 5 different distance metrics: Eucldiean, Manhattan, Minkowsky, Chevyshev and Canberra. The choosen metric is given by the an abbreviation given by the user.
 
 Insturctions for using the program:
 
 1. After running all the above command you should insert a seires of number sepertaed by space.
-2. The program will return the predicted label of the vector using knn algorithem.
+  for example:
+  ![image](https://user-images.githubusercontent.com/90501635/207835511-1befbe1a-e5e7-4eda-a1a8-2fd903c1a633.png)
+
+2. The program will return the predicted label of the vector using knn algorithm.
+  for exmaple:
+  ![image](https://user-images.githubusercontent.com/90501635/207835606-9018cd76-24c4-4bab-a4be-b26730622031.png)
+
 3. You can continue inserting numbers and predict more vectors from the same category.
 
 validation rules:
