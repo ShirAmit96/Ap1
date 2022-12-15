@@ -25,10 +25,12 @@ our code includes 7 files:
 Insturctions for using the program:
 
 1. After running all the above command you should insert a seires of number sepertaed by space.
+  
 for example:
   ![image](https://user-images.githubusercontent.com/90501635/207835511-1befbe1a-e5e7-4eda-a1a8-2fd903c1a633.png)
 
 2. The program will return the predicted label of the vector using knn algorithm.
+  
 for exmaple:
   ![image](https://user-images.githubusercontent.com/90501635/207835606-9018cd76-24c4-4bab-a4be-b26730622031.png)
 
