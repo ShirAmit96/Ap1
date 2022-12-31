@@ -9,6 +9,7 @@
 using namespace std;
 
 
-vector<string> getFirstInput(vector<string> inputVec);
+void getFirstInput(vector<string> inputVec);
 vector<double> getSecondInput();
+bool getClientInput(string input);
 #endif //AP1_INPUT_MANAGMENT_H

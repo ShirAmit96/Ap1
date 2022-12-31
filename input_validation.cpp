@@ -1,10 +1,10 @@
 #include "input_validation.h"
 /*This function separates the input string into sub strings by
  space delimiter and returns a vector of these sub strings */
-vector<string> seperateString(string input)
+
+vector<string> separateString(string input, string delim)
 {
     /*define space to be the delimiter and initialize the sub strings vector:*/
-    string delim = " ";
     size_t delimIndex = 0;
     vector<string> subStrVec{};
     string subStr;
@@ -23,71 +23,54 @@ vector<string> seperateString(string input)
     /*Return the sub strings vector: */
     return subStrVec;
 }
-/*This function checks if the args input is valid.
- if so, it returns a vector of the given args.*/
-vector<string> stringsValidation( vector<string> inputVec){
-	   //if args size!=4, terminate program:
-    if (inputVec.size()!=4){
-        cout<<"Error: invalid number of arguments, exiting program..."<<endl;
-        exit(0);
-    }
-    vector<string> finalVec{};
-    string k=inputVec[1];
-    string file=inputVec[2];
-    string distanceMet=inputVec[3];
-    //check that  k is  a positive int:
-    if(k[0]!='0'&& isdigit(k[0])){
-        for(auto c:k){
-            //if k is not valid-terminate program:
-            if(!isdigit(c)){
-                cout<<"Error: k value is invalid, exiting program..."<<endl;
-                exit(-1);
-            }
+
+vector<string> separateByAlpha(string input){
+    int delimIndex=0;
+    for (int i=0; i<input.length();i++){
+        if (isalpha(input[i])&&input[i-1]==' '){
+            delimIndex=i-1;
+            string firstStr=input.substr(0, delimIndex);
+            string secStr= input.substr(i,input.length());
+            vector <string> inputVec {};
+            inputVec.push_back(firstStr);
+            inputVec.push_back(secStr);
+            return inputVec;
         }
-        //push k to the final vector:
-        finalVec.push_back(k);
-    }else{
-        //if k is not valid-terminate program:
-        cout<<"Error: k value is invalid, exiting program..."<<endl;
-        exit(-1);
     }
-    //check if the inserted file name is valid:
-    if(file=="iris_classified.csv"||file=="beans_Classified.csv"||file=="wine_Classified.csv"){
-        finalVec.push_back(file);
-    }else{
-        //if file name is not valid-terminate program:
-        cout<<"Error: file name is invalid,exiting program..."<<endl;
-        exit(-1);
-    }
-    //check if the inserted distance metric is valid:
-    if(distanceMet=="AUC"||distanceMet=="CHB"||distanceMet=="MAN"
-       ||distanceMet=="CAN"||distanceMet=="MIN"){
-        finalVec.push_back(distanceMet);
-    }
-    else{
-        //if name of the distance metric is not valid-terminate program:
-        cout<<"Error: distance metric name is invalid, exiting program..."<<endl;
-        exit(-1);
-    }
-    //if al the parameters are valid-return the final vector:
-    return finalVec;
 }
+
+bool ipCheck(string ip){
+    vector<string> ipVec= separateString(ip,".");
+    for (int i = 0; i < ipVec.size(); i++) {
+        if (ipVec[i].length() > 3
+            || stoi(ipVec[i]) < 0
+            || stoi(ipVec[i]) > 255)
+            return 0;
+
+        if (ipVec[i].length() > 1
+            && stoi(ipVec[i]) == 0)
+            return 0;
+
+        if (ipVec[i].length() > 1
+            && stoi(ipVec[i]) != 0
+            && ipVec[i][0] == '0')
+            return 0;
+    }
+}
+
 /*This function check if a given string represents a double.
  if so it returns a double.*/
-double doubleValidation(string  s){
+bool doubleValidation(string  s){
     //If the string contains only one digit number:
     if (isdigit(s[0]) && s.length() == 1)
     {
-        // convert the string to a double:
-        double num = stod(s);
-        return num;
+        return 1;
 
     }
     //If the string starts with a 0 but doesn't have a dot after it-exit program:
     else if (s[0] == '0' && s[1] != '.')
     {
-        cout<<"Error: an invalid data was found, exiting program..."<<endl;
-        exit(-1);
+        return 0;
     }
     //put a flag in order to indicate we already have one dot:
     bool dotFlag = false;
@@ -97,10 +80,7 @@ double doubleValidation(string  s){
         //If we got to the last char and it is a digit:
         if (isdigit(s[i]) && (i == s.length() - 1))
         {
-            //convert the string to a double:
-            double num = stod(s);
-            //return the double:
-            return num;
+           return 1;
         }
         //If the char in index i is a digit-continue to the next one:
         else if (isdigit(s[i]))
@@ -118,8 +98,7 @@ double doubleValidation(string  s){
             //Prevent a "--" case:*/
             if (s[1] == '-')
             {
-                cout<<"Error: an invalid data was found, exiting program..."<<endl;
-                exit(-1);
+                return 0;
             }
         }
         //Handle a decimal number case:
@@ -134,35 +113,37 @@ double doubleValidation(string  s){
             //More than one dot case-return empty vector:
             else
             {
-                cout<<"Error: an invalid data was found, exiting program..."<<endl;
-                exit(-1);
+                return 0;
             }
         }
         else
         {
-            cout<<"Error: an invalid data was found, exiting program..."<<endl;
-            exit(-1);
+            return 0;
         }
     }
 }
 /*This function gets a string vector,
  checks if all the items in the vector are doubles and return a double vector*/
 vector<double> vectorValidation( vector<string> inputVec){
-    //check if vector is empty:
-    if (inputVec.size()==0){
-        cout<<"Error: an invalid data was found, exiting program..."<<endl;
-        exit(-1);
-    }
     //This vector will be the returned vector if all the strings in the input are valid:
     vector<double> numVector{};
+    //This vector will be the vector returned if the unput is not valid:
+    vector<double> emptyVec{};
+    //check if vector is empty:
+    if (inputVec.size()==0){
+       return emptyVec;
+    }
     /*Iterate over all the vector's strings:*/
     for (auto x : inputVec)
     {
         //check if the string represents a double and save the double:
-        double num=doubleValidation(x) ;
-        //push the double to a vector:
-        numVector.push_back(num);
-
+        if(doubleValidation(x)) {
+            double num=stod(x);
+            //push the double to a vector:
+            numVector.push_back(num);
+        }else{
+            return emptyVec;
+        }
     }
     return numVector;
 }
@@ -170,7 +151,7 @@ vector<double> vectorValidation( vector<string> inputVec){
  checks if the sub strings are valid numbers and return a double's vector. */
 vector<double> createNumbersVec(string input){
     //send the string to a function that will separate it by space:
-    vector<string> inputVec=seperateString(input);
+    vector<string> inputVec=separateString(input, " ");
     //send the vector to a function that makes sure it contains valid numbers:
     vector<double> finalVec=vectorValidation(inputVec);
     return finalVec;
