@@ -6,9 +6,8 @@
 #include <cmath>
 using namespace std;
 class DistanceMetric{
-private:
-    string metric;
 public:
+    string metric;
     DistanceMetric(string distanceMetric);
     double calculate(vector<double> x, vector<double> y);
     double generalDistFunc(vector<double> x, vector<double> y, double p);

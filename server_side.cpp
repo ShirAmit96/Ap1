@@ -108,7 +108,7 @@ void Server::recieve(int clientSock) {
     }
     try{
         if (k_model.distanceMetric != distanceMetric){
-            //add set metric
+            k_model.updateDistanceMetric(distanceMetric);
         }
         if (k_model.k != k){
             k_model.updateK(k);

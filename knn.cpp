@@ -58,3 +58,7 @@ vector<pair<double,string>> Knn::distance(vector<DataBase::object> database, vec
 void Knn::updateK(int k) {
     this->k = k;
 }
+
+void Knn::updateDistanceMetric(string distanceMetric) {
+    this->metric.metric = distanceMetric;
+}
