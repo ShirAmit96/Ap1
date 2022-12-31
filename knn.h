@@ -6,9 +6,7 @@
 using namespace std;
 class Knn {
 
-    DistanceMetric metric;
-    int k;
-    string distanceMetric;
+
     vector<DataBase::object> db;
 
     vector<pair<double,string> > distance(vector<DataBase::object> database, vector<double> x);
@@ -22,5 +20,8 @@ class Knn {
 public:
     Knn(string metric, int k, vector<DataBase::object> db);
     string predict(vector<double> x);
+    DistanceMetric metric;
+    int k;
+    string distanceMetric;
 };
 #endif //AP1_KNN_H
