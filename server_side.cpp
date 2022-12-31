@@ -134,3 +134,5 @@ void Server::sendToClient(const char *data, int length, int clientSock) {
         perror("error sending to client");
     }
 }
+
+// need to add close
