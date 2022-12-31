@@ -19,6 +19,7 @@ class Knn {
 
 public:
     Knn(string metric, int k, vector<DataBase::object> db);
+    void updateK(int k);
     string predict(vector<double> x);
     DistanceMetric metric;
     int k;

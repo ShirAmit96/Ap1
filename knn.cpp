@@ -54,3 +54,7 @@ vector<pair<double,string>> Knn::distance(vector<DataBase::object> database, vec
         string label = mostCommonLabel(labels);
         return label;
     }
+
+void Knn::updateK(int k) {
+    this->k = k;
+}

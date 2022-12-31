@@ -111,7 +111,7 @@ void Server::recieve(int clientSock) {
             //add set metric
         }
         if (k_model.k != k){
-            // add set k
+            k_model.updateK(k);
         }
     }
     catch(...){
