@@ -2,7 +2,7 @@
 
 int main(int argc, char* argv[]){
     Server server;
-    server.run(argv)
+    server.run(argv);
 }
 void Server::extractFromBuffer(char* buffer, vector<double> &vec, int &k, string &distanceMetric) {
     // separate the buffer with blank space.
@@ -41,7 +41,7 @@ int Server::run(char** argv){
     string suffix = ".csv";
     // create the database for the knn.
     ReaderClass read=ReaderClass(fileName);
-    db=read.readCsv();
+    DataBase db=read.readCsv();
 
     // AF_INET - defines working on Ipv4
     //SOCK_STREAM- DEFINES TCP

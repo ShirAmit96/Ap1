@@ -17,9 +17,8 @@
 using namespace std;
 class Server {
 public:
-    Server();
 
-    Server(DataBase globalDb);
+
     int run(char** argv);
     int setup(char** argv);
     int createClientSocket(int serverSock) ;
@@ -27,7 +26,7 @@ public:
     void sendToClient(const char* data, int length, int clientSock);
     void recieve(int clientSock);
     void close();
-    DataBase db;
+    //DataBase db;
     Knn k_model;
 
 private:
