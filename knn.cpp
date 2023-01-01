@@ -1,15 +1,13 @@
 #include "knn.h"
 //default constructor
-Knn(string metric_input = "", int k = 0,
-        vector<DataBase::object> db = vector<DataBase::object>(),
-bool initialized = false)
+Knn::Knn(bool initialized, string metric_input, int k,vector<DataBase::object> db)
 : metric(metric_input), db(db), initialized_(initialized) {
     this->distanceMetric = metric_input;
     this->k = k;
 }
 
 // the Knn constructor.
-Knn(string metric_input, int k, vector<DataBase::object> db)
+Knn::Knn(string metric_input, int k, vector<DataBase::object> db)
 : metric(metric_input), db(db), initialized_(true) {
     this->distanceMetric = metric_input;
     this->k = k;
@@ -71,7 +69,7 @@ void Knn::updateK(int k) {
     }
 }
 
-void Knn::updateDistanceMetric(string distanceMetric)
+void Knn::updateDistanceMetric(string distanceMetric){
     if (!initialized_) {
         throw std::runtime_error("Knn object not initialized");
     }

@@ -18,6 +18,8 @@ class Knn {
     static bool compare(const pair<string, int>&a, const pair<string, int>&b);
 
 public:
+    Knn(bool initialized = false,string metric_input = "", int k = 0,
+             vector<DataBase::object> db = vector<DataBase::object>());
     Knn(string metric, int k, vector<DataBase::object> db);
     void updateK(int k);
     void updateDistanceMetric(string distanceMetric);
@@ -25,7 +27,6 @@ public:
     DistanceMetric metric;
     int k;
     string distanceMetric;
-    Knn();
     bool initialized_;
 };
 #endif //AP1_KNN_H
