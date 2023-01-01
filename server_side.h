@@ -17,13 +17,17 @@
 using namespace std;
 class Server {
 public:
+    Server();
+
+    Server(DataBase globalDb);
+    int run(char** argv);
     int setup(char** argv);
     int createClientSocket(int serverSock) ;
     void extractFromBuffer(char* buffer, vector<double>& vec, int& k,string& distanceMetric);
     void sendToClient(const char* data, int length, int clientSock);
     void recieve(int clientSock);
     void close();
-    DataBase global_db;
+    DataBase db;
     Knn k_model;
 
 private:
