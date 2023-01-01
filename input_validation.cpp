@@ -44,18 +44,21 @@ bool ipCheck(string ip){
     for (int i = 0; i < ipVec.size(); i++) {
         if (ipVec[i].length() > 3
             || stoi(ipVec[i]) < 0
-            || stoi(ipVec[i]) > 255)
+            || stoi(ipVec[i]) > 255) {
             return 0;
+        }
 
         if (ipVec[i].length() > 1
-            && stoi(ipVec[i]) == 0)
+            && stoi(ipVec[i]) == 0){
             return 0;
-
+        }
         if (ipVec[i].length() > 1
             && stoi(ipVec[i]) != 0
-            && ipVec[i][0] == '0')
+            && ipVec[i][0] == '0') {
             return 0;
+        }
     }
+    return 1;
 }
 
 /*This function check if a given string represents a double.

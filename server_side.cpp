@@ -26,7 +26,7 @@ int Server::run(char** argv){
     // check if port is available
     int serverPort;
     try{
-        serverPort = stoi(argv[1]);
+        serverPort = stoi(argv[2]);
         if((serverPort<1024)||(serverPort>65535)){
             throw "Server port not available";
         }
@@ -37,7 +37,7 @@ int Server::run(char** argv){
     }
 
     // check if file is csv
-    string fileName = argv[2];
+    string fileName = argv[1];
     string suffix = ".csv";
     // create the database for the knn.
     ReaderClass read=ReaderClass(fileName);
