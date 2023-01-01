@@ -1,8 +1,11 @@
-
 #include "client.h"
-
+int main(int argc, char* argv[]){
+    Client client;
+    client.run(argc, argv);
+    return 1;
+}
 using namespace std;
-int Client::main(int argc, char *argv[]) {
+void Client::run(int argc, char** argv) {
     //create a vector from args in order to send it to a validation check:
     vector<string> inputVec{};
     for(int i=0;i<argc;i++){
@@ -68,5 +71,4 @@ int Client::main(int argc, char *argv[]) {
         }
     }
 
-    return 0;
 }

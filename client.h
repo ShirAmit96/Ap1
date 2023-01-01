@@ -4,7 +4,7 @@
 
 #ifndef AP1_CLIENT_H
 #define AP1_CLIENT_H
-#include "input_managment.h";
+#include "input_managment.h"
 #include <iostream>
 #include <sys/socket.h>
 #include <stdio.h>
@@ -12,8 +12,10 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <string.h>
+#include <vector>
 class Client{
-    int main(int argc, char *argv[]);
+public:
+    void run(int argc, char** argv);
 
 };
 #endif //AP1_CLIENT_H

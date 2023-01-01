@@ -1,10 +1,35 @@
-all : server client
-server: server.cpp
-	g++ -std=c++11 -o server server.cpp server_side.cpp server_side.h
-client: client.cpp
-	g++ -std=c++11 -o client client.cpp client.h
+# Chooses the right compiler.
+CC = g++ -std=c++11
+# Have the right clean command.
+ifeq ($(OS),Windows_NT)
+	CLN=del
+else
+	CLN=rm
+endif
+
+BUILD_FILES += distance_metric.o
+BUILD_FILES += input_managment.o
+BUILD_FILES += knn.o
+BUILD_FILES += reader_class.o
+BUILD_FILES += database.o
+BUILD_FILES += input_validation.o
+
+all: $(BUILD_FILES) server_side.o client.o
+	$(CC) $(BUILD_FILES) server_side.o -o server.out
+	$(CC) $(BUILD_FILES) client.o -o client.out
+
+run: $(BUILD_FILES) server_side.o client.o
+	$(CC) $(BUILD_FILES) server_side.o -o server.out & $(CC) $(BUILD_FILES) client.o -o client.out
+
+# Build the algs folder
+%.o: %.cpp %.h
+	$(CC) -c -o $@ $<
+
+server_side.o: server_side.cpp
+	$(CC) -c -o server_side.o server_side.cpp
+client.o: client.cpp
+	$(CC) -c -o client.o client.cpp
+
+# Clean command
 clean:
-	rm client server
-
-
-
+	$(CLN) *.o server.out client.out
