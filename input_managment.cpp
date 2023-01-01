@@ -1,12 +1,18 @@
 /*This class manages the input sends it to input_validation class. */
 #include "input_managment.h"
 /*This function gets a string vector and returns the string if it is valid*/
-vector<string> getFirstInput(vector<string> inputVec) {
-    vector<string> finalVec{};
-    //send the input to a validation check function:
-    finalVec = stringsValidation(inputVec);
-    //return a valid vector:
-    return finalVec;
+void getFirstInput(vector<string> inputVec) {
+    //check input size:
+    if(inputVec.size()!=3){
+        cout<<"invalid input"<<endl;
+        exit(-1);
+    }
+    //check if ip is valid
+    if(ipCheck(inputVec[1])==0) {
+        cout << "invalid input" << endl;
+        exit(-1);
+    }
+        //add guy's input check for the port
 }
 vector<double> getSecondInput(){
     //get input from the user
@@ -18,3 +24,19 @@ vector<double> getSecondInput(){
     return numsVec;
 
 }
+
+bool getClientInput(string input){
+    //separate into two strings by  a letter delimiter:
+    vector<string> inputVec= separateByAlpha(input);
+    //check if the nums vector is valid:
+    if (createNumbersVec(inputVec[0]).size()==0){
+        return 0;
+    }
+    //check if ip is valid :
+    if(!ipCheck(inputVec[1])){
+        return 0;
+    }
+    return 1;
+}
+
+

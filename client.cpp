@@ -1,17 +1,17 @@
 
 #include "client.h"
-#include <iostream>
-#include <sys/socket.h>
-#include <stdio.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <unistd.h>
-#include <string.h>
+
 using namespace std;
-int main() {
-    // who gives to who
-    const char* ip_address = "127.0.0.1";
-    const int port_no = 5555;
+int Client::main(int argc, char *argv[]) {
+    //create a vector from args in order to send it to a validation check:
+    vector<string> inputVec{};
+    for(int i=0;i<argc;i++){
+        inputVec.push_back(argv[i]);
+    }
+    //check if the vector is valid and:
+    getFirstInput(inputVec);
+    const char* ip_address = argv[1];
+    const int port_no = stoi(argv[2]);
     // AF_INET - defines working on Ipv4
     //SOCK_STREAM- DEFINES TCP
     int sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -35,26 +35,38 @@ int main() {
     }
 
     //run in infinite loop - add.
-    //get data from user and preform input check - using args
-    char data_addr[] = "Im a message";
-    int data_len = strlen(data_addr);
-    int sent_bytes = send(sock, data_addr, data_len, 0);
-    if (sent_bytes < 0) {
-// error
+    while (true) {
+        //get data from user and preform input check - using args
+        string input;
+        getline(cin, input);
+        //check if the user wants to terminate program:
+        if(input[0]=='-'&&input[1]=='1'&&input.length()==2){
+            cout<<"terminating program..."<<endl;
+            close(sock);
+            exit(-1);
+        }
+        if (!getClientInput(input)){
+            cout<<"invalid input";
+            continue;
+        }
+        char data_addr[input.length()];
+        strcpy(data_addr, input.c_str());
+        int data_len = strlen(data_addr);
+        int sent_bytes = send(sock, data_addr, data_len, 0);
+        if (sent_bytes < 0) {
+            // error
+        }
+        char buffer[4096];
+        int expected_data_len = sizeof(buffer);
+        int read_bytes = recv(sock, buffer, expected_data_len, 0);
+        if (read_bytes == 0) {
+        // connection is closed
+        } else if (read_bytes < 0) {
+        // error
+        } else {
+
+        }
     }
-    char buffer[4096];
-    int expected_data_len = sizeof(buffer);
-    // gets the label from the server
-    int read_bytes = recv(sock, buffer, expected_data_len, 0);
-    if (read_bytes == 0) {
-// connection is closed
-    }
-    else if (read_bytes < 0) {
-// error
-    }
-    else {
-        cout << buffer;
-    }
-    close(sock);
+
     return 0;
 }
