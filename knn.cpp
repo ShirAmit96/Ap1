@@ -1,11 +1,18 @@
 #include "knn.h"
+//default constructor
+Knn(string metric_input = "", int k = 0,
+        vector<DataBase::object> db = vector<DataBase::object>(),
+bool initialized = false)
+: metric(metric_input), db(db), initialized_(initialized) {
+    this->distanceMetric = metric_input;
+    this->k = k;
+}
 
 // the Knn constructor.
-Knn::Knn(string metric_input, int k, vector<DataBase::object> db)
-        : metric(metric_input),db(db){
-    this->distanceMetric=metric_input;
+Knn(string metric_input, int k, vector<DataBase::object> db)
+: metric(metric_input), db(db), initialized_(true) {
+    this->distanceMetric = metric_input;
     this->k = k;
-
 }
 // compute the distance between the given vectors to all the vectors in the database.
 vector<pair<double,string>> Knn::distance(vector<DataBase::object> database, vector<double> x){
@@ -74,4 +81,3 @@ void Knn::updateDistanceMetric(string distanceMetric)
 }
 }
 
-Knn::Knn():initialized_(false) {}
