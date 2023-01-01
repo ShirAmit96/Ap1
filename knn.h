@@ -25,5 +25,7 @@ public:
     DistanceMetric metric;
     int k;
     string distanceMetric;
+    Knn();
+    bool initialized_;
 };
 #endif //AP1_KNN_H

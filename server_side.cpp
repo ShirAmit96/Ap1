@@ -112,6 +112,7 @@ int Server::run(char** argv){
     catch(...){
         // This case will be in case the knn model was never initialize - first approach.
         k_model=Knn(distanceMetric, k, db.db);
+        k_model.initialized_ = true;
     }
     string label = k_model.predict(vec);
     const char* resultBuffer = label.c_str();
