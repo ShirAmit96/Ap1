@@ -66,6 +66,6 @@ void Knn::updateK(int k) {
 
 void Knn::updateDistanceMetric(string distanceMetric){
         this->metric.metric = distanceMetric;
-        this->didistanceMetric = distanceMetric;
+        //this->didistanceMetric = distanceMetric;
 }
 

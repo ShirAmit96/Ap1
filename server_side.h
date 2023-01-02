@@ -29,9 +29,6 @@ public:
     //DataBase db;
     Knn k_model;
 
-private:
-    int serverSocket;
-    int clientSocket;
 };
 
 #endif //AP1_SERVER_SIDE_H
