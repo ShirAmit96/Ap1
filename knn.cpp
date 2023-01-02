@@ -61,21 +61,11 @@ vector<pair<double,string>> Knn::distance(vector<DataBase::object> database, vec
     }
 
 void Knn::updateK(int k) {
-    if (!initialized_) {
-        throw false;
-    }
-    else {
-        this->k = k;
-    }
+    this->k = k;
 }
 
 void Knn::updateDistanceMetric(string distanceMetric){
-    if (!initialized_) {
-        throw false;
-    }
-    else{
-        this->metric.
-        metric = distanceMetric;
-}
+        this->metric.metric = distanceMetric;
+        this->didistanceMetric = distanceMetric;
 }
 
