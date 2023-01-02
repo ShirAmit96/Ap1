@@ -55,6 +55,7 @@ void Client::run(int argc, char** argv) {
         char data_addr[input.length()];
         strcpy(data_addr, input.c_str());
         int data_len = strlen(data_addr);
+        cout<<data_addr<<endl;
         int sent_bytes = send(sock, data_addr, data_len, 0);
         if (sent_bytes < 0) {
             // error
@@ -67,7 +68,7 @@ void Client::run(int argc, char** argv) {
         } else if (read_bytes < 0) {
         // error
         } else {
-
+            cout<<buffer;
         }
     }
 

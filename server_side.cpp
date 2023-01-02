@@ -1,8 +1,11 @@
 #include "server_side.h"
 
 int main(int argc, char* argv[]){
+    cout<<"line 4";
     Server server;
+    cout<<"line 5";
     server.run(argv);
+    return 1;
 }
 void Server::extractFromBuffer(char* buffer, vector<double> &vec, int &k, string &distanceMetric) {
     // separate the buffer with blank space.
@@ -25,6 +28,7 @@ void Server::extractFromBuffer(char* buffer, vector<double> &vec, int &k, string
 int Server::run(char** argv){
     // check if port is available
     int serverPort;
+    cout<<"line 28";
     try{
         serverPort = stoi(argv[2]);
         if((serverPort<1024)||(serverPort>65535)){
@@ -37,6 +41,7 @@ int Server::run(char** argv){
     }
 
     // check if file is csv
+    cout<<"line 40";
     string fileName = argv[1];
     string suffix = ".csv";
     // create the database for the knn.
@@ -50,6 +55,7 @@ int Server::run(char** argv){
     if (server_sock < 0) {
         perror("error creating socket");
     }
+    cout<<"line 55";
     // struct for address.
     struct sockaddr_in sin;
     //reset the struct
@@ -64,12 +70,13 @@ int Server::run(char** argv){
     if (bind(server_sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
         perror("error binding socket");
     }
+    cout<<"line 70";
     //listen command tells the server to wait for a message from the client.
     // "1" is the max number of clients
     if (listen(server_sock, 1) < 0) {
         perror("error listening to a socket");
     }
-
+    cout<<"line 76";
     // create an address struct for the client:
     struct sockaddr_in client_sin;
     unsigned int addr_len = sizeof(client_sin);
@@ -79,12 +86,13 @@ int Server::run(char** argv){
     if (client_sock < 0) {
         perror("error accepting client");
     }
-
-
+    cout<<"line 86";
     char buffer[4096];
     // define the maximum length of data to receive:
     int expected_data_len = sizeof(buffer);
     int read_bytes = recv(client_sock, buffer, expected_data_len, 0);
+    cout<<read_bytes;
+
     if (read_bytes == 0) {
         // connection is closed
     } else if (read_bytes < 0) {

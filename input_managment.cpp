@@ -4,7 +4,7 @@
 void getFirstInput(vector<string> inputVec) {
     //check input size:
     if(inputVec.size()!=3){
-        cout<<"invalid input"<<endl;
+        cout<<"invalid input size"<<endl;
         exit(-1);
     }
     //check if ip is valid
@@ -30,10 +30,7 @@ bool getClientInput(string input){
     vector<string> inputVec= separateByAlpha(input);
     //check if the nums vector is valid:
     if (createNumbersVec(inputVec[0]).size()==0){
-        return 0;
-    }
-    //check if ip is valid :
-    if(!ipCheck(inputVec[1])){
+        cout<<"vector error"<<endl;
         return 0;
     }
     return 1;

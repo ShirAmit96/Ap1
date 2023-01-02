@@ -20,12 +20,12 @@ public:
 
 
     int run(char** argv);
-    int setup(char** argv);
-    int createClientSocket(int serverSock) ;
+//    int setup(char** argv);
+//    int createClientSocket(int serverSock) ;
     void extractFromBuffer(char* buffer, vector<double>& vec, int& k,string& distanceMetric);
-    void sendToClient(const char* data, int length, int clientSock);
-    void recieve(int clientSock);
-    void close();
+//    void sendToClient(const char* data, int length, int clientSock);
+//    void recieve(int clientSock);
+//    void close();
     //DataBase db;
     Knn k_model;
 
