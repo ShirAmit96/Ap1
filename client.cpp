@@ -1,5 +1,6 @@
 #include "client.h"
 int main(int argc, char* argv[]){
+    cout<<"line 3"<<endl;
     Client client;
     client.run(argc, argv);
     return 1;

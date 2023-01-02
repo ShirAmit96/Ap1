@@ -1,12 +1,5 @@
 #include "server_side.h"
 
-int main(int argc, char* argv[]){
-    cout<<"line 4";
-    Server server;
-    cout<<"line 5";
-    server.run(argv);
-    return 1;
-}
 void Server::extractFromBuffer(char* buffer, vector<double> &vec, int &k, string &distanceMetric) {
     // separate the buffer with blank space.
     char* substring = strtok(buffer, " ");
@@ -28,7 +21,7 @@ void Server::extractFromBuffer(char* buffer, vector<double> &vec, int &k, string
 int Server::run(char** argv){
     // check if port is available
     int serverPort;
-    cout<<"line 28";
+    cout<<"line 28" << endl;
     try{
         serverPort = stoi(argv[2]);
         if((serverPort<1024)||(serverPort>65535)){
@@ -41,7 +34,7 @@ int Server::run(char** argv){
     }
 
     // check if file is csv
-    cout<<"line 40";
+    cout<<"line 40"<<endl;
     string fileName = argv[1];
     string suffix = ".csv";
     // create the database for the knn.
@@ -55,7 +48,7 @@ int Server::run(char** argv){
     if (server_sock < 0) {
         perror("error creating socket");
     }
-    cout<<"line 55";
+    cout<<"line 55"<<endl;
     // struct for address.
     struct sockaddr_in sin;
     //reset the struct
@@ -70,7 +63,7 @@ int Server::run(char** argv){
     if (bind(server_sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
         perror("error binding socket");
     }
-    cout<<"line 70";
+    cout<<"line 70"<<endl;
     //listen command tells the server to wait for a message from the client.
     // "1" is the max number of clients
     if (listen(server_sock, 1) < 0) {
@@ -86,12 +79,12 @@ int Server::run(char** argv){
     if (client_sock < 0) {
         perror("error accepting client");
     }
-    cout<<"line 86";
+    cout<<"line 86"<<endl;
     char buffer[4096];
     // define the maximum length of data to receive:
     int expected_data_len = sizeof(buffer);
     int read_bytes = recv(client_sock, buffer, expected_data_len, 0);
-    cout<<read_bytes;
+    cout<<read_bytes<<endl;
 
     if (read_bytes == 0) {
         // connection is closed
@@ -99,7 +92,7 @@ int Server::run(char** argv){
         //error
     } else {
         //got a message from client
-        cout << buffer;
+        cout << buffer<<endl;
     }
     vector<double> vec;
     int k;
@@ -122,7 +115,11 @@ int Server::run(char** argv){
         k_model=Knn(distanceMetric, k, db.db);
         k_model.initialized_ = true;
     }
+    cout<<"line 118"<<endl;
+    cout<<k_model.k<<endl;
     string label = k_model.predict(vec);
+    cout<<label<<endl;
+    cout<<"line121"<<endl;
     const char* resultBuffer = label.c_str();
     char* copyBuffer = new char[strlen(resultBuffer) + 1];
     strcpy(copyBuffer, resultBuffer);
@@ -133,8 +130,22 @@ int Server::run(char** argv){
     if (sent_bytes < 0) {
         perror("error sending to client");
     }
+    close(server_sock);
+    return 1;
 
 }
+
+
+int main(int argc, char* argv[]){
+    cout << "line 4" << endl;
+    cout << "try" << endl;
+    Server server;
+    cout << "try 2" << endl;
+    server.run(argv);
+    cout << "try3" << endl;
+    return 0;
+}
+
 //int Server::setup(char** argv) {
 //    // check if port is available
 //    int serverPort;

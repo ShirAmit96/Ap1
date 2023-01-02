@@ -62,7 +62,7 @@ vector<pair<double,string>> Knn::distance(vector<DataBase::object> database, vec
 
 void Knn::updateK(int k) {
     if (!initialized_) {
-        throw std::runtime_error("Knn object not initialized");
+        throw false;
     }
     else {
         this->k = k;
@@ -71,7 +71,7 @@ void Knn::updateK(int k) {
 
 void Knn::updateDistanceMetric(string distanceMetric){
     if (!initialized_) {
-        throw std::runtime_error("Knn object not initialized");
+        throw false;
     }
     else{
         this->metric.
