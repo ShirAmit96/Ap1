@@ -107,7 +107,7 @@ bool doubleValidation(string  s){
         }
         //accept numbers that includes "E-"(but not on the first or last digit):
         else if(i!=0 && i!=s.length()-1 && s[i]=='E' &&s[i+1]=='-' &&isdigit(s[i+2])){
-            i+=2;
+            i+=1;
             continue;
         }
         //Handle a negative number case:
