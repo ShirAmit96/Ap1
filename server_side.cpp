@@ -1,27 +1,18 @@
 #include "server_side.h"
 
+
 void Server::extractFromBuffer(char* buffer, vector<double> &vec, int &k, string &distanceMetric) {
-    // separate the buffer with blank space.
-    char* substring = strtok(buffer, " ");
-    // while there is a value in the buffer/
-    while (substring != nullptr) {
-        // checks if it's an alphabetic character.
-        if (isalpha(*substring)) {
-            distanceMetric.assign(substring);
-            // checks if its digit.
-        } else if (isdigit(*substring)) {
-            vec.push_back(stod(substring));
-            // the vector should be inserted before the k.
-        } else {
-            k = stoi(substring);
-        }
-        substring = strtok(nullptr, " ");
-    }
+    vector<string> firstVec= separateByAlpha(buffer);
+    vector<string> secondVec= separateString(firstVec[1]," ");
+    k=checkK(secondVec[1]);
+    distanceMetric.assign(secondVec[0]);
+    vec= createNumbersVec(firstVec[0]);
+
 }
 int Server::run(char** argv){
     // check if port is available
     int serverPort;
-    cout<<"line 28" << endl;
+    //cout<<"line 28" << endl;
     try{
         serverPort = stoi(argv[2]);
         if((serverPort<1024)||(serverPort>65535)){
@@ -34,12 +25,13 @@ int Server::run(char** argv){
     }
 
     // check if file is csv
-    cout<<"line 40"<<endl;
+    //cout<<"line 40"<<endl;
     string fileName = argv[1];
     string suffix = ".csv";
     // create the database for the knn.
     ReaderClass read=ReaderClass(fileName);
     DataBase db=read.readCsv();
+
 
     // AF_INET - defines working on Ipv4
     //SOCK_STREAM- DEFINES TCP
@@ -48,7 +40,7 @@ int Server::run(char** argv){
     if (server_sock < 0) {
         perror("error creating socket");
     }
-    cout<<"line 55"<<endl;
+    //cout<<"line 55"<<endl;
     // struct for address.
     struct sockaddr_in sin;
     //reset the struct
@@ -63,13 +55,13 @@ int Server::run(char** argv){
     if (bind(server_sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
         perror("error binding socket");
     }
-    cout<<"line 70"<<endl;
+    //cout<<"line 70"<<endl;
     //listen command tells the server to wait for a message from the client.
     // "1" is the max number of clients
     if (listen(server_sock, 1) < 0) {
         perror("error listening to a socket");
     }
-    cout<<"line 76";
+    //cout<<"line 76";
         while(true) {
             // create an address struct for the client:
             struct sockaddr_in client_sin;
@@ -84,7 +76,7 @@ int Server::run(char** argv){
             }
 
             while (true) {
-                cout << "line 86" << endl;
+                //cout << "line 86" << endl;
                 char buffer[4096];
                 // define the maximum length of data to receive:
                 int expected_data_len = sizeof(buffer);
@@ -103,37 +95,44 @@ int Server::run(char** argv){
                 int k;
                 string distanceMetric;
                 extractFromBuffer(buffer, vec, k, distanceMetric);
+                int columnsSize=db.db[0].size;
+                if(columnsSize!=db.db.size()){
+                    cout<<"invalid input";
+                    break;
+                }
                 if (k > db.db.size()) {
                     cout << "Error: k value is bigger than data's size, exiting program..." << endl;
                     exit(-1);
-                }
-                // This case will be in case the knn model was never initialize with real values- first approach.
-                if (k_model.initialized_ == false) {
-                    k_model = Knn(distanceMetric, k, db.db);
-                    k_model.initialized_ = true;
-                }
-                if (k_model.initialized_ == true) {
-                    if (k_model.distanceMetric != distanceMetric) {
-                        k_model.updateDistanceMetric(distanceMetric);
-                    }
-                    if (k_model.k != k) {
-                        k_model.updateK(k);
-                    }
-                }
-                cout << "line 118" << endl;
-                cout << k_model.k << endl;
-                string label = k_model.predict(vec);
-                cout << label << endl;
-                cout << "line121" << endl;
-                const char *resultBuffer = label.c_str();
-                char *copyBuffer = new char[strlen(resultBuffer) + 1];
-                strcpy(copyBuffer, resultBuffer);
-                int length = label.length();
+                }else {
 
-                // check if need to put here length.
-                int sent_bytes = send(client_sock, copyBuffer, length, 0);
-                if (sent_bytes < 0) {
-                    perror("error sending to client");
+                    // This case will be in case the knn model was never initialize with real values- first approach.
+                    if (k_model.initialized_ == false) {
+                        k_model = Knn(distanceMetric, k, db.db);
+                        k_model.initialized_ = true;
+                    }
+                    if (k_model.initialized_ == true) {
+                        if (k_model.distanceMetric != distanceMetric) {
+                            k_model.updateDistanceMetric(distanceMetric);
+                        }
+                        if (k_model.k != k) {
+                            k_model.updateK(k);
+                        }
+                    }
+                    //cout << "line 118" << endl;
+                    cout << k_model.k << endl;
+                    string label = k_model.predict(vec);
+                    cout << label << endl;
+                    //cout << "line121" << endl;
+                    const char *resultBuffer = label.c_str();
+                    char *copyBuffer = new char[strlen(resultBuffer) + 1];
+                    strcpy(copyBuffer, resultBuffer);
+                    int length = label.length();
+
+                    // check if need to put here length.
+                    int sent_bytes = send(client_sock, copyBuffer, length, 0);
+                    if (sent_bytes < 0) {
+                        perror("error sending to client");
+                    }
                 }
             }
         }
@@ -143,11 +142,11 @@ int Server::run(char** argv){
 }
 
 int main(int argc, char* argv[]){
-    cout << "line 4" << endl;
-    cout << "try" << endl;
+    //cout << "line 4" << endl;
+    //cout << "try" << endl;
     Server server;
-    cout << "try 2" << endl;
+    //cout << "try 2" << endl;
     server.run(argv);
-    cout << "try3" << endl;
+    //cout << "try3" << endl;
     return 0;
 }

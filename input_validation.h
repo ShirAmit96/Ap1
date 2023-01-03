@@ -11,5 +11,6 @@ bool ipCheck(string ip);
 bool doubleValidation(string s);
 vector<double> vectorValidation( vector<string> inputVec);
 vector<double> createNumbersVec(string input);
+int checkK(string k);
 
 #endif //AP1_INPUT_VALIDATION_H
