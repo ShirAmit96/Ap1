@@ -13,13 +13,15 @@ int Server::run(char** argv){
     // check if port is available
     int serverPort = stoi(argv[2]);
     if(!validPort(serverPort)){
-        perror("Server: invalid port. exiting...");
+        cout<<"Server: invalid port. exiting..."<<endl;
+        exit(-1);
     }
 
     // check if file is csv
     string fileName = argv[1];
     if(!validFile(fileName)){
-        perror("Server: invalid file name");
+        cout<<"Server: invalid file name"<<endl;
+        exit(-1);
     }
     // create the database for the knn.
     ReaderClass read=ReaderClass(fileName);
