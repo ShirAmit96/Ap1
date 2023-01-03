@@ -44,12 +44,9 @@ int checkK(string k){
     try{
          new_k=stoi(k);
     }catch(...){
-
+        new_k=0;
     }
-    if(new_k>0){
-        return new_k;
-    }
-
+    return new_k;
 }
 bool ipCheck(string ip){
     vector<string> ipVec= separateString(ip,".");
@@ -71,6 +68,12 @@ bool ipCheck(string ip){
         }
     }
     return 1;
+}
+bool checkMetric(string metric){
+    if(metric=="AUC"||metric=="MAN"||metric=="CHB"||metric=="CAN"||metric=="MIN"){
+        return true;
+    }
+    return false;
 }
 
 /*This function check if a given string represents a double.
@@ -172,15 +175,30 @@ vector<double> createNumbersVec(string input){
     return finalVec;
 }
 
-bool validPort(int serverPort){
-    if((serverPort<1024)||(serverPort>65535)){
-        return false;
+int validPort(string serverPort){
+    int port= checkPositiveInt(serverPort);
+    if((port<1024)||(port>65535)){
+        return 0;
     }
     else{
-        return true;
+        return port;
     }
 }
-
+int checkPositiveInt(string num) {
+    int result;
+    if (num[0] != '0' && isdigit(num[0])) {
+        for (auto n: num) {
+            //if k is not valid-terminate program:
+            if (!isdigit(n)) {
+                return 0;
+            }
+        }
+        result = stoi(num);
+        return result;
+    }else {
+        return 0;
+    }
+}
 // this function making sure that a given file name is of csv file.
 bool validFile(string fileName){
     // finding the last position where there is a dot in the file name.
