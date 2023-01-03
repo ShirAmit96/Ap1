@@ -56,5 +56,6 @@ DataBase ReaderClass::readCsv(){
 
     else
         cout<<"Could not open the file"<<endl;
+        exit(-1);
 
 }

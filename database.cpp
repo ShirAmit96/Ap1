@@ -8,7 +8,7 @@ DataBase::DataBase(vector<vector<string> > readOutput){
 /*This function create the class's members:  */
 void DataBase::createDataBase(vector<vector<string> > readOutput) {
     if(readOutput.size()==0){
-        cout<<"Error, exiting program..."<<endl;
+        cout<<"invalid file, exiting program"<<endl;
         exit(-1);
     }
     //loop over the 2D vector that contains the file's data:
@@ -22,7 +22,7 @@ void DataBase::createDataBase(vector<vector<string> > readOutput) {
             if (j!=readOutput[i].size()-1){
                 //check that the number is valid
                 if(!doubleValidation(readOutput[i][j])){
-                    cout<<"invalid input"<<endl;
+                    cout<<"invalid file, exiting program"<<endl;
                     exit(-1);
                 }
                 double num=stod(readOutput[i][j]);
