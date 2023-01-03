@@ -1,18 +1,22 @@
 #include "server_side.h"
 
 
-void Server::extractFromBuffer(char* buffer, vector<double> &vec, int &k, string &distanceMetric) {
+bool Server::extractFromBuffer(char* buffer, vector<double> &vec, int &k, string &distanceMetric) {
     vector<string> firstVec= separateByAlpha(buffer);
     vector<string> secondVec= separateString(firstVec[1]," ");
     k=checkK(secondVec[1]);
-    distanceMetric.assign(secondVec[0]);
+    string metric=secondVec[0];
+    distanceMetric.assign(metric);
     vec= createNumbersVec(firstVec[0]);
-
+    if(k==0||vec.size()==0||!checkMetric(metric)){
+        return false;
+    }
+    return true;
 }
 int Server::run(char** argv){
     // check if port is available
-    int serverPort = stoi(argv[2]);
-    if(!validPort(serverPort)){
+    int serverPort = validPort(argv[2]);
+    if(serverPort==0){
         cout<<"Server: invalid port. exiting..."<<endl;
         exit(-1);
     }
@@ -35,7 +39,6 @@ int Server::run(char** argv){
     if (server_sock < 0) {
         perror("error creating socket");
     }
-    //cout<<"line 55"<<endl;
     // struct for address.
     struct sockaddr_in sin;
     //reset the struct
@@ -50,13 +53,11 @@ int Server::run(char** argv){
     if (bind(server_sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
         perror("error binding socket");
     }
-    //cout<<"line 70"<<endl;
     //listen command tells the server to wait for a message from the client.
     // "1" is the max number of clients
     if (listen(server_sock, 1) < 0) {
         perror("error listening to a socket");
     }
-    //cout<<"line 76";
         while(true) {
             // create an address struct for the client:
             struct sockaddr_in client_sin;
@@ -71,12 +72,10 @@ int Server::run(char** argv){
             }
 
             while (true) {
-                //cout << "line 86" << endl;
                 char buffer[4096];
                 // define the maximum length of data to receive:
                 int expected_data_len = sizeof(buffer);
                 int read_bytes = recv(client_sock, buffer, expected_data_len, 0);
-                //cout << read_bytes << endl;
 
                 if (read_bytes == 0) {
                     // connection is closed
@@ -84,26 +83,23 @@ int Server::run(char** argv){
                     //error
                 } else {
                     //got a message from client
-                    //cout << buffer << endl;
                 }
                 vector<double> vec;
                 int k;
                 string distanceMetric;
-                extractFromBuffer(buffer, vec, k, distanceMetric);
+                bool validInput=extractFromBuffer(buffer, vec, k, distanceMetric);
                 int columnsSize=db.db[0].size;
-                if(columnsSize!=vec.size()){
-                    const char *messageStr="invalid input";
-                    char* message=new char[strlen(messageStr) + 1];
-                    strcpy(message,messageStr);
+                if(columnsSize!=vec.size()||!validInput||k > db.db.size()){
+                    string messageStr="invalid input";
+                    char message [messageStr.size() + 1];
+                    strcpy(message,messageStr.c_str());
                     int length = strlen(message);
                     int message_sent_bytes = send(client_sock, message, length, 0);
                     if (message_sent_bytes < 0) {
+                        //♥
                         perror("error sending to client");
                     }
-                }
-                if (k > db.db.size()) {
-                    cout << "Error: k value is bigger than data's size, exiting program..." << endl;
-                    exit(-1);
+                    continue;
                 }else {
                     // This case will be in case the knn model was never initialize with real values- first approach.
                     if (!k_model.initialized_) {
@@ -119,17 +115,15 @@ int Server::run(char** argv){
                         }
                     }
                     string label = k_model.predict(vec);
-                    //cout << label << endl;
-                    //cout << "line121" << endl;
-                    const char *resultBuffer = label.c_str();
-                    char *copyBuffer = new char[strlen(resultBuffer) + 1];
-                    strcpy(copyBuffer, resultBuffer);
+                    char copyBuffer [label.size()];
+                    strcpy(copyBuffer, label.c_str());
                     int length = label.length();
 
                     // check if need to put here length.
                     int sent_bytes = send(client_sock, copyBuffer, length, 0);
-                    //cout<<"garooa"<<endl;
+                    memset(copyBuffer, 0, length);
                     if (sent_bytes < 0) {
+                        //♥
                         perror("error sending to client");
                     }
                 }
@@ -142,11 +136,7 @@ int Server::run(char** argv){
 }
 
 int main(int argc, char* argv[]){
-    //cout << "line 4" << endl;
-    //cout << "try" << endl;
     Server server;
-    //cout << "try 2" << endl;
     server.run(argv);
-    //cout << " " << endl;
     return 0;
 }

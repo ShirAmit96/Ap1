@@ -11,5 +11,5 @@ using namespace std;
 
 void getFirstInput(vector<string> inputVec);
 vector<double> getSecondInput();
-bool getClientInput(string input);
+bool checkUserInput(string input);
 #endif //AP1_INPUT_MANAGMENT_H

@@ -35,6 +35,7 @@ void Client::run(int argc, char** argv) {
     // connect the socket to the data that is in the struct:
     if (connect(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
         perror("error connecting to server");
+        exit(-1);
     }
 
     //run in infinite loop - add.
@@ -48,27 +49,41 @@ void Client::run(int argc, char** argv) {
             close(sock);
             exit(-1);
         }
-        if (!getClientInput(input)){
-            cout<<"invalid input";
+        if (!checkUserInput(input)){
+            cout<<"got here"<<endl;
+            cout<<"invalid input"<<endl;
             continue;
         }
         char data_addr[input.length()];
         strcpy(data_addr, input.c_str());
-        int data_len = strlen(data_addr);
-        //cout<<data_addr<<endl;
+        int data_len = strlen(data_addr);;
         int sent_bytes = send(sock, data_addr, data_len, 0);
         if (sent_bytes < 0) {
-            // error
+            cout<<"error sending t server"<<endl;
+            exit(-1);
         }
         char buffer[4096];
         int expected_data_len = sizeof(buffer);
         int read_bytes = recv(sock, buffer, expected_data_len, 0);
         if (read_bytes == 0) {
-        // connection is closed
+            cout<<"error connecting to server"<<endl;
+            exit(-1);
         } else if (read_bytes < 0) {
-        // error
+            cout<<"error connecting to server"<<endl;
+            exit(-1);
+
         } else {
-            cout<<buffer;
+            string buff(buffer);
+            string invalid("invalid input");
+            int index=buff.find(invalid);
+            if(index!=-1){
+                memset(buffer, 0,sizeof(buffer));
+                continue;
+            }else{
+                cout<<buffer<<endl;
+                memset(buffer, 0,sizeof(buffer));
+            }
+
         }
     }
 
