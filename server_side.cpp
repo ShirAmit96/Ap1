@@ -70,71 +70,73 @@ int Server::run(char** argv){
         perror("error listening to a socket");
     }
     cout<<"line 76";
-    while(true) {
-        // create an address struct for the client:
-        struct sockaddr_in client_sin;
-        unsigned int addr_len = sizeof(client_sin);
-        // create a new socket for the client using accept command:
-        int client_sock = accept(server_sock, (struct sockaddr *) &client_sin, &addr_len);
-        // check if the creation of the socket for the client faild:
-        if (client_sock < 0) {
-            perror("error accepting client");
-            exit(-1);
-        }
-    }
-    while(true) {
-        cout << "line 86" << endl;
-        char buffer[4096];
-        // define the maximum length of data to receive:
-        int expected_data_len = sizeof(buffer);
-        int read_bytes = recv(client_sock, buffer, expected_data_len, 0);
-        cout << read_bytes << endl;
-
-        if (read_bytes == 0) {
-            // connection is closed
-        } else if (read_bytes < 0) {
-            //error
-        } else {
-            //got a message from client
-            cout << buffer << endl;
-        }
-        vector<double> vec;
-        int k;
-        string distanceMetric;
-        extractFromBuffer(buffer, vec, k, distanceMetric);
-        if (k > db.db.size()) {
-            cout << "Error: k value is bigger than data's size, exiting program..." << endl;
-            exit(-1);
-        }
-        // This case will be in case the knn model was never initialize with real values- first approach.
-        if (k_model.initialize_ == false){
-            k_model = Knn(distanceMetric, k, db.db);
-            k_model.initialized_ = true;
-        }
-        if (k_model.initialize == true){
-            if (k_model.distanceMetric != distanceMetric) {
-                k_model.updateDistanceMetric(distanceMetric);
+        while(true) {
+            // create an address struct for the client:
+            struct sockaddr_in client_sin;
+            unsigned int addr_len = sizeof(client_sin);
+            // create a new socket for the client using accept command:
+            int client_sock = accept(server_sock, (struct sockaddr *) &client_sin,
+                                     reinterpret_cast<socklen_t *>(&addr_len));
+            // check if the creation of the socket for the client failed:
+            if (client_sock < 0) {
+                perror("error accepting client");
+                exit(-1);
             }
-            if (k_model.k != k) {
-                k_model.updateK(k);
+
+            while (true) {
+                cout << "line 86" << endl;
+                char buffer[4096];
+                // define the maximum length of data to receive:
+                int expected_data_len = sizeof(buffer);
+                int read_bytes = recv(client_sock, buffer, expected_data_len, 0);
+                cout << read_bytes << endl;
+
+                if (read_bytes == 0) {
+                    // connection is closed
+                } else if (read_bytes < 0) {
+                    //error
+                } else {
+                    //got a message from client
+                    cout << buffer << endl;
+                }
+                vector<double> vec;
+                int k;
+                string distanceMetric;
+                extractFromBuffer(buffer, vec, k, distanceMetric);
+                if (k > db.db.size()) {
+                    cout << "Error: k value is bigger than data's size, exiting program..." << endl;
+                    exit(-1);
+                }
+                // This case will be in case the knn model was never initialize with real values- first approach.
+                if (k_model.initialized_ == false) {
+                    k_model = Knn(distanceMetric, k, db.db);
+                    k_model.initialized_ = true;
+                }
+                if (k_model.initialized_ == true) {
+                    if (k_model.distanceMetric != distanceMetric) {
+                        k_model.updateDistanceMetric(distanceMetric);
+                    }
+                    if (k_model.k != k) {
+                        k_model.updateK(k);
+                    }
+                }
+                cout << "line 118" << endl;
+                cout << k_model.k << endl;
+                string label = k_model.predict(vec);
+                cout << label << endl;
+                cout << "line121" << endl;
+                const char *resultBuffer = label.c_str();
+                char *copyBuffer = new char[strlen(resultBuffer) + 1];
+                strcpy(copyBuffer, resultBuffer);
+                int length = label.length();
+
+                // check if need to put here length.
+                int sent_bytes = send(client_sock, copyBuffer, length, 0);
+                if (sent_bytes < 0) {
+                    perror("error sending to client");
+                }
             }
         }
-        cout << "line 118" << endl;
-        cout << k_model.k << endl;
-        string label = k_model.predict(vec);
-        cout << label << endl;
-        cout << "line121" << endl;
-        const char *resultBuffer = label.c_str();
-        char *copyBuffer = new char[strlen(resultBuffer) + 1];
-        strcpy(copyBuffer, resultBuffer);
-        int length = label.length();
-
-        // check if need to put here length.
-        int sent_bytes = send(client_sock, copyBuffer, length, 0);
-        if (sent_bytes < 0) {
-            perror("error sending to client");
-        }
-    }
     close(server_sock);
     return 1;
 
