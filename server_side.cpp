@@ -77,9 +77,11 @@ int Server::run(char** argv){
                 int read_bytes = recv(client_sock, buffer, expected_data_len, 0);
 
                 if (read_bytes == 0) {
-                    // connection is closed
+                    cout<<"0"<<endl;
+                    break;
                 } else if (read_bytes < 0) {
-                    //error
+                    cout<<"-"<<endl;
+                    break;
                 } else {
                     //got a message from client
                 }
