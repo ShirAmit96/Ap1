@@ -20,8 +20,8 @@ int Server::run(char** argv){
         }
     }
     catch(...){
-        cout << "Server: invalid port. exiting...";
-        return -1;
+        cout << "Server: invalid port. exiting..."<<endl;
+        exit(-1);
     }
 
     // check if file is csv
@@ -81,7 +81,7 @@ int Server::run(char** argv){
                 // define the maximum length of data to receive:
                 int expected_data_len = sizeof(buffer);
                 int read_bytes = recv(client_sock, buffer, expected_data_len, 0);
-                cout << read_bytes << endl;
+                //cout << read_bytes << endl;
 
                 if (read_bytes == 0) {
                     // connection is closed
@@ -89,15 +89,15 @@ int Server::run(char** argv){
                     //error
                 } else {
                     //got a message from client
-                    cout << buffer << endl;
+                    //cout << buffer << endl;
                 }
                 vector<double> vec;
                 int k;
                 string distanceMetric;
                 extractFromBuffer(buffer, vec, k, distanceMetric);
                 int columnsSize=db.db[0].size;
-                if(columnsSize!=db.db.size()){
-                    cout<<"invalid input";
+                if(columnsSize!=vec.size()){
+                    cout<<"invalid input"<<endl;
                     break;
                 }
                 if (k > db.db.size()) {
@@ -119,9 +119,9 @@ int Server::run(char** argv){
                         }
                     }
                     //cout << "line 118" << endl;
-                    cout << k_model.k << endl;
+                    //cout << k_model.k << endl;
                     string label = k_model.predict(vec);
-                    cout << label << endl;
+                    //cout << label << endl;
                     //cout << "line121" << endl;
                     const char *resultBuffer = label.c_str();
                     char *copyBuffer = new char[strlen(resultBuffer) + 1];
@@ -130,11 +130,13 @@ int Server::run(char** argv){
 
                     // check if need to put here length.
                     int sent_bytes = send(client_sock, copyBuffer, length, 0);
+                    //cout<<"garooa"<<endl;
                     if (sent_bytes < 0) {
                         perror("error sending to client");
                     }
                 }
             }
+
         }
     close(server_sock);
     return 1;
@@ -147,6 +149,6 @@ int main(int argc, char* argv[]){
     Server server;
     //cout << "try 2" << endl;
     server.run(argv);
-    //cout << "try3" << endl;
+    //cout << " " << endl;
     return 0;
 }

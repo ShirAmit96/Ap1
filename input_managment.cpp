@@ -37,3 +37,11 @@ bool getClientInput(string input){
 }
 
 
+//
+//int separateServerInput(string input, char* buffer, vector<double> &vec, int &k, string &distanceMetric){
+//    //separate into two strings by  a letter delimiter:
+//    vector<string> inputVec= separateByAlpha(input);
+//    createNumbersVec(inputVec[0]).size();
+//
+//    return 1;
+//}
