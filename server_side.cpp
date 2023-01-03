@@ -67,8 +67,7 @@ int Server::run(char** argv){
                                      reinterpret_cast<socklen_t *>(&addr_len));
             // check if the creation of the socket for the client failed:
             if (client_sock < 0) {
-                perror("error accepting client");
-                exit(-1);
+                cout<<"error accepting client"<<endl;
             }
 
             while (true) {
