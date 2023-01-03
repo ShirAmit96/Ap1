@@ -73,13 +73,7 @@ void Client::run(int argc, char** argv) {
             exit(-1);
 
         } else {
-            string buff(buffer);
-            string invalid("invalid input");
-            int index=buff.find(invalid);
-            if(index!=-1){
-                memset(buffer, 0,sizeof(buffer));
-                continue;
-            }else{
+
                 cout<<buffer<<endl;
                 memset(buffer, 0,sizeof(buffer));
             }
@@ -87,4 +81,3 @@ void Client::run(int argc, char** argv) {
         }
     }
 
-}
