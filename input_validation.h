@@ -12,5 +12,7 @@ bool doubleValidation(string s);
 vector<double> vectorValidation( vector<string> inputVec);
 vector<double> createNumbersVec(string input);
 int checkK(string k);
+bool validPort(int serverPort);
+bool validFile(string fileName);
 
 #endif //AP1_INPUT_VALIDATION_H

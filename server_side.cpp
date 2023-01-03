@@ -11,23 +11,16 @@ void Server::extractFromBuffer(char* buffer, vector<double> &vec, int &k, string
 }
 int Server::run(char** argv){
     // check if port is available
-    int serverPort;
-    //cout<<"line 28" << endl;
-    try{
-        serverPort = stoi(argv[2]);
-        if((serverPort<1024)||(serverPort>65535)){
-            throw "Server port not available";
-        }
-    }
-    catch(...){
-        cout << "Server: invalid port. exiting..."<<endl;
-        exit(-1);
+    int serverPort = stoi(argv[2]);
+    if(!validPort(serverPort)){
+        perror("Server: invalid port. exiting...");
     }
 
     // check if file is csv
-    //cout<<"line 40"<<endl;
     string fileName = argv[1];
-    string suffix = ".csv";
+    if(!validFile(fileName)){
+        perror("Server: invalid file name");
+    }
     // create the database for the knn.
     ReaderClass read=ReaderClass(fileName);
     DataBase db=read.readCsv();

@@ -172,5 +172,31 @@ vector<double> createNumbersVec(string input){
     return finalVec;
 }
 
+bool validPort(int serverPort){
+    if((serverPort<1024)||(serverPort>65535)){
+        return false;
+    }
+    else{
+        return true;
+    }
+}
+
+// this function making sure that a given file name is of csv file.
+bool validFile(string fileName){
+    // finding the last position where there is a dot in the file name.
+    size_t lastDot = fileName.find_last_of('.');
+    // making sure that the dot is not the last char.
+    if (lastDot == string::npos){
+        return false;
+    }
+    string sub = fileName.substr(lastDot);
+    if (sub == ".csv"){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
 
 
