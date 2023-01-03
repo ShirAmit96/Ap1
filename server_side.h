@@ -13,6 +13,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <vector>
+#include "input_validation.h"
 
 using namespace std;
 class Server {
@@ -22,7 +23,7 @@ public:
     int run(char** argv);
 //    int setup(char** argv);
 //    int createClientSocket(int serverSock) ;
-    void extractFromBuffer(char* buffer, vector<double>& vec, int& k,string& distanceMetric);
+    void extractFromBuffer(char* buffer, vector<double>& vec, int &k,string& distanceMetric);
 //    void sendToClient(const char* data, int length, int clientSock);
 //    void recieve(int clientSock);
 //    void close();

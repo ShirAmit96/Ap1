@@ -39,6 +39,18 @@ vector<string> separateByAlpha(string input){
     }
 }
 
+int checkK(string k){
+    int new_k;
+    try{
+         new_k=stoi(k);
+    }catch(...){
+
+    }
+    if(new_k>0){
+        return new_k;
+    }
+
+}
 bool ipCheck(string ip){
     vector<string> ipVec= separateString(ip,".");
     for (int i = 0; i < ipVec.size(); i++) {
@@ -159,5 +171,6 @@ vector<double> createNumbersVec(string input){
     vector<double> finalVec=vectorValidation(inputVec);
     return finalVec;
 }
+
 
 
