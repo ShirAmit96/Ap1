@@ -92,7 +92,9 @@ int Server::run(char** argv){
                 extractFromBuffer(buffer, vec, k, distanceMetric);
                 int columnsSize=db.db[0].size;
                 if(columnsSize!=vec.size()){
-                    char* message = "invalid input";
+                    const char *messageStr="invalid input";
+                    char* message=new char[strlen(messageStr) + 1];
+                    strcpy(message,messageStr);
                     int length = strlen(message);
                     int message_sent_bytes = send(client_sock, message, length, 0);
                     if (message_sent_bytes < 0) {
