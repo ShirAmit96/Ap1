@@ -97,20 +97,23 @@ int Server::run(char** argv){
                 extractFromBuffer(buffer, vec, k, distanceMetric);
                 int columnsSize=db.db[0].size;
                 if(columnsSize!=vec.size()){
-                    cout<<"invalid input"<<endl;
-                    break;
+                    char* message = "invalid input";
+                    int length = strlen(message);
+                    int message_sent_bytes = send(client_sock, message, length, 0);
+                    if (message_sent_bytes < 0) {
+                        perror("error sending to client");
+                    }
                 }
                 if (k > db.db.size()) {
                     cout << "Error: k value is bigger than data's size, exiting program..." << endl;
                     exit(-1);
                 }else {
-
                     // This case will be in case the knn model was never initialize with real values- first approach.
-                    if (k_model.initialized_ == false) {
+                    if (!k_model.initialized_) {
                         k_model = Knn(distanceMetric, k, db.db);
                         k_model.initialized_ = true;
                     }
-                    if (k_model.initialized_ == true) {
+                    if (k_model.initialized_) {
                         if (k_model.distanceMetric != distanceMetric) {
                             k_model.updateDistanceMetric(distanceMetric);
                         }
@@ -118,8 +121,6 @@ int Server::run(char** argv){
                             k_model.updateK(k);
                         }
                     }
-                    //cout << "line 118" << endl;
-                    //cout << k_model.k << endl;
                     string label = k_model.predict(vec);
                     //cout << label << endl;
                     //cout << "line121" << endl;
