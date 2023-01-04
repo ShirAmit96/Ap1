@@ -69,6 +69,10 @@ void Client::run(int argc, char** argv) {
         }
         //Prepare the data for sending to the server:
         int data_len = input.size()+1;
+        if(data_len>4096){
+            cout<<"invalid input"<<endl;
+            continue;
+        }
         //Send the data to the server:
         int sent_bytes = send(sock, input.c_str(), data_len, 0);
         //Check if an error occurred while sending to the server:

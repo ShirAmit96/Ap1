@@ -76,7 +76,9 @@ int Server::run(char** argv){
                 // define the maximum length of data to receive:
                 int expected_data_len = sizeof(buffer);
                 int read_bytes = recv(client_sock, buffer, expected_data_len, 0);
-
+                if (expected_data_len<read_bytes){
+                    break;
+                }
                 if (read_bytes == 0) {
                     break;
                 } else if (read_bytes < 0) {
