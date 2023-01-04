@@ -52,7 +52,7 @@ void Client::run(int argc, char** argv) {
         string input;
         getline(cin, input);
         //check string size:
-        if(input.size()<3){
+        if(input.size()<2){
             cout<<"invalid input"<<endl;
             continue;
         }
