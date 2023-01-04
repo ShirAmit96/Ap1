@@ -16,5 +16,7 @@ bool checkMetric(string metric);
 int checkPositiveInt(string num);
 int validPort(string serverPort);
 bool validFile(string fileName);
+void checkFirstInput(vector<string> inputVec);
+bool checkUserInput(string input);
 
 #endif //AP1_INPUT_VALIDATION_H
