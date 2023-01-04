@@ -281,6 +281,10 @@ bool checkUserInput(string input){
     }catch(...){
         return 0;
     }
+    //check that secondVec is valid:
+    if(secondVec.size()!=2){
+        return 0;
+    }
     // Check if k is valid:
     int k;
     try{k=checkPositiveInt(secondVec[1]);}catch(...){
