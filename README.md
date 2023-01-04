@@ -1,20 +1,20 @@
 # Ap1
-Manual for ex2: 
+Manual for ex3: 
 
 Instructions for compiling and runing the code: 
 
 Log in to "planet" server and run the following commands:
-1. git clone -b ex2 https://github.com/ShirAmit96/Ap1.git
+1. git clone -b ex3 https://github.com/ShirAmit96/Ap1.git
 3. cd Ap1 
-4. put "iris_classified.csv", "beans_Classified.csv" and "wine_Classified.csv" inside Ap1 directory.
-5. make
-6. ./a.out <k> <file_name> <distance_metric>
+4. make
+5. open two terminals- one for the server and one for the client.
+6. in the first terminal run the command: ./server.out file port
+7. in the second terminal run the command: ./client.out ip port
 
-*** k is a number , file name is one of the above files and distance metric can be: AUC, MAN, CHB, CAN, MIN.
 
 our code includes 7 files: 
-1. main.cpp - this is the main file of the program. The main handles the calls of the other functions. first, the main will get the first input via args and later, after validation check of the first input, the second input will be inserted.If everything is valid, a predicted label will be printed.
-2. input_managment.cpp - This file contains the functions that arrange the input and the send it to input_validation class.if everything is valid, the input will be returned to the main.
+1. client.cpp - This file contains a client class. The client connects a server using an inserted ip and port. After connectong the server it gets from the user a number's vector,distance metric and k .If everything is valid, a predicted label(sended from the server) will be printed.
+2. server_side.cpp- 
 3. input_validation.cpp -This file contains the functions which perform valdiation checks on the inserted data. 
 4. distance_metric.cpp -
 5. database.cpp-This class represents a database that holds a vector of structs and each struct contains size(=numbers of columns), vector of numbers and a matching label.
@@ -23,8 +23,8 @@ our code includes 7 files:
 
 Insturctions for using the program:
 
-1. After running all the above command you should insert a seires of number sepertaed by space.
-2. The program will return the predicted label of the vector using knn algorithem.
+1. After running all the above command you should insert to the client's terminal a seires of numbers, distance metric name( AUC/MAN/CHB/CAN/MIN) and a k value.
+2. The predicted label of the vector will be printed.
 3. You can continue inserting numbers and predict more vectors from the same category.
 
 validation rules:
@@ -33,6 +33,8 @@ validation rules:
 3. Make sure that the files names are identical to the names mentioned above.
 4. Make sure that the number of columns in the csv files is consistent.
 5. Make sure that k is a positive natural number and that it is not bigger than the data size.
+6. Make sure the port is a number between 1024-65535.
+7. Make sure that the inserted ip is valid.
 
-Any deviation from the above instructions will result in termination of the program.
+Any deviation from the above instructions a connection problem between client and server will result in termination of the program.
 
