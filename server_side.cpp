@@ -37,7 +37,8 @@ int Server::run(char** argv){
     int server_sock = socket(AF_INET, SOCK_STREAM, 0);
     // if an error occurred while creating the socket-a negative number will be returned:
     if (server_sock < 0) {
-        perror("error creating socket");
+        cout<<"error creating socket"<<endl;
+        exit(-1);
     }
     // struct for address.
     struct sockaddr_in sin;
