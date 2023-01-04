@@ -8,7 +8,6 @@ else
 endif
 
 BUILD_FILES += distance_metric.o
-BUILD_FILES += input_managment.o
 BUILD_FILES += knn.o
 BUILD_FILES += reader_class.o
 BUILD_FILES += database.o
