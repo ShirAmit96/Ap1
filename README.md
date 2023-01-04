@@ -38,6 +38,7 @@ validation rules:
 5. Make sure that k is a positive natural number and that it is not bigger than the data size.
 6. Make sure the port is a number between 1024-65535.
 7. Make sure that the inserted ip is valid.
+8. Make sure that the distance metric name is AUC/MAN/CHB/CAN/MIN.
 
 Any deviation from the above instructions client  will result in termination of the program.
 
