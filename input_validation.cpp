@@ -26,6 +26,10 @@ vector<string> separateString(string input, string delim)
   a letter delimiter and returns a vector of these sub strings */
 vector<string> separateByAlpha(string input){
     int delimIndex=0;
+    vector <string> inputVec {};
+    if(isalpha(input[0])){
+        return inputVec;
+    }
     for (int i=0; i<input.length();i++){
         //check if we got to a letter and before it a sapce:
         if (isalpha(input[i])&&input[i-1]==' '){
@@ -34,28 +38,20 @@ vector<string> separateByAlpha(string input){
             string firstStr=input.substr(0, delimIndex);
             string secStr= input.substr(i,input.length());
             //insert the 2 new strings into a vector and return it:
-            vector <string> inputVec {};
             inputVec.push_back(firstStr);
             inputVec.push_back(secStr);
             return inputVec;
         }
     }
 }
-/*delete ♥♥♥♥*/
-int checkK(string k){
-    int new_k;
-    try{
-         new_k=stoi(k);
-    }catch(...){
-        new_k=0;
-    }
-    return new_k;
-}
+
 /*This function gets a string and check if it is a valid ip address:*/
 bool ipCheck(string ip){
     //separate the string by a '.' delimiter:
     vector<string> ipVec= separateString(ip,".");
-
+    if(ipVec.size()!=4){
+        return 0;
+    }
     for (int i = 0; i < ipVec.size(); i++) {
         //check if the sub string represents a number:
         if(!checkPositiveInt(ipVec[i])){
@@ -266,14 +262,30 @@ void checkFirstInput(vector<string> inputVec) {
  else -it will return false..*/
 bool checkUserInput(string input){
     //separate into two strings by  a letter delimiter:
-    vector<string> inputVec= separateByAlpha(input);
+    vector<string> inputVec{};
+     try{
+          inputVec = separateByAlpha(input);
+     }catch(...){
+        return 0;
+        }
+     if(inputVec.size()!=2){
+         return 0;
+     }
     //check if the nums vector is valid:
     if (createNumbersVec(inputVec[0]).size()==0){
         return 0;
     }
-    vector<string> secondVec= separateString(inputVec[1]," ");
+    vector<string> secondVec {};
+    try{
+        secondVec= separateString(inputVec[1]," ");
+    }catch(...){
+        return 0;
+    }
     // Check if k is valid:
-    int k=checkPositiveInt(secondVec[1]);
+    int k;
+    try{k=checkPositiveInt(secondVec[1]);}catch(...){
+        return 0;
+    }
     if(k==0){
         return 0;
     }
