@@ -4,7 +4,7 @@
 bool Server::extractFromBuffer(char* buffer, vector<double> &vec, int &k, string &distanceMetric) {
     vector<string> firstVec= separateByAlpha(buffer);
     vector<string> secondVec= separateString(firstVec[1]," ");
-    k=checkK(secondVec[1]);
+    k=checkPositiveInt(secondVec[1]);
     string metric=secondVec[0];
     distanceMetric.assign(metric);
     vec= createNumbersVec(firstVec[0]);
@@ -51,12 +51,12 @@ int Server::run(char** argv){
     sin.sin_port = htons(serverPort);
     // connect the socket to the data that is in the struct:
     if (bind(server_sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
-        perror("error binding socket");
+        cout<<"error binding socket"<<endl;
     }
     //listen command tells the server to wait for a message from the client.
     // "1" is the max number of clients
     if (listen(server_sock, 1) < 0) {
-        perror("error listening to a socket");
+        cout<<"error listening to a socket"<<endl;
     }
         while(true) {
             // create an address struct for the client:
@@ -77,14 +77,11 @@ int Server::run(char** argv){
                 int read_bytes = recv(client_sock, buffer, expected_data_len, 0);
 
                 if (read_bytes == 0) {
-                    cout<<"0"<<endl;
                     break;
                 } else if (read_bytes < 0) {
-                    cout<<"-"<<endl;
                     break;
                 } else {
                     //got a message from client
-                }
                 vector<double> vec;
                 int k;
                 string distanceMetric;
@@ -97,8 +94,7 @@ int Server::run(char** argv){
                     int length = strlen(message);
                     int message_sent_bytes = send(client_sock, message, length, 0);
                     if (message_sent_bytes < 0) {
-                        //♥
-                        perror("error sending to client");
+                        cout<<"error sending to client"<<endl;
                     }
                     continue;
                 }else {
@@ -120,20 +116,18 @@ int Server::run(char** argv){
                     strcpy(copyBuffer, label.c_str());
                     int length = label.length();
 
-                    // check if need to put here length.
                     int sent_bytes = send(client_sock, copyBuffer, length, 0);
                     memset(copyBuffer, 0, length);
                     if (sent_bytes < 0) {
-                        //♥
-                        perror("error sending to client");
+                        cout<<"error sending to client"<<endl;
                     }
+                }
                 }
             }
 
         }
     close(server_sock);
     return 1;
-
 }
 
 int main(int argc, char* argv[]){
