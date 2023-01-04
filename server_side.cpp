@@ -90,10 +90,8 @@ int Server::run(char** argv){
                 int columnsSize=db.db[0].size;
                 if(columnsSize!=vec.size()||!validInput||k > db.db.size()){
                     string messageStr="invalid input";
-                    char message [messageStr.size() + 1];
-                    strcpy(message,messageStr.c_str());
-                    int length = strlen(message);
-                    int message_sent_bytes = send(client_sock, message, length, 0);
+                    int length = messageStr.size()+1;
+                    int message_sent_bytes = send(client_sock,messageStr.c_str(), length, 0);
                     if (message_sent_bytes < 0) {
                         cout<<"error sending to client"<<endl;
                     }
@@ -113,12 +111,8 @@ int Server::run(char** argv){
                         }
                     }
                     string label = k_model.predict(vec);
-                    char copyBuffer [label.size()];
-                    strcpy(copyBuffer, label.c_str());
-                    int length = label.length();
-
-                    int sent_bytes = send(client_sock, copyBuffer, length, 0);
-                    memset(copyBuffer, 0, length);
+                    int length = label.size()+1;
+                    int sent_bytes = send(client_sock, label.c_str(), length, 0);
                     if (sent_bytes < 0) {
                         cout<<"error sending to client"<<endl;
                     }
