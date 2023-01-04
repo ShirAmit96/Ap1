@@ -25,10 +25,12 @@ Insturctions for using the program:
 
 1. After running all the above command you should insert to the client's terminal a seires of numbers, distance metric name( AUC/MAN/CHB/CAN/MIN) and a k value.
 2. The predicted label of the vector will be printed.
-3. You can continue inserting numbers and predict more vectors from the same category.
+3. You can continue inserting input(as mentions in 1) and predict more vectors from the same category.
 4. If you want to terminate the client's session, insert "-1" in the terminal.
    The server will continue running and will wait for another client.
+
 validation rules:
+
 1. The amount of numbers you insert should match the size of the vectors in the requested file.
 2. Seperate the inserted numbers by one space only and avoid putting space before the first number and after the last.
 3. Make sure that the files names are identical to the names mentioned above.
