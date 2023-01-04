@@ -63,11 +63,9 @@ void Client::run(int argc, char** argv) {
             continue;
         }
         //Prepare the data for sending to the server:
-        char data_addr[input.length()];
-        strcpy(data_addr, input.c_str());
-        int data_len = strlen(data_addr);
+        int data_len = input.size()+1;
         //Send the data to the server:
-        int sent_bytes = send(sock, data_addr, data_len, 0);
+        int sent_bytes = send(sock, input.c_str(), data_len, 0);
         //Check if an error occurred while sending to the server:
         if (sent_bytes < 0) {
             //If an error occurred-print a message and close the client:
