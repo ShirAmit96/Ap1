@@ -16,10 +16,10 @@ our code includes 7 files:
 1. client.cpp - This file contains a client class. The client connects a server using an inserted ip and port. After connectong the server it gets from the user a number's vector,distance metric and k .If everything is valid, a predicted label(sended from the server) will be printed.
 2. server_side.cpp - this file contains a server class. The server gets as input port number and a path to a file. The server create a database from the file in the path file and a socket with the port number. The server also creates the client socket and connect to the client. The server is waiting for an input from the client, and if the input is valid, the server classify the client's input using the Knn algorithm we implemented in the previous exercise. After calssifing the server sends the label to the client and waits for antoher input. If the input is not valid the server sends a "invalid input" message to the client.
 3. input_validation.cpp -This file contains the functions which perform valdiation checks on the inserted data. 
-4. distance_metric.cpp -
+4. distance_metric.cpp - This class represent a distance metric object, the object can calculate distance between two vectors in 5 different distance metrics: Eucldiean, Manhattan, Minkowsky, Chevyshev and Canberra. The choosen metric is given by the an abbreviation given by the user.
 5. database.cpp-This class represents a database that holds a vector of structs and each struct contains size(=numbers of columns), vector of numbers and a matching label.
 6. reader_class.cpp-This class reads a given csv file and creates a database class that holds the file content.
-7. knn.cpp-
+7. knn.cpp - This class implements the K Nearest Neighbors algorithm. When the predict method is called, first distances between given vector to all the vectors in the databse are computed by the distnace metric according to the metric given by the user. After that the labels of the K nearest neighbors are saved to a vector, and in the end we return the most common label in the vector as the predicted label to the given vector.
 
 Insturctions for using the program:
 
