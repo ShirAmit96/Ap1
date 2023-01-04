@@ -54,6 +54,7 @@ void Client::run(int argc, char** argv) {
         //check string size:
         if(input.size()<3){
             cout<<"invalid input"<<endl;
+            continue;
         }
         //check if the user wants to terminate program:
         if(input[0]=='-'&&input[1]=='1'&&input.length()==2){
