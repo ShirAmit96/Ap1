@@ -7,7 +7,13 @@ DataBase::DataBase(vector<vector<string> > readOutput){
 }
 /*This function create the class's members:  */
 void DataBase::createDataBase(vector<vector<string> > readOutput) {
-    if(readOutput.size()==0){
+    //check if file is empty:
+    if(readOutput.size()<=1){
+        cout<<"invalid file, exiting program"<<endl;
+        exit(-1);
+    }
+    //check that file is in the right format:
+    if (!doubleValidation(readOutput[0][0])){
         cout<<"invalid file, exiting program"<<endl;
         exit(-1);
     }
