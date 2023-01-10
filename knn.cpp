@@ -50,14 +50,17 @@ vector<pair<double,string>> Knn::distance(vector<DataBase::object> database, vec
         return max_element(labels_count.cbegin(), labels_count.cend(), compare)->first;
 }
     // The predict method calls all the necessary functions in order to make a prediction.
-    // First compute distance from unknown vector to all vectors in database.
+    // First compute distance from unknown vector from the unclassified database to all vectors in database.
     // Then find the labels of the k nearest neighbors.
     // At the end find and return the most common label.
-    string Knn::predict(vector<double> x){
-        vector<pair<double,string>> distancesAndLabels=distance(this->db,x);
-        vector<string> labels = nearestKNeighbors(distancesAndLabels,this->k);
-        string label = mostCommonLabel(labels);
-        return label;
+    DataBase Knn::predict(DataBase &unclassified_db){
+        for(auto vec:unclassified_db.db) {
+            vector<pair<double, string>> distancesAndLabels = distance(this->db, vec.values);
+            vector<string> labels = nearestKNeighbors(distancesAndLabels, this->k);
+            string label = mostCommonLabel(labels);
+            vec.label = label;
+        }
+        return unclassified_db;
     }
 
 void Knn::updateK(int k) {
@@ -66,6 +69,6 @@ void Knn::updateK(int k) {
 
 void Knn::updateDistanceMetric(string distanceMetric){
         this->metric.metric = distanceMetric;
-        //this->didistanceMetric = distanceMetric;
+        this->distanceMetric = distanceMetric;
 }
 

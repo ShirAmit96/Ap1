@@ -27,16 +27,15 @@ int Server::run(char** argv){
         exit(-1);
     }
     // create the database for the knn.
-    ReaderClass read_classified=ReaderClass(fileName_classified,'classified');
-    DataBase db_classified=read_classified.readCsv();
+    ReaderClass read=ReaderClass();
+    DataBase db_classified=read.readCsv(fileName_classified,'classified');
 
     string fileName_unclassified = "add_from_command";
     if(!validFile(fileName_unclassified)){
         cout<<"Server: invalid file name"<<endl;
         exit(-1);
     }
-    ReaderClass read_unclassified=ReaderClass(fileName_unclassified,'unclassified');
-    DataBase db_unclassified=read_unclassified.readCsv();
+    DataBase db_unclassified=read.readCsv(fileName_unclassified,'unclassified');
 
 
     // AF_INET - defines working on Ipv4
@@ -119,12 +118,12 @@ int Server::run(char** argv){
                             k_model.updateK(k);
                         }
                     }
-                    string label = k_model.predict(vec);
-                    int length = label.size()+1;
-                    int sent_bytes = send(client_sock, label.c_str(), length, 0);
-                    if (sent_bytes < 0) {
-                        cout<<"error sending to client"<<endl;
-                    }
+                    DataBase classified_vectors = k_model.predict(db_unclassified);
+                    int length = classified_vectors.db[0].size+1;
+                    //int sent_bytes = send(client_sock, label.c_str(), length, 0);
+                    //if (sent_bytes < 0) {
+                    //    cout<<"error sending to client"<<endl;
+                   // }
                 }
                 }
             }

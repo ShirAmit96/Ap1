@@ -23,7 +23,7 @@ public:
     Knn(string metric, int k, vector<DataBase::object> db);
     void updateK(int k);
     void updateDistanceMetric(string distanceMetric);
-    string predict(vector<double> x);
+    DataBase predict(DataBase &unclassified_db);
     DistanceMetric metric;
     int k;
     string distanceMetric;
