@@ -2,20 +2,20 @@
 #include "database.h"
 
 /*contractor:*/
-DataBase::DataBase(vector<vector<string> > readOutput){
+DataBase::DataBase(vector<vector<string> > readOutput , bool validFile,bool  classifiedFlag){
     createDataBase(readOutput);
+    isClassified=classifiedFlag;
+    isValid=validFile;
 }
 /*This function create the class's members:  */
 void DataBase::createDataBase(vector<vector<string> > readOutput) {
     //check if file is empty:
     if(readOutput.size()<=1){
-        cout<<"invalid file, exiting program"<<endl;
-        exit(-1);
+       isValid=false;
     }
     //check that file is in the right format:
     if (!doubleValidation(readOutput[0][0])){
-        cout<<"invalid file, exiting program"<<endl;
-        exit(-1);
+        isValid=false;
     }
     //loop over the 2D vector that contains the file's data:
     for(int i=0;i<readOutput.size();i++)
@@ -28,17 +28,25 @@ void DataBase::createDataBase(vector<vector<string> > readOutput) {
             if (j!=readOutput[i].size()-1){
                 //check that the number is valid
                 if(!doubleValidation(readOutput[i][j])){
-                    cout<<"invalid file, exiting program"<<endl;
-                    exit(-1);
+                  isValid=false;
                 }
                 double num=stod(readOutput[i][j]);
                 //push the number into the values vector:
                 obj.values.push_back(num);
             }else{
-                //if we got to the last column-initialize the label:
-                obj.label=readOutput[i][j];
-                obj.size=j;
-                db.push_back(obj);
+                //if we got to the last column-check if the file is classified:
+                if(isClassified) {
+                    obj.label = readOutput[i][j];
+                    obj.size = j;
+                    db.push_back(obj);
+                }else{
+                    double num=stod(readOutput[i][j]);
+                    //push the number into the values vector:
+                    obj.values.push_back(num);
+                    obj.label = "None";
+                    obj.size = j;
+                    db.push_back(obj);
+                }
 
             }
         }

@@ -8,6 +8,8 @@ using namespace std;
 
 class DataBase {
 public:
+    bool isValid;
+    bool isClassified;
     struct object{
         string label;
         int size;
@@ -15,7 +17,7 @@ public:
     };
     vector<object> db{};
 
-   DataBase(vector<vector<string> > readOutput);
+   DataBase(vector<vector<string> > readOutput, bool validFile,bool classifiedFlag);
     void createDataBase(vector<vector<string> > readOutput);
 
 };
