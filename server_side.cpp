@@ -20,16 +20,23 @@ int Server::run(char** argv){
         cout<<"Server: invalid port. exiting..."<<endl;
         exit(-1);
     }
-
-    // check if file is csv
-    string fileName = argv[1];
-    if(!validFile(fileName)){
+    // the file names will be received from the command.
+    string fileName_classified = "add_from_command";
+    if(!validFile(fileName_classified)){
         cout<<"Server: invalid file name"<<endl;
         exit(-1);
     }
     // create the database for the knn.
-    ReaderClass read=ReaderClass(fileName);
-    DataBase db=read.readCsv();
+    ReaderClass read_classified=ReaderClass(fileName_classified,'classified');
+    DataBase db_classified=read_classified.readCsv();
+
+    string fileName_unclassified = "add_from_command";
+    if(!validFile(fileName_unclassified)){
+        cout<<"Server: invalid file name"<<endl;
+        exit(-1);
+    }
+    ReaderClass read_unclassified=ReaderClass(fileName_unclassified,'unclassified');
+    DataBase db_unclassified=read_unclassified.readCsv();
 
 
     // AF_INET - defines working on Ipv4
@@ -89,8 +96,8 @@ int Server::run(char** argv){
                 int k;
                 string distanceMetric;
                 bool validInput=extractFromBuffer(buffer, vec, k, distanceMetric);
-                int columnsSize=db.db[0].size;
-                if(columnsSize!=vec.size()||!validInput||k > db.db.size()){
+                int columnsSize=db_classified.db[0].size;
+                if(columnsSize!=vec.size()||!validInput||k > db_classified.db.size()){
                     string messageStr="invalid input";
                     int length = messageStr.size()+1;
                     int message_sent_bytes = send(client_sock,messageStr.c_str(), length, 0);
@@ -101,7 +108,7 @@ int Server::run(char** argv){
                 }else {
                     // This case will be in case the knn model was never initialize with real values- first approach.
                     if (!k_model.initialized_) {
-                        k_model = Knn(distanceMetric, k, db.db);
+                        k_model = Knn(distanceMetric, k, db_classified.db);
                         k_model.initialized_ = true;
                     }
                     if (k_model.initialized_) {
