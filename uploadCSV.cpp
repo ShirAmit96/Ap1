@@ -17,6 +17,7 @@ void UploadCSV::execute(SharedData* sharedData) {
             dio->write("invalid input.\n");
             return;
         } else {
+            dio->write("Upload complete.");
             dio->write("Please upload your local test CSV file.\n");
             string testFile = dio->read();
             if (!validFile(testFile)) {
@@ -29,8 +30,10 @@ void UploadCSV::execute(SharedData* sharedData) {
                     dio->write("invalid input.\n");
                     return;
                 } else {
+                    dio->write("Upload complete.");
                     sharedData->db_classified = dbClassified;
                     sharedData->db_unclassified = dbUnclassified;
+                    sharedData->dataUploaded=true;
                 }
             }
         }
