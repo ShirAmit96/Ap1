@@ -8,15 +8,8 @@
 #include <algorithm>
 #include <string.h>
 #include "command.h"
-#include "database.h"
 using namespace std;
 
-struct SharedData{
-    DataBase db_classified;
-    DataBase db_unclassified;
-    int k = 5;
-    string distanceMetric = "AUC";
-};
 
 class Cli {
     vector<Command*> commands;

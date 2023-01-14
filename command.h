@@ -5,6 +5,14 @@
 #ifndef AP1_COMMAND_H
 #define AP1_COMMAND_H
 #include "defaultIO.h"
+#include "database.h"
+
+struct SharedData{
+    DataBase db_classified;
+    DataBase db_unclassified;
+    int k = 5;
+    string distanceMetric = "AUC";
+};
 
 class Command{
 protected:
