@@ -12,12 +12,13 @@ struct SharedData{
     DataBase db_unclassified;
     int k = 5;
     string distanceMetric = "AUC";
+    bool dataUploaded=false;
+    bool dataClassified=false;
 };
 
 class Command{
 protected:
     DefaultIO* dio;
-
 public:
     const string description;
     Command(DefaultIO* dio,const string description):dio(dio),description(description){}
