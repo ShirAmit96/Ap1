@@ -21,7 +21,7 @@ protected:
 public:
     const string description;
     Command(DefaultIO* dio,const string description):dio(dio),description(description){}
-    virtual void execute()=0;
+    virtual void execute(SharedData* sharedData)=0;
     virtual ~Command(){}
 };
 

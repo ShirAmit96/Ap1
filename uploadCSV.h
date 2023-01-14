@@ -5,11 +5,14 @@
 #ifndef AP1_UPLOADCSV_H
 #define AP1_UPLOADCSV_H
 #include "command.h"
+#include "reader_class.h"
+#include "database.h"
+#include "input_validation.h"
 
 
 class UploadCSV:public Command {
     UploadCSV(DefaultIO* dio):Command(dio,"upload an unclassified csv data file\n"){}
-    virtual void execute();
+    virtual void execute(SharedData* sharedData);
 };
 
 
