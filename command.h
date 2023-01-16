@@ -6,14 +6,17 @@
 #define AP1_COMMAND_H
 #include "defaultIO.h"
 #include "database.h"
+#include "knn.h"
 
 struct SharedData{
     DataBase db_classified;
     DataBase db_unclassified;
+    Knn k_model;
     int k = 5;
     string distanceMetric = "AUC";
     bool dataUploaded=false;
     bool dataClassified=false;
+    bool k_initialized=false;
 };
 
 class Command{

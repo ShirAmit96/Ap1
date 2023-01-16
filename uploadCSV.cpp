@@ -3,6 +3,7 @@
 //
 
 #include "uploadCSV.h"
+#include "knn.h"
 
 void UploadCSV::execute(SharedData* sharedData) {
     dio->write("Please upload your local train CSV file.\n");
@@ -34,6 +35,10 @@ void UploadCSV::execute(SharedData* sharedData) {
                     sharedData->db_classified = dbClassified;
                     sharedData->db_unclassified = dbUnclassified;
                     sharedData->dataUploaded=true;
+                    // create an instance ok Knn
+                    sharedData->k_model = Knn(sharedData->distanceMetric, sharedData->k, sharedData->db_classified.db);
+                    // update that Knn instance have been initialized.
+                    sharedData->k_initialized=true;
                 }
             }
         }
