@@ -8,6 +8,12 @@
 #include <algorithm>
 #include <string.h>
 #include "command.h"
+#include "uploadCSV.h"
+#include "settings.h"
+#include "display_results.h"
+#include "classify.h"
+#include "download.h"
+#include "exit.h"
 using namespace std;
 
 

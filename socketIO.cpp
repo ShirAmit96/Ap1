@@ -14,7 +14,3 @@ void SocketIO::write(string message){
     const char* msg=message.c_str();
     send(sock,msg,strlen(msg),0);
 }
-
-void SocketIO::writeCSV(string path){
-
-}

@@ -21,7 +21,6 @@ public:
     SocketIO(int sock):sock(sock){}
     virtual string read();
     virtual void write(string text);
-    virtual void writeCSV( string path);
 };
 
 

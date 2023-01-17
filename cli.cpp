@@ -4,13 +4,13 @@ Cli::Cli(DefaultIO* dio) {
     commands.push_back(new UploadCSV(dio));
     commands.push_back(new Settings(dio));
     commands.push_back(new Classify(dio));
-    commands.push_back(new Display(dio));
+    commands.push_back(new DisplayResults(dio));
     commands.push_back(new Download(dio));
     commands.push_back(new Exit(dio));
 }
 
 void Cli::start(){
-    SharedData sharedData;
+    SharedData* sharedData;
     int index=-1;
     while(index!=5){
         dio->write("Welcome to the Anomaly Detection Server.\n");
@@ -24,7 +24,7 @@ void Cli::start(){
         string input = dio->read();
         index=input[0]-'0'-1;
         if(index>=0 && index<=6)
-            commands[index]->execute(&sharedData);
+            commands[index]->execute(sharedData);
     }
 }
 
