@@ -20,9 +20,10 @@ struct SharedData{
 };
 
 class Command{
-protected:
-    DefaultIO* dio;
+//protected:
+  //  DefaultIO* dio;
 public:
+    DefaultIO* dio;
     const string description;
     Command(DefaultIO* dio,const string description):dio(dio),description(description){}
     virtual void execute(SharedData* sharedData)=0;
