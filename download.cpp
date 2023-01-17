@@ -2,8 +2,8 @@
 void Download::writeCSV(SharedData* sharedData){
     string resultsPath = dio->read();
     fstream file (resultsPath, ios::out);
-    db=sharedData->db_unclassified;
-    rows=db.db.size()
+    DataBase db=sharedData->db_unclassified;
+    int rows =db.db.size();
     if (file.is_open()) {
         for(int i=0; i<rows; i++){
             file<<i+1<<","<<db.db[i].label<<"\n";
@@ -21,7 +21,7 @@ void Download::execute(SharedData* sharedData) {
         dio->write("please classify the data\n");
         return;
     }else {
-        writeCSV(&sharedData);
+        writeCSV(sharedData);
         return;
     }
 }
