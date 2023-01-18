@@ -27,14 +27,14 @@ void UploadCSV::execute(SharedData* sharedData) {
             } else {
                 ReaderClass read2 = ReaderClass();
                 DataBase dbUnclassified = read2.readCsv(testFile, "unclassified");
-                if (!read2.validFile) {
+                if (!read2.validFile||dbUnclassified.db.size!=dcClassified.db.size) {
                     dio->write("invalid input.\n");
                     return;
                 } else {
-                    dio->write("Upload complete.");
                     sharedData->db_classified = dbClassified;
                     sharedData->db_unclassified = dbUnclassified;
                     sharedData->dataUploaded=true;
+                    dio->write("Upload complete.");
                     // create an instance ok Knn
                     sharedData->k_model = Knn(sharedData->distanceMetric, sharedData->k, sharedData->db_classified.db);
                     // update that Knn instance have been initialized.
