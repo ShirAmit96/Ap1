@@ -5,7 +5,7 @@
 #include "uploadCSV.h"
 #include "knn.h"
 
-void UploadCSV::execute(SharedData* sharedData) {
+void UploadCSV::execute(SharedData *sharedData) {
     dio->write("Please upload your local train CSV file.\n");
     string trainFile = dio->read();
     if (!validFile(trainFile)) {

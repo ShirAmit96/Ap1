@@ -56,7 +56,8 @@ DataBase ReaderClass::readCsv(string fileName, string fileType){
             validFile=false;
         }
         //create a DataBase class that contains the content of the file:
-        DataBase db=DataBase(content, validFile, classifiedFlag);
+        DataBase db;
+        db.createDataBase(content, validFile, classifiedFlag);
         if(db.isValid&&validFile){
             validFile=true;
         }else{

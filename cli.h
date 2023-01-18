@@ -8,12 +8,6 @@
 #include <algorithm>
 #include <string.h>
 #include "command.h"
-#include "uploadCSV.h"
-#include "settings.h"
-#include "display_results.h"
-#include "classify.h"
-#include "download.h"
-#include "exit.h"
 using namespace std;
 
 
@@ -24,7 +18,6 @@ public:
     Cli(DefaultIO* dio);
     void start();
     virtual ~Cli();
+
 };
-
-
 #endif //AP1_CLI_H

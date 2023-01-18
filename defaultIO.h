@@ -11,4 +11,6 @@ public:
     virtual void write(string text)=0;
     virtual ~DefaultIO(){}
 };
+
+
 #endif //AP1_DEFAULTIO_H

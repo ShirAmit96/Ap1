@@ -11,6 +11,7 @@
 
 
 class UploadCSV:public Command {
+public:
     UploadCSV(DefaultIO* dio):Command(dio,"upload an unclassified csv data file\n"){}
     virtual void execute(SharedData* sharedData);
 };

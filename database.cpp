@@ -2,13 +2,11 @@
 #include "database.h"
 
 /*contractor:*/
-DataBase::DataBase(vector<vector<string> > readOutput , bool validFile,bool  classifiedFlag){
-    createDataBase(readOutput);
+
+/*This function create the class's members:  */
+void DataBase::createDataBase(vector<vector<string> > readOutput,bool validFile,bool  classifiedFlag) {
     isClassified=classifiedFlag;
     isValid=validFile;
-}
-/*This function create the class's members:  */
-void DataBase::createDataBase(vector<vector<string> > readOutput) {
     //check if file is empty:
     if(readOutput.size()<=1){
        isValid=false;
@@ -53,3 +51,4 @@ void DataBase::createDataBase(vector<vector<string> > readOutput) {
 
     }
 }
+

@@ -1,10 +1,9 @@
 #include "cli.h"
-#include "cli.cpp"
 #include "standardIO.h"
 int main(){
 
-    StandardIO* standardIo;
-    Cli cli (standardIo);
+    DefaultIO* sio  = new StandardIO;
+    Cli cli (sio);
     cli.start();
     return 0;
 }

@@ -8,8 +8,10 @@
 #include "command.h"
 using namespace std;
 class Settings:public Command{
+public:
     Settings(DefaultIO* dio):Command(dio,"algorithm settings\n"){}
     virtual void execute(SharedData* sharedData);
+    virtual ~Settings(){}
 };
 
 #endif //AP1_SETTINGS_H

@@ -7,7 +7,9 @@
 #include "command.h"
 using namespace std;
 class Classify:public Command{
+public:
     Classify(DefaultIO* dio):Command(dio,"classify data\n"){}
     virtual void execute(SharedData* sharedData);
+    virtual ~Classify(){}
 };
 #endif //AP1_CLASSIFY_H
