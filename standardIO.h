@@ -12,4 +12,5 @@ public:
     virtual void write(string text);
 };
 
+
 #endif //AP1_STANDARDIO_H

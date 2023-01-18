@@ -7,6 +7,7 @@
 #include "command.h"
 using namespace std;
 class DisplayResults:public Command{
+public:
     DisplayResults(DefaultIO* dio):Command(dio,"display results\n"){}
     virtual void execute(SharedData* sharedData);
 };

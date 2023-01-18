@@ -10,6 +10,6 @@ string StandardIO::read(){
     return input;
 }
 void StandardIO::write(string text){
-    cout<<text<<endl;
+    cout<<text;
 
 }

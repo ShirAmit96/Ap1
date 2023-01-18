@@ -16,10 +16,7 @@ public:
         vector<double> values;
     };
     vector<object> db{};
-
-   DataBase(vector<vector<string> > readOutput, bool validFile,bool classifiedFlag);
-    void createDataBase(vector<vector<string> > readOutput);
-
+    void createDataBase(vector<vector<string> > readOutput,bool validFile,bool  classifiedFlag);
 };
 
 
