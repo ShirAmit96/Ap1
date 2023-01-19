@@ -13,7 +13,7 @@ void UploadCSV::execute(SharedData *sharedData) {
             dio->write("invalid input.\n");
             return;
         } else {
-            dio->write("Upload complete.");
+            dio->write("Upload complete.\n");
             dio->write("Please upload your local test CSV file.\n");
             string testFile = dio->read();
             if (!validFile(testFile)) {
@@ -26,7 +26,7 @@ void UploadCSV::execute(SharedData *sharedData) {
                     dio->write("invalid input.\n");
                     return;
                 } else {
-                    dio->write("Upload complete.");
+                    dio->write("Upload complete.\n");
                     sharedData->db_classified = dbClassified;
                     sharedData->db_unclassified = dbUnclassified;
                     sharedData->dataUploaded=true;
@@ -82,7 +82,7 @@ void Settings::execute(SharedData *sharedData) {
 
 }
 void Classify::execute(SharedData *sharedData) {
-    if(sharedData->dataUploaded){
+    if(!sharedData->dataUploaded){
         dio->write("please upload data\n");
         return;
     }
@@ -113,7 +113,7 @@ void DisplayResults::execute(SharedData *sharedData) {
         else{
             // print the labels after classification.
             for (int i =1 ; i < sharedData->db_unclassified.db.size()+1; i++){
-                string classifiedRow = to_string(i) +"\t"+sharedData->db_unclassified.db[i].label+"\n";
+                string classifiedRow = to_string(i) +"\t"+sharedData->db_unclassified.db[i-1].label+"\n";
                 dio->write(classifiedRow);
             }
             dio->write("Done.\n");
@@ -142,6 +142,7 @@ void Download::execute(SharedData* sharedData) {
         dio->write("please classify the data\n");
         return;
     }else {
+        dio->write("please enter a path to csv file:\n");
         writeCSV(sharedData);
         return;
     }
