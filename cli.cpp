@@ -12,7 +12,7 @@ Cli::Cli(DefaultIO* dio) {
 void Cli::start(){
     SharedData sharedData;
     int index=-1;
-    while(index!=5){
+    while(index!=7){
         dio->write("Welcome to the Anomaly Detection Server.\n");
         dio->write("Please choose an option:\n");
         for(size_t i=0;i<commands.size();i++){
@@ -26,8 +26,9 @@ void Cli::start(){
         }
         string input = dio->read();
         index=input[0]-'0'-1;
-        if(index>=0 && index<=6)
+        if(index>=0 && index<=4||index==7) {
             commands[index]->execute(&sharedData);
+        }
     }
 }
 

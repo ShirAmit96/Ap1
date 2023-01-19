@@ -54,7 +54,7 @@ vector<pair<double,string>> Knn::distance(vector<DataBase::object> database, vec
     // Then find the labels of the k nearest neighbors.
     // At the end find and return the most common label.
     DataBase Knn::predict(DataBase &unclassified_db){
-        for(auto vec:unclassified_db.db) {
+        for(auto &vec:unclassified_db.db) {
             vector<pair<double, string>> distancesAndLabels = distance(this->db, vec.values);
             vector<string> labels = nearestKNeighbors(distancesAndLabels, this->k);
             string label = mostCommonLabel(labels);
