@@ -60,7 +60,7 @@ public:
 };
 class Exit:public Command {
 public:
-    Exit(DefaultIO* dio):Command(dio,"exit\n"){};
+    Exit(DefaultIO* dio):Command(dio,"exit\n*END!"){};
     virtual void execute(SharedData* sharedData);
 };
 

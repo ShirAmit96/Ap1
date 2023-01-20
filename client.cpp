@@ -26,12 +26,12 @@ string Client::receiveFromServer(int sock) {
         close(sock);
         exit(-1);
     } else {
-        string received = buffer;
+        string received (buffer);
         return received;
     }
 }
 void Client::sendToServer(int sock, string message){
-    int sent_bytes = send(sock, message.c_str(),message.length(), 0);
+    int sent_bytes = send(sock, message.c_str(),message.length()+1, 0);
     //Check if an error occurred while sending to the server:
     if (sent_bytes < 0) {
         //If an error occurred-print a message and close the client:
@@ -140,11 +140,12 @@ void Client::run(int argc, char** argv) {
     //convert port's number from how it represented in our computer memory to how the network is going to present it:
     sin.sin_port = htons(port_no);
     // connect the socket to the data that is in the struct:
-    if (connect(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
-        cout<<"Error connecting to server";
-        close(sock);
-        exit(-1);
+    if(connect(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
+        cout<<"Error connecting to server"<<endl;
+        //close(sock);
+        //exit(-1);
     }
+    cout << "line 148" << endl;
     //in buffer string we will put the messages from server:
     string bufferString="";
     //Run in an infinite loop to allow continuous communication with the server:
@@ -153,14 +154,15 @@ void Client::run(int argc, char** argv) {
             string currentBuffer= receiveFromServer(sock);
             bufferString+=currentBuffer;
             //check if message is complete:
-            if(currentBuffer.find("*End!")!= string::npos){
+            if(currentBuffer.find("*END!")!= string::npos){
                 vector<string> sepBuffer= separateString(bufferString,"*");
                 bufferString= sepBuffer[0];
                 //command #1:
-                if(bufferString.find("#cmd1")){
+                if(bufferString.find("#cmd1")!= string::npos){
                     handleCmd1(sock);
+                    cout << "line 165" << endl;
                     bufferString="";
-                }else if(bufferString.find("#cmd5")){
+                }else if(bufferString.find("#cmd5")!= string::npos){
                     handleCmd5(sock);
                     bufferString="";
                 }else{
