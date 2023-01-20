@@ -18,7 +18,7 @@ bool Server::extractFromBuffer(char* buffer, vector<double> &vec, int &k, string
 
 int Server::initServer(char **argv) {
     // check if port is available
-    int serverPort = validPort(argv[2]);
+    int serverPort = validPort(argv[1]);
     if (serverPort == 0) {
         cout << "Server: invalid port. exiting..." << endl;
         exit(-1);
@@ -52,26 +52,27 @@ int Server::initServer(char **argv) {
 }
 
 int Server::createClientSocket(int server_sock) {
-    // create an address struct for the client:
-    struct sockaddr_in client_sin;
-    unsigned int addr_len = sizeof(client_sin);
-    // create a new socket for the client using accept command:
-    int client_sock = accept(server_sock, (struct sockaddr *) &client_sin,
-                             reinterpret_cast<socklen_t *>(&addr_len));
-    // check if the creation of the socket for the client failed:
-    if (client_sock < 0) {
-        cout << "error accepting client" << endl;
-    }
-    else{
-        return client_sock;
-    }
+        // create an address struct for the client:
+        struct sockaddr_in client_sin;
+        unsigned int addr_len = sizeof(client_sin);
+        // create a new socket for the client using accept command:
+        int client_sock = accept(server_sock, (struct sockaddr *) &client_sin,
+                                 reinterpret_cast<socklen_t *>(&addr_len));
+        // check if the creation of the socket for the client failed:
+        if (client_sock < 0) {
+            cout << "error accepting client" << endl;
+        } else {
+            return client_sock;
+        }
 
 }
-
 void Server::handleClient(int clientId){
     DefaultIO* sio  = new SocketIO(clientId);
+    cout<<"line 73";
     Cli cli(sio);
+    cout<<"line 75";
     cli.start();
+    cout<<"line 77";
 }
 
 int main(int argc, char* argv[]){

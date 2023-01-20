@@ -5,7 +5,6 @@
 #ifndef AP1_SERVER_SIDE_H
 #define AP1_SERVER_SIDE_H
 #include "knn.h"
-#include "reader_class.h"
 #include <iostream>
 #include <sys/socket.h>
 #include <stdio.h>
