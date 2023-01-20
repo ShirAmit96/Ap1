@@ -6,6 +6,7 @@
 #include "knn.h"
 #include "reader_class.h"
 #include "command.h"
+#include <string>
 
 struct SharedData{
     DataBase db_classified;
@@ -31,6 +32,7 @@ class UploadCSV:public Command {
 public:
     UploadCSV(DefaultIO* dio):Command(dio,"upload an unclassified csv data file\n"){}
     virtual void execute(SharedData* sharedData);
+    string writeCSV(SharedData* sharedData, string fileContent, bool classified);
 };
 class Settings:public Command{
 public:
@@ -53,14 +55,13 @@ class Download:public Command{
 public:
     Download(DefaultIO* dio):Command(dio,"download results\n"){}
     virtual void execute(SharedData* sharedData);
-    void writeCSV(SharedData* sharedData);
+    void Download::writeCSV(SharedData* sharedData)
 };
 class Exit:public Command {
 public:
     Exit(DefaultIO* dio):Command(dio,"exit\n"){};
     virtual void execute(SharedData* sharedData);
 };
-
 
 
 #endif //AP1_COMMAND_H

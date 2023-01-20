@@ -1,47 +1,72 @@
 #include "command.h"
+string UploadCSV::writeCSV(SharedData* sharedData, string fileContent, bool classified){
+    string filePath;
+    if(classified) {
+        filePath="classified.csv";
+    }else{
+        filePath="unClassified.csv";
+    }
+    fstream file (filePath, ios::out);
+    if (file.is_open()) {
+        file<<fileContent;
+        file.close();
+    }
+    return filePath;
 
+}
 void UploadCSV::execute(SharedData *sharedData) {
-    dio->write("Please upload your local train CSV file.\n");
-    string trainFile = dio->read();
-    if (!validFile(trainFile)) {
-        dio->write("invalid input.\n");
+    dio->write("Please upload your local train CSV file.\n#cmd1*END!");
+    string trainFileContent="";
+    while(true){
+        string subFile = dio->read();
+        if(subFile.find("*EOF") != string::npos){
+            vector<string> spiltString= separateString(subFile,"*");
+            trainFileContent+=spiltString[0];
+            break;
+        }
+        trainFileContent+=subFile;
+
+    }
+    string trainFile=writeCSV(sharedData,trainFileContent,true);
+    ReaderClass read1 = ReaderClass();
+    DataBase dbClassified = read1.readCsv(trainFile, "classified");
+    if (!read1.validFile) {
+        dio->write("invalid input.\n*END!");
         return;
-    } else {
-        ReaderClass read1 = ReaderClass();
-        DataBase dbClassified = read1.readCsv(trainFile, "classified");
-        if (!read1.validFile) {
-            dio->write("invalid input.\n");
-            return;
         } else {
-            dio->write("Upload complete.\n");
-            dio->write("Please upload your local test CSV file.\n");
-            string testFile = dio->read();
-            if (!validFile(testFile)) {
+            dio->write("Upload complete.\n*END!");
+            string testFileContent="";
+            while(true){
+                string subFile = dio->read();
+                if(subFile.find("*EOF") != string::npos){
+                    vector<string> spiltString= separateString(subFile,"*");
+                    testFileContent+=spiltString[0];
+                    break;
+                }
+                trainFileContent+=subFile;
+            }
+            string testFile=writeCSV(sharedData, trainFileContent, false);
+            ReaderClass read2 = ReaderClass();
+            DataBase dbUnclassified = read2.readCsv(testFile, "unclassified");
+            if (!read2.validFile) {
                 dio->write("invalid input.\n");
                 return;
             } else {
-                ReaderClass read2 = ReaderClass();
-                DataBase dbUnclassified = read2.readCsv(testFile, "unclassified");
-                if (!read2.validFile) {
-                    dio->write("invalid input.\n");
-                    return;
-                } else {
-                    dio->write("Upload complete.\n");
-                    sharedData->db_classified = dbClassified;
-                    sharedData->db_unclassified = dbUnclassified;
-                    sharedData->dataUploaded=true;
-                    // create an instance ok Knn
-                    sharedData->k_model = Knn(sharedData->distanceMetric, sharedData->k, sharedData->db_classified.db);
-                    // update that Knn instance have been initialized.
-                    sharedData->k_initialized=true;
+                dio->write("Upload complete.\n");
+                sharedData->db_classified = dbClassified;
+                sharedData->db_unclassified = dbUnclassified;
+                sharedData->dataUploaded=true;
+                // create an instance ok Knn
+                sharedData->k_model = Knn(sharedData->distanceMetric, sharedData->k, sharedData->db_classified.db);
+                // update that Knn instance have been initialized.
+                sharedData->k_initialized=true;
                 }
             }
         }
-    }
 }
 
 void Settings::execute(SharedData *sharedData) {
-    string setting = "The current KNN parameters are: K = " + to_string(sharedData->k)+", distance metric = " + sharedData->distanceMetric+"\n";
+    string setting = "The current KNN parameters are: K = " + to_string(sharedData->k)+", distance metric = " + sharedData->distanceMetric+"\n*END!";
     dio->write(setting);
     string settingsInput=dio->read();
     // it means that user didn't press only "enter".
@@ -51,17 +76,17 @@ void Settings::execute(SharedData *sharedData) {
         // assign and check if k is valid.
         int k = checkPositiveInt(settings[0]);
         if (k==0){
-            dio->write("invalid value for K\n");
+            dio->write("invalid value for K\n*END!");
             // check if also the metric is not valid.
             if(!checkMetric(settings[1])){
-                dio->write("invalid value for metric\n");
+                dio->write("invalid value for metric\n*END!");
             }
             return;
         }
         else{
             // check if distance metric is valid.
             if(!checkMetric(settings[1])){
-                dio->write("invalid value for metric\n");
+                dio->write("invalid value for metric\n*END!");
                 return;
             }
             else{
@@ -83,22 +108,22 @@ void Settings::execute(SharedData *sharedData) {
 }
 void Classify::execute(SharedData *sharedData) {
     if(!sharedData->dataUploaded){
-        dio->write("please upload data\n");
+        dio->write("please upload data\n*END!");
         return;
     }
     else{
         sharedData->k_model.predict(sharedData->db_unclassified);
         sharedData->dataClassified=true;
-        dio->write("classifying data complete\n");
+        dio->write("classifying data complete\n*END!");
     }
 }
 void DisplayResults::execute(SharedData *sharedData) {
     // check if data is uploaded.
     if(!sharedData->dataUploaded){
-        dio->write("please upload data\n");
+        dio->write("please upload data\n*END!");
         // check if also data is not classified - which it will not be because the data have not been uploaded yet.
         if(!sharedData->dataClassified){
-            dio->write("please classify the data");
+            dio->write("please classify the dataa\n*END!");
         }
         return;
     }
@@ -106,44 +131,49 @@ void DisplayResults::execute(SharedData *sharedData) {
     else{
         // check if data was uploaded but not classified.
         if(!sharedData->dataClassified){
-            dio->write("please classify the data");
+            dio->write("please classify the data\n*END!");
             return;
         }
             // in the case data was uploaded and classified.
         else{
             // print the labels after classification.
             for (int i =1 ; i < sharedData->db_unclassified.db.size()+1; i++){
-                string classifiedRow = to_string(i) +"\t"+sharedData->db_unclassified.db[i-1].label+"\n";
+                string classifiedRow = to_string(i) +"\t"+sharedData->db_unclassified.db[i-1].label+"\n*END!";
                 dio->write(classifiedRow);
             }
-            dio->write("Done.\n");
+            dio->write("Done.\n*END!");
         }
     }
 }
 void Download::writeCSV(SharedData* sharedData){
-    string resultsPath = dio->read();
-    fstream file (resultsPath, ios::out);
-    DataBase db=sharedData->db_unclassified;
-    int rows =db.db.size();
-    if (file.is_open()) {
-        for(int i=0; i<rows; i++){
-            file<<i+1<<","<<db.db[i].label<<"\n";
+    string updateFromClient = dio->read();
+        DataBase db=sharedData->db_unclassified;
+        string fileContent="";
+        for (int i =1 ; i < sharedData->db_unclassified.db.size()+1; i++){
+            if(i==sharedData->db_unclassified.db.size()){
+                string classifiedRow = to_string(i) +"\t"+sharedData->db_unclassified.db[i-1].label+"\n#EOF*END!";
+                dio->write(classifiedRow);
+                break;
+            }
+            string classifiedRow = to_string(i) +"\t"+sharedData->db_unclassified.db[i-1].label+"\n*END!";
+            dio->write(classifiedRow);
+
         }
-        file.close();
-    } else {
-        dio->write("invalid input\n");
     }
-}
 void Download::execute(SharedData* sharedData) {
     if(!sharedData->dataUploaded){
-        dio->write("please upload data\n");
+        dio->write("please upload data\n*END!");
         return;
     }else if(!sharedData->dataClassified){
-        dio->write("please classify the data\n");
+        dio->write("please classify the data\n*END!");
         return;
     }else {
-        dio->write("please enter a path to csv file:\n");
-        writeCSV(sharedData);
+        dio->write("#cmd5*END!");
+        string message = dio->read();
+        if(message.find("*pathInserted")!= string::npos) {
+            writeCSV(sharedData);
+
+        }//else♥♥
         return;
     }
 }

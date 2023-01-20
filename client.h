@@ -6,6 +6,7 @@
 #define AP1_CLIENT_H
 #include "input_validation.h"
 #include <iostream>
+#include <fstream>
 #include <sys/socket.h>
 #include <stdio.h>
 #include <netinet/in.h>
@@ -13,9 +14,15 @@
 #include <unistd.h>
 #include <string.h>
 #include <vector>
+#include <sstream>
+#include <thread>
 class Client{
 public:
     void run(int argc, char** argv);
-
+    string receiveFromServer(int sock);
+    void sendToServer(int sock, string message);
+    void handleCmd1(int sock);
+    void handleCmd5(int sock);
+    void writeCSV(string results, string filePath);
 };
 #endif //AP1_CLIENT_H
