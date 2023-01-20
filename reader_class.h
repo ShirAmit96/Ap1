@@ -18,7 +18,6 @@ public:
     bool isClassified(string fileType);
     bool validFile;
     DataBase readCsv(string fileName,  string fileType);
-
 };
 #endif //AP1_READERCLASS_H
 

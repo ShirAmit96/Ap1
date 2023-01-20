@@ -63,6 +63,7 @@ void UploadCSV::execute(SharedData *sharedData) {
                 }
             }
         }
+}
 
 void Settings::execute(SharedData *sharedData) {
     string setting = "The current KNN parameters are: K = " + to_string(sharedData->k)+", distance metric = " + sharedData->distanceMetric+"\n*END!";
@@ -144,7 +145,8 @@ void DisplayResults::execute(SharedData *sharedData) {
         }
     }
 }
-void Download::writeCSV(SharedData* sharedData){
+void Download::sendFile(SharedData* sharedData){
+    string updateFromClient = dio->read();
         DataBase db=sharedData->db_unclassified;
         string fileContent="";
         for (int i =1 ; i < sharedData->db_unclassified.db.size()+1; i++){
@@ -169,7 +171,7 @@ void Download::execute(SharedData* sharedData) {
         dio->write("#cmd5*END!");
         string message = dio->read();
         if(message.find("*pathInserted")!= string::npos) {
-            writeCSV(sharedData);
+            sendFile(sharedData);
 
         }//else♥♥
         return;
