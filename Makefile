@@ -1,17 +1,19 @@
 # Chooses the right compiler.
-CC = g++ -std=c++11
+CC = g++ -std=c++11 -pthread
 # Have the right clean command.
 ifeq ($(OS),Windows_NT)
 	CLN=del
 else
 	CLN=rm
 endif
-
 BUILD_FILES += distance_metric.o
 BUILD_FILES += knn.o
 BUILD_FILES += reader_class.o
 BUILD_FILES += database.o
 BUILD_FILES += input_validation.o
+BUILD_FILES += cli.o
+BUILD_FILES += command.o
+BUILD_FILES += socketIO.o
 
 all: $(BUILD_FILES) server_side.o client.o
 	$(CC) $(BUILD_FILES) server_side.o -o server.out

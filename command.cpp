@@ -63,7 +63,7 @@ void UploadCSV::execute(SharedData *sharedData) {
                 }
             }
         }
-}
+
 
 void Settings::execute(SharedData *sharedData) {
     string setting = "The current KNN parameters are: K = " + to_string(sharedData->k)+", distance metric = " + sharedData->distanceMetric+"\n*END!";
