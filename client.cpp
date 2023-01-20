@@ -8,6 +8,105 @@ int main(int argc, char* argv[]){
     return 1;
 }
 using namespace std;
+
+string Client::receiveFromServer(int sock) {
+    char buffer[4096];
+    int expected_data_len = sizeof(buffer);
+    //receive the response of the server:
+    int read_bytes = recv(sock, buffer, expected_data_len, 0);
+    //Check if an error occurred while receiving from the server:
+    if (read_bytes == 0) {
+        //If the server is closed-print a message and close the client:
+        cout << "Error connecting to server" << endl;
+        close(sock);
+        exit(-1);
+    } else if (read_bytes < 0) {
+        //If an error occurred-print a message and close the client:
+        cout << "Error connecting to server" << endl;
+        close(sock);
+        exit(-1);
+    } else {
+        string received = buffer;
+        return received;
+    }
+}
+void Client::sendToServer(int sock, string message){
+    int sent_bytes = send(sock, message.c_str(),message.length(), 0);
+    //Check if an error occurred while sending to the server:
+    if (sent_bytes < 0) {
+        //If an error occurred-print a message and close the client:
+        cout<<"Error sending to server"<<endl;
+        close(sock);
+        exit(-1);
+    }
+}
+void Client::handleCmd1(int sock){
+    cout<<"Please upload your local train CSV file"<<endl;
+    //get path for train file from the user:
+    string trainPath;
+    getline(cin, trainPath);
+    //♥ add a condition if the path is not valid
+    // read the file and convert it into string:
+    ofstream trainStream(trainPath);
+    stringstream trainBuffer;
+    trainBuffer << trainStream.rdbuf();
+    string trainString = trainBuffer.str();
+    //add a sign for the server that the file is ended:
+    trainString+="*EOF";
+    //Prepare the data for sending to the server:
+    //Send the data to the server:
+    sendToServer(sock, trainString);
+    // part 2 of command 1:
+    string serverUpdate1= receiveFromServer(sock);
+    //print update from server:
+    cout<<serverUpdate1<<endl;
+    if(serverUpdate1.find("invalid")!= string::npos){
+        return;
+    }
+    string testPath;
+    ofstream testStream(trainPath);
+    getline(cin, testPath);
+    stringstream testBuffer;
+    testBuffer << testStream.rdbuf();
+    string testString = testBuffer.str();
+    testString+="*EOF";
+    //Send the data to the server:
+    sendToServer(sock, testString);
+    string serverUpdate2= receiveFromServer(sock);
+    cout<<serverUpdate2<<endl;
+
+}
+void Client::writeCSV(string results, string filePath){
+    fstream file (filePath, ios::out);
+    if (file.is_open()) {
+        file<<results;
+        file.close();
+    } else {
+        cout<<"invalid path";
+    }
+}
+void Client::handleCmd5(int sock) {
+    cout<<"Please enter a csv path: "<<endl;
+    string filePath;
+    getline(cin, filePath);
+    string updateServer="*pathInserted";
+    sendToServer(sock, updateServer);
+    string bufferString;
+    while (true) {
+        string currentBuffer= receiveFromServer(sock);
+        bufferString+=currentBuffer;
+        if(currentBuffer.find("#EOF")!= string::npos) {
+            vector <string> sepEnd= separateString(bufferString, "#EOF");
+            string fileContent=sepEnd[0];
+            thread t(&Client::writeCSV, this, fileContent, filePath);
+            t.detach();
+            break;
+        }
+        else{
+            continue;
+        }
+    }
+}
 /*This class represents a client that communicates with a server*/
 void Client::run(int argc, char** argv) {
     /*This function creates a socket, connects to the server and communicates with it/ */
@@ -46,63 +145,37 @@ void Client::run(int argc, char** argv) {
         close(sock);
         exit(-1);
     }
+    //in buffer string we will put the messages from server:
+    string bufferString="";
     //Run in an infinite loop to allow continuous communication with the server:
     while (true) {
-        //get data from user:
-        string input;
-        getline(cin, input);
-        //check string size:
-        if(input.size()<2){
-            cout<<"invalid input"<<endl;
-            continue;
-        }
-        //check if the user wants to terminate program:
-        if(input[0]=='-'&&input[1]=='1'&&input.length()==2){
-            cout<<"terminating program..."<<endl;
-            close(sock);
-            exit(-1);
-        }
-        //Check if the inserted input is valid:
-        if (!checkUserInput(input)){
-            cout<<"invalid input"<<endl;
-            continue;
-        }
-        //Prepare the data for sending to the server:
-        int data_len = input.size()+1;
-        if(data_len>4096){
-            cout<<"invalid input"<<endl;
-            continue;
-        }
-        //Send the data to the server:
-        int sent_bytes = send(sock, input.c_str(), data_len, 0);
-        //Check if an error occurred while sending to the server:
-        if (sent_bytes < 0) {
-            //If an error occurred-print a message and close the client:
-            cout<<"Error sending to server"<<endl;
-            close(sock);
-            exit(-1);
-        }
-        char buffer[4096];
-        int expected_data_len = sizeof(buffer);
-        //receive the response of the server:
-        int read_bytes = recv(sock, buffer, expected_data_len, 0);
-        //Check if an error occurred while receiving from the server:
-        if (read_bytes == 0) {
-            //If the server is closed-print a message and close the client:
-            cout<<"Error connecting to server"<<endl;
-            close(sock);
-            exit(-1);
-        } else if (read_bytes < 0) {
-            //If an error occurred-print a message and close the client:
-            cout<<"Error connecting to server"<<endl;
-            close(sock);
-            exit(-1);
-
-        } else {
-            //If we managed to receive a message from the server - print it:
-                cout<<buffer<<endl;
-                memset(buffer, 0,sizeof(buffer));
+            //'currentBuffer' is used for cases in which the buffer is too long for one iteration:
+            string currentBuffer= receiveFromServer(sock);
+            bufferString+=currentBuffer;
+            //check if message is complete:
+            if(currentBuffer.find("*End!")!= string::npos){
+                vector<string> sepBuffer= separateString(bufferString,"*");
+                bufferString= sepBuffer[0];
+                //command #1:
+                if(bufferString.find("#cmd1")){
+                    handleCmd1(sock);
+                    bufferString="";
+                }else if(bufferString.find("#cmd5")){
+                    handleCmd5(sock);
+                    bufferString="";
+                }else{
+                    vector<string> sepCmd= separateString(bufferString,"*");
+                    string command=sepCmd[0];
+                    cout<<command;
+                    string input;
+                    getline(cin, input);
+                    sendToServer(sock, input);
+                    bufferString="";
+                }
+                }else{
+                //the message didn't end yet:
+                continue;
             }
-        }
+            }
     }
 
