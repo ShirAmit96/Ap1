@@ -55,7 +55,7 @@ class Download:public Command{
 public:
     Download(DefaultIO* dio):Command(dio,"download results\n"){}
     virtual void execute(SharedData* sharedData);
-    void Download::writeCSV(SharedData* sharedData)
+    void sendFile(SharedData* sharedData);
 };
 class Exit:public Command {
 public:

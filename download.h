@@ -9,7 +9,7 @@
 using namespace std;
 class Download:public Command{
 public:
-    Download(DefaultIO* dio):Command(dio,"download results\n"){}
+    Download(DefaultIO* dio):Command(dio,"download results\n"){};
     virtual void execute(SharedData* sharedData);
     void writeCSV(SharedData* sharedData);
 };

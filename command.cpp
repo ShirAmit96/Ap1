@@ -145,7 +145,7 @@ void DisplayResults::execute(SharedData *sharedData) {
         }
     }
 }
-void Download::writeCSV(SharedData* sharedData){
+void Download::sendFile(SharedData* sharedData){
     string updateFromClient = dio->read();
         DataBase db=sharedData->db_unclassified;
         string fileContent="";
@@ -171,7 +171,7 @@ void Download::execute(SharedData* sharedData) {
         dio->write("#cmd5*END!");
         string message = dio->read();
         if(message.find("*pathInserted")!= string::npos) {
-            writeCSV(sharedData);
+            sendFile(sharedData);
 
         }//else♥♥
         return;
