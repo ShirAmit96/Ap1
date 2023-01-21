@@ -4,9 +4,6 @@ string UploadCSV::writeCSV(SharedData* sharedData, string fileContent, bool clas
     string filePath;
     cout << "line 5" << endl;
     fileContent = fileContent + " ";
-    if(!classified){
-        cout << fileContent << endl;
-    }
     // check if string contain null char, if so delete it.
     size_t pos = fileContent.find('\0');
     size_t finalPos = fileContent.find(" ");

@@ -24,6 +24,7 @@ void Cli::start(){
                 flagBreak = true;
             }
             dio->write(s);
+            //s="";
             dio->write(commands[i]->description);
             if (flagBreak){
                 break;
