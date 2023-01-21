@@ -3,28 +3,14 @@
 string UploadCSV::writeCSV(SharedData* sharedData, string fileContent, bool classified){
     string filePath;
     cout << "line 5" << endl;
-    if(!classified){
-        cout << fileContent << endl;
-    }
-    fileContent = fileContent + "END";
+    fileContent = fileContent + " ";
     if(!classified){
         cout << fileContent << endl;
     }
     // check if string contain null char, if so delete it.
-    if(fileContent.find('\0') !=string::npos ){
-        size_t pos = fileContent.find('\0');
-        if(!classified){
-            cout << pos << endl;
-        }
-        size_t finalPos = fileContent.find("END");
-        if(!classified){
-            cout << finalPos << endl;
-        }
-        fileContent = fileContent.substr(pos+1, finalPos-1);
-        if(!classified){
-            cout << fileContent << endl;
-        }
-    }
+    size_t pos = fileContent.find('\0');
+    size_t finalPos = fileContent.find(" ");
+    fileContent = fileContent.substr(pos+1, finalPos-1);
     if(classified) {
         filePath="classified.csv";
     }else{
@@ -83,9 +69,9 @@ void UploadCSV::execute(SharedData *sharedData) {
                     testFileContent+=spiltString[0];
                     break;
                 }
-                trainFileContent+=subFile;
+                testFileContent+=subFile;
             }
-            string testFile=writeCSV(sharedData, trainFileContent, false);
+            string testFile=writeCSV(sharedData, testFileContent, false);
             ReaderClass read2 = ReaderClass();
             DataBase dbUnclassified = read2.readCsv(testFile, "unclassified");
             if (!read2.validFile) {

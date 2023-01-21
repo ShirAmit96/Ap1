@@ -72,8 +72,8 @@ void Client::handleCmd1(int sock){
     }
     cout<<"Please upload your local test CSV file."<<endl;
     string testPath;
-    ifstream testStream(testPath);
     getline(cin, testPath);
+    ifstream testStream(testPath);
     stringstream testBuffer;
     testBuffer << testStream.rdbuf();
     string testString = testBuffer.str();
