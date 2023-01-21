@@ -13,6 +13,7 @@ void Cli::start(){
     SharedData sharedData;
     int index=-1;
     while(index!=7){
+        bool flagBreak;
         dio->write("Welcome to the Anomaly Detection Server.\n");
         dio->write("Please choose an option:\n");
         for(int i=0;i<commands.size();i++){
@@ -20,9 +21,13 @@ void Cli::start(){
             s[0]=((char)(i+1+'0'));
             if(i==5){
                 s[0]=((char)(8+'0'));
+                flagBreak = true;
             }
             dio->write(s);
             dio->write(commands[i]->description);
+            if (flagBreak){
+                break;
+            }
         }
         cout << "line 27" << endl;
         string input = dio->read();

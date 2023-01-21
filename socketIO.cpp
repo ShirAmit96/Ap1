@@ -4,7 +4,7 @@
 string SocketIO::read(){
     char c=0;
     string s="";
-    while(c!='\n'){
+    while(c!='*'){
         recv(sock,&c,sizeof(char),0);
         s+=c;
     }

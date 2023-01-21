@@ -1,25 +1,64 @@
 #include "command.h"
+
 string UploadCSV::writeCSV(SharedData* sharedData, string fileContent, bool classified){
     string filePath;
+    cout << "line 5" << endl;
+    if(!classified){
+        cout << fileContent << endl;
+    }
+    fileContent = fileContent + "END";
+    if(!classified){
+        cout << fileContent << endl;
+    }
+    // check if string contain null char, if so delete it.
+    if(fileContent.find('\0') !=string::npos ){
+        size_t pos = fileContent.find('\0');
+        if(!classified){
+            cout << pos << endl;
+        }
+        size_t finalPos = fileContent.find("END");
+        if(!classified){
+            cout << finalPos << endl;
+        }
+        fileContent = fileContent.substr(pos+1, finalPos-1);
+        if(!classified){
+            cout << fileContent << endl;
+        }
+    }
     if(classified) {
         filePath="classified.csv";
     }else{
         filePath="unClassified.csv";
     }
-    fstream file (filePath, ios::out);
-    if (file.is_open()) {
-        file<<fileContent;
+    std::fstream file;
+    file.open(filePath, std::ios::in);
+    if(file.good()) {
+        std::cout << "File exists, writing to it" << std::endl;
         file.close();
+        file.open(filePath, std::ios::out | std::ios::app | std::ios::binary);
+        if(file.good()) {
+            file.clear();
+            file<<fileContent;
+            file.close();
+        }
+    } else {
+        std::cout << "File does not exist, creating it" << std::endl;
+        file.close();
+        file.open(filePath, std::ios::out | std::ios::binary);
+        if(file.good()) {
+            file.clear();
+            file<<fileContent;
+            file.close();
+        }
     }
     return filePath;
-
 }
 void UploadCSV::execute(SharedData *sharedData) {
     dio->write("Please upload your local train CSV file.\n#cmd1*END!");
-    string trainFileContent="";
+    string trainFileContent;
     while(true){
         string subFile = dio->read();
-        if(subFile.find("*EOF") != string::npos){
+        if(subFile.find("*") != string::npos){
             vector<string> spiltString= separateString(subFile,"*");
             trainFileContent+=spiltString[0];
             break;
@@ -30,15 +69,16 @@ void UploadCSV::execute(SharedData *sharedData) {
     string trainFile=writeCSV(sharedData,trainFileContent,true);
     ReaderClass read1 = ReaderClass();
     DataBase dbClassified = read1.readCsv(trainFile, "classified");
+    cout << "line 33" << endl;
     if (!read1.validFile) {
-        dio->write("invalid input.\n*END!");
+        dio->write("invalid input.\n");
         return;
         } else {
-            dio->write("Upload complete.\n*END!");
+            dio->write("Upload complete.\n");
             string testFileContent="";
             while(true){
                 string subFile = dio->read();
-                if(subFile.find("*EOF") != string::npos){
+                if(subFile.find("*") != string::npos){
                     vector<string> spiltString= separateString(subFile,"*");
                     testFileContent+=spiltString[0];
                     break;
@@ -56,7 +96,7 @@ void UploadCSV::execute(SharedData *sharedData) {
                 sharedData->db_classified = dbClassified;
                 sharedData->db_unclassified = dbUnclassified;
                 sharedData->dataUploaded=true;
-                // create an instance ok Knn
+                // create an instance of Knn
                 sharedData->k_model = Knn(sharedData->distanceMetric, sharedData->k, sharedData->db_classified.db);
                 // update that Knn instance have been initialized.
                 sharedData->k_initialized=true;
