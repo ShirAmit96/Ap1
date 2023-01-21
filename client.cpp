@@ -185,6 +185,7 @@ void Client::run(int argc, char** argv) {
                     getline(cin, input);
                     input = input + "*";
                     sendToServer(sock, input);
+                    input ="";
                     bufferString="";
                 }
                 }else{
