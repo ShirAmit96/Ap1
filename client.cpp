@@ -41,16 +41,23 @@ void Client::sendToServer(int sock, string message){
     }
 }
 void Client::handleCmd1(int sock){
-    cout<<"Please upload your local train CSV file"<<endl;
+    cout<<"Please upload your local train CSV file."<<endl;
     //get path for train file from the user:
     string trainPath;
     getline(cin, trainPath);
+    cout << "line 48:" << trainPath << endl;
     //♥ add a condition if the path is not valid
     // read the file and convert it into string:
-    ofstream trainStream(trainPath);
-    stringstream trainBuffer;
-    trainBuffer << trainStream.rdbuf();
-    string trainString = trainBuffer.str();
+    ifstream trainStream(trainPath);
+    string trainString ="";
+    if(trainStream.is_open())
+    {
+        // read the file and convert it into string:
+        stringstream trainBuffer;
+        trainBuffer << trainStream.rdbuf();
+        trainString = trainBuffer.str();
+    }else
+        cout<<"Unable to open the file"<<endl;
     //add a sign for the server that the file is ended:
     trainString+="*EOF";
     //Prepare the data for sending to the server:
@@ -63,8 +70,9 @@ void Client::handleCmd1(int sock){
     if(serverUpdate1.find("invalid")!= string::npos){
         return;
     }
+    cout<<"Please upload your local test CSV file."<<endl;
     string testPath;
-    ofstream testStream(trainPath);
+    ifstream testStream(testPath);
     getline(cin, testPath);
     stringstream testBuffer;
     testBuffer << testStream.rdbuf();
@@ -77,8 +85,10 @@ void Client::handleCmd1(int sock){
 
 }
 void Client::writeCSV(string results, string filePath){
+    cout << "line 80" << endl;
     fstream file (filePath, ios::out);
     if (file.is_open()) {
+        cout << "results" << endl;
         file<<results;
         file.close();
     } else {
@@ -89,12 +99,14 @@ void Client::handleCmd5(int sock) {
     cout<<"Please enter a csv path: "<<endl;
     string filePath;
     getline(cin, filePath);
+    cout <<filePath << endl;
     string updateServer="*pathInserted";
     sendToServer(sock, updateServer);
     string bufferString;
     while (true) {
         string currentBuffer= receiveFromServer(sock);
         bufferString+=currentBuffer;
+        cout << "line 99" << currentBuffer << endl;
         if(currentBuffer.find("#EOF")!= string::npos) {
             vector <string> sepEnd= separateString(bufferString, "#EOF");
             string fileContent=sepEnd[0];
@@ -171,6 +183,7 @@ void Client::run(int argc, char** argv) {
                     cout<<command;
                     string input;
                     getline(cin, input);
+                    input = input + "*";
                     sendToServer(sock, input);
                     bufferString="";
                 }
