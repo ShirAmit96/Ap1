@@ -176,10 +176,13 @@ void DisplayResults::execute(SharedData *sharedData) {
             // in the case data was uploaded and classified.
         else{
             // print the labels after classification.
-            for (int i =1 ; i < sharedData->db_unclassified.db.size()+1; i++){
-                string classifiedRow = to_string(i) +"\t"+sharedData->db_unclassified.db[i-1].label+"\n#cmd4*END!";
-                dio->write(classifiedRow);
+            string classifiedRow = "";
+            for (int i =1 ; i < sharedData->db_unclassified.db.size()+1; i++) {
+                classifiedRow += to_string(i) + "\t" + sharedData->db_unclassified.db[i - 1].label + "\n";
             }
+            classifiedRow = classifiedRow +"#cmd4*END!";
+            dio->write(classifiedRow);
+
             dio->write("Done.\n*END!");
         }
     }
