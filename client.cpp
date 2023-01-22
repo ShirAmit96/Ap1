@@ -66,7 +66,7 @@ void Client::handleCmd1(int sock){
     // part 2 of command 1:
     string serverUpdate1= receiveFromServer(sock);
     //print update from server:
-    cout<<serverUpdate1<<endl;
+    cout<<serverUpdate1<<flush;
     if(serverUpdate1.find("invalid")!= string::npos){
         return;
     }
@@ -81,8 +81,17 @@ void Client::handleCmd1(int sock){
     //Send the data to the server:
     sendToServer(sock, testString);
     string serverUpdate2= receiveFromServer(sock);
-    cout<<serverUpdate2<<endl;
+    cout<<serverUpdate2<<flush;
 
+}
+
+void Client::handleCmd2(int sock, string message){
+    vector<string> sepMessage=separateString(message,"#");
+    string output=sepMessage[0];
+    cout<<output<<flush;
+    string input;
+    getline(cin, input);
+    sendToServer(sock,input);
 }
 void Client::writeCSV(string results, string filePath){
     cout << "line 80" << endl;
@@ -177,25 +186,32 @@ void Client::run(int argc, char** argv) {
                 }else if(bufferString.find("#cmd5")!= string::npos){
                     handleCmd5(sock);
                     bufferString="";
-                }else{
+                }else if(bufferString.find("#cmd2")!= string::npos){
+                    handleCmd2(sock,bufferString);
+                    bufferString="";
+                }
+                else{
                     vector<string> sepCmd= separateString(bufferString,"*");
                     string command=sepCmd[0];
-                    cout<<command;
-                    if(command.find("invalid")!= string::npos){
+                    if(bufferString.find("#cmd3")!= string::npos||bufferString.find("#cmd4")!= string::npos){
+                        vector<string> sepCmd= separateString(bufferString,"#");
+                        command=sepCmd[0];
+                        cout<<command<<flush;
+                        bufferString="";
+                        sendToServer(sock, " ");
                         continue;
+
                     }
-                    if(command.find("classifying data complete")!= string::npos){
-                        cout << "DEBUG HERE::::::" << command << endl;
-                        sendToServer(sock, "heyheyheyhey");
-                        cout << "line 188" << endl;
-                        command ="";
-                        continue;
-                    }
+                    else if(command.find("Welcome")==string::npos){
+                        sendToServer(sock, " ");
+                        continue;}
+                    cout<<command<<flush;
                     string input;
                     getline(cin, input);
-                    cout << "******#####getline:" << input << endl;
-                    //input = input + "*";
                     sendToServer(sock, input);
+                    if(input=="8"){
+                        exit(-1);
+                    }
                     input ="";
                     bufferString="";
                 }

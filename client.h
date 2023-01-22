@@ -22,6 +22,7 @@ public:
     string receiveFromServer(int sock);
     void sendToServer(int sock, string message);
     void handleCmd1(int sock);
+    void handleCmd2(int sock, string message);
     void handleCmd5(int sock);
     void writeCSV(string results, string filePath);
 };
