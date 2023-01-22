@@ -41,9 +41,11 @@ void UploadCSV::execute(SharedData *sharedData) {
     string trainFileContent;
     while(true){
         string subFile = dio->read();
-        if(subFile.find("*") != string::npos){
-            vector<string> spiltString= separateString(subFile,"*");
-            trainFileContent+=spiltString[0];
+        cout << "line 44:" << subFile<< endl;
+        if(trainFileContent.find("*") != string::npos){
+            vector<string> spiltString= separateString(trainFileContent,"*");
+            trainFileContent=spiltString[0];
+            cout << trainFileContent << endl;
             break;
         }
         trainFileContent+=subFile;
@@ -52,6 +54,7 @@ void UploadCSV::execute(SharedData *sharedData) {
     string trainFile=writeCSV(sharedData,trainFileContent,true);
     ReaderClass read1 = ReaderClass();
     DataBase dbClassified = read1.readCsv(trainFile, "classified");
+    remove(trainFile.c_str());
     cout << "line 33" << endl;
     if (!read1.validFile) {
         dio->write("invalid input.\n");
@@ -61,16 +64,23 @@ void UploadCSV::execute(SharedData *sharedData) {
             string testFileContent="";
             while(true){
                 string subFile = dio->read();
-                if(subFile.find("*") != string::npos){
-                    vector<string> spiltString= separateString(subFile,"*");
-                    testFileContent+=spiltString[0];
+                cout << "line 67:"<<subFile << endl;
+                testFileContent+=subFile;
+                if(testFileContent.find("*") != string::npos){
+                    cout << "line 69" << endl;
+                    size_t finalPos = testFileContent.find("*");
+                    testFileContent = testFileContent.substr(0, finalPos);
+                    //vector<string> spiltTestString= separateString(testFileContent,"*");
+                    //testFileContent=spiltTestString[0];
+                    cout << testFileContent<<endl;
                     break;
                 }
-                testFileContent+=subFile;
+                cout <<"line 75:"<<testFileContent<<endl;
             }
             string testFile=writeCSV(sharedData, testFileContent, false);
             ReaderClass read2 = ReaderClass();
             DataBase dbUnclassified = read2.readCsv(testFile, "unclassified");
+            cout << remove(testFile.c_str()) << endl;
             if (!read2.validFile) {
                 dio->write("invalid input.\n");
                 return;
@@ -95,34 +105,38 @@ void Settings::execute(SharedData *sharedData) {
     // it means that user didn't press only "enter".
     if (settingsInput.length() != 0){
         string delim = " ";
-        vector<string> settings = separateString(settingsInput,delim);
-        // assign and check if k is valid.
-        int k = checkPositiveInt(settings[0]);
-        if (k==0){
-            dio->write("invalid value for K\n*END!");
-            // check if also the metric is not valid.
-            if(!checkMetric(settings[1])){
-                dio->write("invalid value for metric\n*END!");
-            }
-            return;
+        if(!(settingsInput.find(" ") != string::npos)){
+            dio->write("invalid input\n");
         }
-        else{
-            // check if distance metric is valid.
-            if(!checkMetric(settings[1])){
-                dio->write("invalid value for metric\n*END!");
-                return;
-            }
-            else{
-                string distanceMetric = settings[1];
-                // change metric if it's different from the current setting.
-                if (distanceMetric != sharedData->distanceMetric)
-                    sharedData->distanceMetric = distanceMetric;
-                sharedData->k_model.updateDistanceMetric(sharedData->distanceMetric);
-            }
-            // change k if it's different from the current setting.
-            if(k!=sharedData->k){
-                sharedData->k = k;
-                sharedData->k_model.updateK(sharedData->k);
+        if(&settingsInput[settingsInput.length()-1] != " ") {
+            vector<string> settings = separateString(settingsInput, delim);
+            // assign and check if k is valid.
+            int k = checkPositiveInt(settings[0]);
+            if (k == 0) {
+                dio->write("invalid value for K\n*END!");
+                // check if also the metric is not valid.
+                if (!checkMetric(settings[1])) {
+                    dio->write("invalid value for metric\n*END!");
+                }
+            } else {
+                cout << k << endl;
+                // check if distance metric is valid.
+                if (!checkMetric(settings[1])) {
+                    dio->write("invalid value for metric\n*END!");
+
+                } else {
+                    string distanceMetric = settings[1];
+                    cout << distanceMetric << endl;
+                    // change metric if it's different from the current setting.
+                    if (distanceMetric != sharedData->distanceMetric)
+                        sharedData->distanceMetric = distanceMetric;
+                    sharedData->k_model.updateDistanceMetric(sharedData->distanceMetric);
+                }
+                // change k if it's different from the current setting.
+                if (k != sharedData->k) {
+                    sharedData->k = k;
+                    sharedData->k_model.updateK(sharedData->k);
+                }
             }
         }
 
@@ -138,6 +152,8 @@ void Classify::execute(SharedData *sharedData) {
         sharedData->k_model.predict(sharedData->db_unclassified);
         sharedData->dataClassified=true;
         dio->write("classifying data complete\n*END!");
+        cout << "line 155" << endl;
+        return;
     }
 }
 void DisplayResults::execute(SharedData *sharedData) {

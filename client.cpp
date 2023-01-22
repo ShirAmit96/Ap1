@@ -163,7 +163,7 @@ void Client::run(int argc, char** argv) {
     //Run in an infinite loop to allow continuous communication with the server:
     while (true) {
             //'currentBuffer' is used for cases in which the buffer is too long for one iteration:
-            string currentBuffer= receiveFromServer(sock);
+            string currentBuffer = receiveFromServer(sock);
             bufferString+=currentBuffer;
             //check if message is complete:
             if(currentBuffer.find("*END!")!= string::npos){
@@ -181,9 +181,20 @@ void Client::run(int argc, char** argv) {
                     vector<string> sepCmd= separateString(bufferString,"*");
                     string command=sepCmd[0];
                     cout<<command;
+                    if(command.find("invalid")!= string::npos){
+                        continue;
+                    }
+                    if(command.find("classifying data complete")!= string::npos){
+                        cout << "DEBUG HERE::::::" << command << endl;
+                        sendToServer(sock, "heyheyheyhey");
+                        cout << "line 188" << endl;
+                        command ="";
+                        continue;
+                    }
                     string input;
                     getline(cin, input);
-                    input = input + "*";
+                    cout << "******#####getline:" << input << endl;
+                    //input = input + "*";
                     sendToServer(sock, input);
                     input ="";
                     bufferString="";

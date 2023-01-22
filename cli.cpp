@@ -11,9 +11,9 @@ Cli::Cli(DefaultIO* dio) {
 
 void Cli::start(){
     SharedData sharedData;
-    int index=-1;
-    while(index!=7){
-        bool flagBreak;
+    while(true){
+        cout << "line 15" << endl;
+        bool flagBreak = false;
         dio->write("Welcome to the Anomaly Detection Server.\n");
         dio->write("Please choose an option:\n");
         for(int i=0;i<commands.size();i++){
@@ -32,10 +32,29 @@ void Cli::start(){
         }
         cout << "line 27" << endl;
         string input = dio->read();
-        cout << input << endl;
-        index=input[0]-'0'-1;
-        if(index>=0 && index<=4||index==7) {
-            commands[index]->execute(&sharedData);
+        if (input == "1"){
+            commands[0]->execute(&sharedData);
+        }
+        if (input == "2"){
+            commands[1]->execute(&sharedData);
+        }
+        if (input == "3"){
+            commands[2]->execute(&sharedData);
+        }
+        if (input == "4"){
+            commands[3]->execute(&sharedData);
+        }
+        if (input == "5"){
+            commands[4]->execute(&sharedData);
+        }
+        if (input == "8"){
+            commands[5]->execute(&sharedData);
+            break;
+        }
+        else{
+            cout << "%&%&%&%&%&%&%"<<input << endl;
+            input ="";
+            continue;
         }
     }
 }
