@@ -181,9 +181,8 @@ void DisplayResults::execute(SharedData *sharedData) {
                 classifiedRow += to_string(i) + "\t" + sharedData->db_unclassified.db[i - 1].label + "\n";
             }
             classifiedRow = classifiedRow +"#cmd4*END!";
+            classifiedRow = classifiedRow + "Done.\n*END!";
             dio->write(classifiedRow);
-
-            dio->write("Done.\n*END!");
         }
     }
 }
