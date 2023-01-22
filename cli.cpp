@@ -14,22 +14,19 @@ void Cli::start(){
     while(true){
         cout << "line 15" << endl;
         bool flagBreak = false;
-        dio->write("Welcome to the Anomaly Detection Server.\n");
-        dio->write("Please choose an option:\n");
+        string menu="Welcome to the KNN classifier Server. Please choose an option:\n";
         for(int i=0;i<commands.size();i++){
-            string s("1.");
-            s[0]=((char)(i+1+'0'));
+            int num=i+1;
             if(i==5){
-                s[0]=((char)(8+'0'));
-                flagBreak = true;
+               flagBreak = true;
+               num=8;
             }
-            dio->write(s);
-            //s="";
-            dio->write(commands[i]->description);
+           menu+=to_string(num) + "."+commands[i]->description;
             if (flagBreak){
                 break;
             }
         }
+        dio->write(menu);
         cout << "line 27" << endl;
         string input = dio->read();
         if (input == "1"){

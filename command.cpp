@@ -99,7 +99,7 @@ void UploadCSV::execute(SharedData *sharedData) {
 
 
 void Settings::execute(SharedData *sharedData) {
-    string setting = "The current KNN parameters are: K = " + to_string(sharedData->k)+", distance metric = " + sharedData->distanceMetric+"\n*END!";
+    string setting = "The current KNN parameters are: K = " + to_string(sharedData->k)+", distance metric = " + sharedData->distanceMetric+"\n#cmd2*END!";
     dio->write(setting);
     string settingsInput=dio->read();
     // it means that user didn't press only "enter".
@@ -159,10 +159,10 @@ void Classify::execute(SharedData *sharedData) {
 void DisplayResults::execute(SharedData *sharedData) {
     // check if data is uploaded.
     if(!sharedData->dataUploaded){
-        dio->write("please upload data\n*END!");
+        dio->write("please upload data\n#cmd3*END!");
         // check if also data is not classified - which it will not be because the data have not been uploaded yet.
         if(!sharedData->dataClassified){
-            dio->write("please classify the dataa\n*END!");
+            dio->write("please classify the dataa\n#cmd3*END!");
         }
         return;
     }
@@ -170,14 +170,14 @@ void DisplayResults::execute(SharedData *sharedData) {
     else{
         // check if data was uploaded but not classified.
         if(!sharedData->dataClassified){
-            dio->write("please classify the data\n*END!");
+            dio->write("please classify the data\n#cmd4*END!");
             return;
         }
             // in the case data was uploaded and classified.
         else{
             // print the labels after classification.
             for (int i =1 ; i < sharedData->db_unclassified.db.size()+1; i++){
-                string classifiedRow = to_string(i) +"\t"+sharedData->db_unclassified.db[i-1].label+"\n*END!";
+                string classifiedRow = to_string(i) +"\t"+sharedData->db_unclassified.db[i-1].label+"\n#cmd4*END!";
                 dio->write(classifiedRow);
             }
             dio->write("Done.\n*END!");
@@ -190,7 +190,7 @@ void Download::sendFile(SharedData* sharedData){
         string fileContent="";
         for (int i =1 ; i < sharedData->db_unclassified.db.size()+1; i++){
             if(i==sharedData->db_unclassified.db.size()){
-                string classifiedRow = to_string(i) +"\t"+sharedData->db_unclassified.db[i-1].label+"\n#EOF*END!";
+                string classifiedRow = to_string(i) +"\t"+sharedData->db_unclassified.db[i-1].label+"\n#EOF#cmd5*END!";
                 dio->write(classifiedRow);
                 break;
             }
