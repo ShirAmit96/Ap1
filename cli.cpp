@@ -28,7 +28,9 @@ void Cli::start(){
         }
         dio->write(menu);
         cout << "line 27" << endl;
+        std::this_thread::sleep_for(std::chrono::milliseconds(20));
         string input = dio->read();
+        cout<<"input: "<<input<<endl;
         if (input == "1"){
             commands[0]->execute(&sharedData);
         }
@@ -48,11 +50,7 @@ void Cli::start(){
             commands[5]->execute(&sharedData);
             break;
         }
-        else{
-            cout << "%&%&%&%&%&%&%"<<input << endl;
-            input ="";
-            continue;
-        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(20));
     }
 }
 

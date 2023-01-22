@@ -172,39 +172,44 @@ void Client::run(int argc, char** argv) {
     //Run in an infinite loop to allow continuous communication with the server:
     while (true) {
             //'currentBuffer' is used for cases in which the buffer is too long for one iteration:
-            string currentBuffer = receiveFromServer(sock);
+            string currentBuffer="";
+            currentBuffer = receiveFromServer(sock);
             bufferString+=currentBuffer;
+            //cout<<"bufferString : <"<<bufferString<< ">" <<endl;
             //check if message is complete:
             if(currentBuffer.find("*END!")!= string::npos){
                 vector<string> sepBuffer= separateString(bufferString,"*");
-                bufferString= sepBuffer[0];
+                bufferString="";
+                string sepreatedCmd= sepBuffer[0];
                 //command #1:
-                if(bufferString.find("#cmd1")!= string::npos){
+                if(sepreatedCmd.find("#cmd1")!= string::npos){
                     handleCmd1(sock);
-                    cout << "line 165" << endl;
+                    cout<<"cmd 1"<<endl;
                     bufferString="";
-                }else if(bufferString.find("#cmd5")!= string::npos){
+                }else if(sepreatedCmd.find("#cmd5")!= string::npos){
                     handleCmd5(sock);
+                    cout<<"cmd 5"<<endl;
                     bufferString="";
-                }else if(bufferString.find("#cmd2")!= string::npos){
-                    handleCmd2(sock,bufferString);
+                }else if(sepreatedCmd.find("#cmd2")!= string::npos){
+                    handleCmd2(sock,sepreatedCmd);
+                    cout<<"cmd 2"<<endl;
                     bufferString="";
-                }
-                else{
-                    vector<string> sepCmd= separateString(bufferString,"*");
-                    string command=sepCmd[0];
-                    if(bufferString.find("#cmd3")!= string::npos||bufferString.find("#cmd4")!= string::npos){
-                        vector<string> sepCmd= separateString(bufferString,"#");
+                }else{
+                    string command=sepreatedCmd;
+                    if(sepreatedCmd.find("#cmd3")!= string::npos||sepreatedCmd.find("#cmd4")!= string::npos){
+                        vector<string> sepCmd= separateString(sepreatedCmd,"#");
                         command=sepCmd[0];
+                        cout<<"cmd 3 or 4:"<<endl;
                         cout<<command<<flush;
-                        bufferString="";
-                        sendToServer(sock, " ");
+                        //sendToServer(sock, " ");
                         continue;
-
                     }
                     else if(command.find("Welcome")==string::npos){
-                        sendToServer(sock, " ");
-                        continue;}
+                        cout<<"not welcome :"<<endl;
+                        //sendToServer(sock, " ");
+                        continue;
+                    }
+                    //Print menu
                     cout<<command<<flush;
                     string input;
                     getline(cin, input);

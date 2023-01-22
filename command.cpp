@@ -145,24 +145,25 @@ void Settings::execute(SharedData *sharedData) {
 }
 void Classify::execute(SharedData *sharedData) {
     if(!sharedData->dataUploaded){
-        dio->write("please upload data\n*END!");
+        dio->write("please upload data\n#cmd3*END!");
         return;
     }
     else{
+        dio->write("classifying data complete\n#cmd3*END!");
         sharedData->k_model.predict(sharedData->db_unclassified);
         sharedData->dataClassified=true;
-        dio->write("classifying data complete\n*END!");
-        cout << "line 155" << endl;
+        cout << "classify" << endl;
         return;
     }
 }
 void DisplayResults::execute(SharedData *sharedData) {
     // check if data is uploaded.
     if(!sharedData->dataUploaded){
-        dio->write("please upload data\n#cmd3*END!");
+        std::this_thread::sleep_for(std::chrono::milliseconds(20));
+        dio->write("please upload data\n*END!");
         // check if also data is not classified - which it will not be because the data have not been uploaded yet.
         if(!sharedData->dataClassified){
-            dio->write("please classify the dataa\n#cmd3*END!");
+            dio->write("please classify the data\n*END!");
         }
         return;
     }
@@ -170,7 +171,7 @@ void DisplayResults::execute(SharedData *sharedData) {
     else{
         // check if data was uploaded but not classified.
         if(!sharedData->dataClassified){
-            dio->write("please classify the data\n#cmd4*END!");
+            dio->write("please classify the data\n*END!");
             return;
         }
             // in the case data was uploaded and classified.
@@ -180,8 +181,7 @@ void DisplayResults::execute(SharedData *sharedData) {
             for (int i =1 ; i < sharedData->db_unclassified.db.size()+1; i++) {
                 classifiedRow += to_string(i) + "\t" + sharedData->db_unclassified.db[i - 1].label + "\n";
             }
-            classifiedRow = classifiedRow +"#cmd4*END!";
-            classifiedRow = classifiedRow + "Done.\n*END!";
+            classifiedRow = classifiedRow + "Done.\n#cmd4*END!";
             dio->write(classifiedRow);
         }
     }
