@@ -41,15 +41,17 @@ void UploadCSV::execute(SharedData *sharedData) {
     string trainFileContent;
     while(true){
         string subFile = dio->read();
-        cout << "line 44:" << subFile<< endl;
-        if(trainFileContent.find("*") != string::npos){
-            vector<string> spiltString= separateString(trainFileContent,"*");
-            trainFileContent=spiltString[0];
+        trainFileContent+=subFile;
+        if(trainFileContent.find("*EOF") != string::npos){
             cout << trainFileContent << endl;
+            vector<string> spiltString= separateString(trainFileContent,"*");
+            if(spiltString[0].find("failed")!= string::npos){
+                return;
+            }
+            trainFileContent="";
+            trainFileContent=spiltString[0];
             break;
         }
-        trainFileContent+=subFile;
-
     }
     string trainFile=writeCSV(sharedData,trainFileContent,true);
     ReaderClass read1 = ReaderClass();
@@ -63,16 +65,20 @@ void UploadCSV::execute(SharedData *sharedData) {
             dio->write("Upload complete.\n");
             string testFileContent="";
             while(true){
-                string subFile = dio->read();
-                cout << "line 67:"<<subFile << endl;
-                testFileContent+=subFile;
-                if(testFileContent.find("*") != string::npos){
-                    cout << "line 69" << endl;
+                string subFileTest ="";
+                subFileTest= dio->read();
+                testFileContent+=subFileTest;
+                cout<<"subfile: "<<subFileTest<<endl;
+                if(testFileContent.find("*EOF") != string::npos){
+                    if(testFileContent.find("failed")!=string::npos){
+                        return;
+                    }
+                    cout<<"test before: "<<testFileContent<<endl;
                     size_t finalPos = testFileContent.find("*");
                     testFileContent = testFileContent.substr(0, finalPos);
                     //vector<string> spiltTestString= separateString(testFileContent,"*");
                     //testFileContent=spiltTestString[0];
-                    cout << testFileContent<<endl;
+                    cout <<"test after: " <<testFileContent<<endl;
                     break;
                 }
                 cout <<"line 75:"<<testFileContent<<endl;

@@ -31,6 +31,7 @@ string Client::receiveFromServer(int sock) {
     }
 }
 void Client::sendToServer(int sock, string message){
+    cout<<message<<endl;
     int sent_bytes = send(sock, message.c_str(),message.length()+1, 0);
     //Check if an error occurred while sending to the server:
     if (sent_bytes < 0) {
@@ -56,13 +57,15 @@ void Client::handleCmd1(int sock){
         stringstream trainBuffer;
         trainBuffer << trainStream.rdbuf();
         trainString = trainBuffer.str();
-    }else
+        //add a sign for the server that the file is ended
+        trainString+="*EOF";
+        //Send the data to the server:
+        sendToServer(sock, trainString);
+    }else{
         cout<<"Unable to open the file"<<endl;
-    //add a sign for the server that the file is ended:
-    trainString+="*EOF";
-    //Prepare the data for sending to the server:
-    //Send the data to the server:
-    sendToServer(sock, trainString);
+        sendToServer(sock, "failed*END!");
+        return;
+    }
     // part 2 of command 1:
     string serverUpdate1= receiveFromServer(sock);
     //print update from server:
@@ -73,15 +76,24 @@ void Client::handleCmd1(int sock){
     cout<<"Please upload your local test CSV file."<<endl;
     string testPath;
     getline(cin, testPath);
+    // add a condition:
     ifstream testStream(testPath);
-    stringstream testBuffer;
-    testBuffer << testStream.rdbuf();
-    string testString = testBuffer.str();
-    testString+="*EOF";
-    //Send the data to the server:
-    sendToServer(sock, testString);
-    string serverUpdate2= receiveFromServer(sock);
-    cout<<serverUpdate2<<flush;
+    if(testStream.is_open()) {
+        stringstream testBuffer;
+        testBuffer << testStream.rdbuf();
+        string testString = testBuffer.str();
+        testString += "*EOF";
+        //Send the data to the server:
+        cout<< "test string :"<<testString<<endl;
+        sendToServer(sock, testString);
+        string serverUpdate2= receiveFromServer(sock);
+        cout<<serverUpdate2<<flush;
+    }else{
+        cout<<"Unable to open the file"<<endl;
+        sendToServer(sock, "failed*END!");
+        return;
+    }
+
 
 }
 
@@ -175,6 +187,7 @@ void Client::run(int argc, char** argv) {
             string currentBuffer="";
             currentBuffer = receiveFromServer(sock);
             bufferString+=currentBuffer;
+            cout<<"line 180"<<endl;
             //cout<<"bufferString : <"<<bufferString<< ">" <<endl;
             //check if message is complete:
             if(currentBuffer.find("*END!")!= string::npos){
@@ -186,6 +199,9 @@ void Client::run(int argc, char** argv) {
                     handleCmd1(sock);
                     cout<<"cmd 1"<<endl;
                     bufferString="";
+                    //string menu= receiveFromServer(sock);
+                    //vector<string> sepMenu = separateString(menu,"*");
+                    //cout<<sepMenu[0]<<flush;
                 }else if(sepreatedCmd.find("#cmd5")!= string::npos){
                     handleCmd5(sock);
                     cout<<"cmd 5"<<endl;
