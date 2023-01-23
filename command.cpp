@@ -42,7 +42,7 @@ void UploadCSV::execute(SharedData *sharedData) {
     while(true){
         string subFile = dio->read();
         trainFileContent+=subFile;
-        if(trainFileContent.find("*EOF") != string::npos){
+        if(trainFileContent.find("*END!") != string::npos){
             cout << trainFileContent << endl;
             vector<string> spiltString= separateString(trainFileContent,"*");
             if(spiltString[0].find("failed")!= string::npos){
@@ -69,7 +69,7 @@ void UploadCSV::execute(SharedData *sharedData) {
                 subFileTest= dio->read();
                 testFileContent+=subFileTest;
                 cout<<"subfile: "<<subFileTest<<endl;
-                if(testFileContent.find("*EOF") != string::npos){
+                if(testFileContent.find("*END!") != string::npos){
                     if(testFileContent.find("failed")!=string::npos){
                         return;
                     }
