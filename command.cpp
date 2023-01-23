@@ -3,11 +3,6 @@
 string UploadCSV::writeCSV(SharedData* sharedData, string fileContent, bool classified){
     string filePath;
     cout << "line 5" << endl;
-    fileContent = fileContent + " ";
-    // check if string contain null char, if so delete it.
-    size_t pos = fileContent.find('\0');
-    size_t finalPos = fileContent.find(" ");
-    fileContent = fileContent.substr(pos+1, finalPos-1);
     if(classified) {
         filePath="classified.csv";
     }else{
