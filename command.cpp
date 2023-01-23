@@ -202,21 +202,22 @@ void DisplayResults::execute(SharedData *sharedData) {
         }
     }
 }
-void Download::sendFile(SharedData* sharedData){
-    string updateFromClient = dio->read();
-        DataBase db=sharedData->db_unclassified;
-        string fileContent="";
-        for (int i =1 ; i < sharedData->db_unclassified.db.size()+1; i++){
-            if(i==sharedData->db_unclassified.db.size()){
-                string classifiedRow = to_string(i) +"\t"+sharedData->db_unclassified.db[i-1].label+"\n#EOF#cmd5*END!";
-                dio->write(classifiedRow);
-                break;
-            }
-            string classifiedRow = to_string(i) +"\t"+sharedData->db_unclassified.db[i-1].label+"\n*END!";
-            dio->write(classifiedRow);
 
+void Download::sendFile(SharedData* sharedData){
+        string fileContent="";
+        // Create variable to store the classified rows inside.
+        string classifiedData = "";
+        // Loop over the data structure we store the classified labels inside.
+        for (int i =1 ; i < sharedData->db_unclassified.db.size()+1; i++){
+            // Concat the Data we want to write to the csv file.
+                classifiedData += to_string(i) +"\t"+sharedData->db_unclassified.db[i-1].label+"\n";
+            }
+            // Mark that this is the end of the Data we want to write to the file.
+            classifiedData+="#EOF";
+            // Send the data to the client through socketIO.
+            dio->write(classifiedData);
         }
-    }
+
 void Download::execute(SharedData* sharedData) {
     if(!sharedData->dataUploaded){
         dio->write("please upload data\n*END!");
