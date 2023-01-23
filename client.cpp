@@ -58,7 +58,7 @@ void Client::handleCmd1(int sock){
         trainBuffer << trainStream.rdbuf();
         trainString = trainBuffer.str();
         //add a sign for the server that the file is ended
-        trainString+="*EOF";
+        trainString+="*END!";
         //Send the data to the server:
         sendToServer(sock, trainString);
     }else{
@@ -82,7 +82,7 @@ void Client::handleCmd1(int sock){
         stringstream testBuffer;
         testBuffer << testStream.rdbuf();
         string testString = testBuffer.str();
-        testString += "*EOF";
+        testString += "*END!";
         //Send the data to the server:
         cout<< "test string :"<<testString<<endl;
         sendToServer(sock, testString);
