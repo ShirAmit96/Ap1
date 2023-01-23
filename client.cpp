@@ -67,6 +67,7 @@ void Client::handleCmd1(int sock){
         return;
     }
     // part 2 of command 1:
+    std::this_thread::sleep_for(std::chrono::milliseconds(40));
     string serverUpdate1= receiveFromServer(sock);
     //print update from server:
     cout<<serverUpdate1<<flush;
