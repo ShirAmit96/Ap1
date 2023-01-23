@@ -121,16 +121,23 @@ void Settings::execute(SharedData *sharedData) {
             } else {
                 cout << k << endl;
                 // check if distance metric is valid.
-                if (!checkMetric(settings[1])) {
-                    dio->write("invalid value for metric\n*END!");
-
-                } else {
-                    string distanceMetric = settings[1];
-                    cout << distanceMetric << endl;
-                    // change metric if it's different from the current setting.
-                    if (distanceMetric != sharedData->distanceMetric)
-                        sharedData->distanceMetric = distanceMetric;
-                    sharedData->k_model.updateDistanceMetric(sharedData->distanceMetric);
+                // the try and catch block is for the cases where the user inserts blank space after the k,
+                // and not a Distance Metric alias.
+                try {
+                    if (!checkMetric(settings[1])) {
+                        dio->write("invalid value for metric\n*END!");
+                    }
+                    else {
+                        string distanceMetric = settings[1];
+                        cout << distanceMetric << endl;
+                        // change metric if it's different from the current setting.
+                        if (distanceMetric != sharedData->distanceMetric)
+                            sharedData->distanceMetric = distanceMetric;
+                        sharedData->k_model.updateDistanceMetric(sharedData->distanceMetric);
+                    }
+                }
+                catch (std::out_of_range& e){
+                    dio->write("invalid input\n");
                 }
                 // change k if it's different from the current setting.
                 if (k != sharedData->k) {
@@ -144,13 +151,16 @@ void Settings::execute(SharedData *sharedData) {
 
 }
 void Classify::execute(SharedData *sharedData) {
+    // First check if the data was uploaded.
     if(!sharedData->dataUploaded){
         dio->write("please upload data\n#cmd3*END!");
         return;
     }
     else{
         dio->write("classifying data complete\n#cmd3*END!");
+        // classifying the data.
         sharedData->k_model.predict(sharedData->db_unclassified);
+        // set the flag to true.
         sharedData->dataClassified=true;
         cout << "classify" << endl;
         return;
