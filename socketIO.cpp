@@ -10,7 +10,7 @@ string SocketIO::read() {
     }
     buffer[read_bytes] = '\0';
     string output = string(buffer);
-    //cout << "in socketio read: " << output << endl;
+    cout << "in socketio read: " << output << endl;
     delete[] buffer;
     return output;
 }
