@@ -14,8 +14,9 @@ using namespace std;
 class Cli {
     vector<Command*> commands;
     DefaultIO* dio;
+    int sock;
 public:
-    Cli(DefaultIO* dio);
+    Cli(DefaultIO* dio, int scoket);
     void start();
     virtual ~Cli();
 

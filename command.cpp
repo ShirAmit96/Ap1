@@ -3,10 +3,11 @@
 string UploadCSV::writeCSV(SharedData* sharedData, string fileContent, bool classified){
     string filePath;
     cout << "line 5" << endl;
+    filePath=to_string(sharedData->socket);
     if(classified) {
-        filePath="classified.csv";
+        filePath+="classified.csv";
     }else{
-        filePath="unClassified.csv";
+        filePath+="unClassified.csv";
     }
     std::fstream file;
     file.open(filePath, std::ios::in);

@@ -9,6 +9,7 @@
 #include <string>
 
 struct SharedData{
+    int socket;
     DataBase db_classified;
     DataBase db_unclassified;
     Knn k_model;
