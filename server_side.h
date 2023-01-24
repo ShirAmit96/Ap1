@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <vector>
+#include <thread>
 #include "input_validation.h"
 
 using namespace std;
@@ -19,12 +20,9 @@ class Server {
 public:
 
 
-    int run(char** argv);
-    int initServer(char** argv);
+    void run(char** argv);
+    static void handleClient(int clientId);
     bool extractFromBuffer(char* buffer, vector<double>& vec, int &k,string& distanceMetric);
-    void handleClient(int clientId);
-    int createClientSocket(int server_sock);
-    Knn k_model;
 
 };
 
