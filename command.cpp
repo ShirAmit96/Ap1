@@ -113,6 +113,11 @@ void UploadCSV::execute(SharedData *sharedData) {
                 sharedData->db_unclassified = dbUnclassified;
                 // update 'dataUploaded' flag:
                 sharedData->dataUploaded=true;
+                // check if k is larger than the data size.
+                // If k is larger we define k as the size of data.
+                if(sharedData->k > dbClassified.db.size()){
+                    sharedData->k = dbClassified.db.size();
+                }
                 // create an instance of Knn:
                 sharedData->k_model = Knn(sharedData->distanceMetric, sharedData->k, sharedData->db_classified.db);
                 // update that Knn instance have been initialized.
