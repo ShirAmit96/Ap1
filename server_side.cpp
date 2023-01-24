@@ -62,10 +62,10 @@ void Server::run(char** argv){
         }
         else{
             // create a new thread for the client
-            thread t(handleClient, client_sock);
+           //thread t(handleClient, client_sock);
             // detach the thread so that it can run independently
-            t.detach();
-            //handleClient(client_sock);
+            //t.detach();
+            handleClient(client_sock);
         }
 
         while (true) {

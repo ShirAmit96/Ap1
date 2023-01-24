@@ -42,10 +42,13 @@ void UploadCSV::execute(SharedData *sharedData) {
     // get train file content from the client:
     string trainFileContent;
     while(true){
+        cout<<"while"<<endl;
         //use 'trainSubFile' in case the file is too big for only one message:
         string trainSubFile = dio->read();
+        cout<<"trainsub: "<<"<"<<trainSubFile<<">"<<endl;
         //add the received string to 'trainFileContent' string:
         trainFileContent+=trainSubFile;
+        cout<<"traincontent "<<"<"<<trainFileContent<<">"<<endl;
         // check if the message is complete:
         if(trainFileContent.find("*END!") != string::npos){
             // separate the '*END!' flag from the string:
