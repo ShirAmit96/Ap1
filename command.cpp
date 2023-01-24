@@ -113,11 +113,6 @@ void UploadCSV::execute(SharedData *sharedData) {
                 sharedData->db_unclassified = dbUnclassified;
                 // update 'dataUploaded' flag:
                 sharedData->dataUploaded=true;
-                // check if k is larger than the data size.
-                // If k is larger we define k as the size of data.
-                if(sharedData->k > dbClassified.db.size()){
-                    sharedData->k = dbClassified.db.size()-1;
-                }
                 // create an instance of Knn:
                 sharedData->k_model = Knn(sharedData->distanceMetric, sharedData->k, sharedData->db_classified.db);
                 // update that Knn instance have been initialized.
@@ -174,8 +169,15 @@ void Settings::execute(SharedData *sharedData) {
                 }
                 // change k if it's different from the current setting.
                 if (k != sharedData->k) {
-                    sharedData->k = k;
-                    sharedData->k_model.updateK(sharedData->k);
+                    // If the user inserted k larger than data size, we return invalid input.
+                    if(k > sharedData->db_classified.db.size()){
+                        dio->write("invalid value for K\n*END!");
+                        return;
+                    }
+                    else {
+                        sharedData->k = k;
+                        sharedData->k_model.updateK(sharedData->k);
+                    }
                 }
             }
         }
