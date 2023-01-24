@@ -13,7 +13,8 @@
 #include <string.h>
 #include <vector>
 #include "defaultIO.h"
-
+/*This class inherits the abstract class Defaults IO.
+ *it implements read and write functions using sockets*/
 class SocketIO:public DefaultIO {
     int sock;
 public:
