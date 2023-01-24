@@ -81,8 +81,9 @@ void UploadCSV::execute(SharedData *sharedData) {
             string testFile=writeCSV(sharedData, testFileContent, false);
             ReaderClass read2 = ReaderClass();
             DataBase dbUnclassified = read2.readCsv(testFile, "unclassified");
-            cout << remove(testFile.c_str()) << endl;
-            if (!read2.validFile) {
+            remove(testFile.c_str());
+            //if the file is not valid or doesn't match the num of columns in the classified file-return:
+            if (!read2.validFile||dbUnclassified.db.size()!=dbClassified.db.size()) {
                 dio->write("invalid input.\n");
                 return;
             } else {
@@ -171,10 +172,10 @@ void DisplayResults::execute(SharedData *sharedData) {
     // check if data is uploaded.
     if(!sharedData->dataUploaded){
         std::this_thread::sleep_for(std::chrono::milliseconds(20));
-        dio->write("please upload data\n*END!");
+        dio->write("please upload data\n#cmd4*END!");
         // check if also data is not classified - which it will not be because the data have not been uploaded yet.
         if(!sharedData->dataClassified){
-            dio->write("please classify the data\n*END!");
+            dio->write("please classify the data\n#cmd4*END!");
         }
         return;
     }
@@ -182,7 +183,7 @@ void DisplayResults::execute(SharedData *sharedData) {
     else{
         // check if data was uploaded but not classified.
         if(!sharedData->dataClassified){
-            dio->write("please classify the data\n*END!");
+            dio->write("please classify the data\n#cmd4*END!");
             return;
         }
             // in the case data was uploaded and classified.
