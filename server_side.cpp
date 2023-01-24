@@ -11,6 +11,7 @@ void Server::handleClient(int clientId) {
     cli.start();
     cout<<"line 77"<<endl;
     close(clientId);
+    delete sio;
 }
 
 void Server::run(char** argv){
@@ -64,6 +65,7 @@ void Server::run(char** argv){
             thread t(handleClient, client_sock);
             // detach the thread so that it can run independently
             t.detach();
+            //handleClient(client_sock);
         }
 
         while (true) {
