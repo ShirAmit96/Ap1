@@ -1,8 +1,9 @@
 #include "command.h"
-
+/*This function gets sharedData struct, a file content string and classified flag and
+  writes the string into a temp csv file and which is name is "<socket number><classified/unclassified>"*/
 string UploadCSV::writeCSV(SharedData* sharedData, string fileContent, bool classified){
     string filePath;
-    cout << "line 5" << endl;
+    //determine the name of the file according to socket and by its type:
     filePath=to_string(sharedData->socket);
     if(classified) {
         filePath+="classified.csv";
@@ -10,19 +11,20 @@ string UploadCSV::writeCSV(SharedData* sharedData, string fileContent, bool clas
         filePath+="unClassified.csv";
     }
     std::fstream file;
+    // check if the file exists:
     file.open(filePath, std::ios::in);
+    // if the file is exists:
     if(file.good()) {
-        std::cout << "File exists, writing to it" << std::endl;
-        file.close();
+        //clear the file:
         file.open(filePath, std::ios::out | std::ios::app | std::ios::binary);
         if(file.good()) {
             file.clear();
+            //write the content into the file:
             file<<fileContent;
             file.close();
         }
     } else {
-        std::cout << "File does not exist, creating it" << std::endl;
-        file.close();
+        // if file doesn't exist,create a new one and write to it:
         file.open(filePath, std::ios::out | std::ios::binary);
         if(file.good()) {
             file.clear();
@@ -32,68 +34,86 @@ string UploadCSV::writeCSV(SharedData* sharedData, string fileContent, bool clas
     }
     return filePath;
 }
+/*This function executes command #1.It gets a classified file content, check if it valid and saves it in db.
+ * then, it performs the same process with an un classified file.*/
 void UploadCSV::execute(SharedData *sharedData) {
+    // send the command to the client using dio:
     dio->write("Please upload your local train CSV file.\n#cmd1*END!");
+    // get train file content from the client:
     string trainFileContent;
     while(true){
-        string subFile = dio->read();
-        trainFileContent+=subFile;
+        //use 'trainSubFile' in case the file is too big for only one message:
+        string trainSubFile = dio->read();
+        //add the received string to 'trainFileContent' string:
+        trainFileContent+=trainSubFile;
+        // check if the message is complete:
         if(trainFileContent.find("*END!") != string::npos){
-            cout << trainFileContent << endl;
+            // separate the '*END!' flag from the string:
             vector<string> spiltString= separateString(trainFileContent,"*");
+            // If the uploading in the client failed - return:
             if(spiltString[0].find("failed")!= string::npos){
                 return;
             }
+            // put the separated string into 'trainFileContent':
             trainFileContent="";
             trainFileContent=spiltString[0];
             break;
         }
     }
+    // write the train file content into a temp file:
     string trainFile=writeCSV(sharedData,trainFileContent,true);
+    // create a db that will hold the train file content:
     ReaderClass read1 = ReaderClass();
     DataBase dbClassified = read1.readCsv(trainFile, "classified");
+    // remove the temp file created:
     remove(trainFile.c_str());
-    cout << "line 33" << endl;
+    // if the file is not valid send a message to the client and return:
     if (!read1.validFile) {
         dio->write("invalid input.\n");
         return;
         } else {
             dio->write("Upload complete.\n");
+            // get test file content from the client:
             string testFileContent="";
+
             while(true){
+                //use 'subFileTest' in case the file is too big for only one message:
                 string subFileTest ="";
                 subFileTest= dio->read();
+                //add the received string to 'testFileContent' string:
                 testFileContent+=subFileTest;
-                cout<<"subfile: "<<subFileTest<<endl;
+                // check if the message is complete:
                 if(testFileContent.find("*END!") != string::npos){
+                    // If the uploading in the client failed - return:
                     if(testFileContent.find("failed")!=string::npos){
                         return;
                     }
-                    cout<<"test before: "<<testFileContent<<endl;
+                    // separate the '*END!' flag from the string:
                     size_t finalPos = testFileContent.find("*");
+                    // put the separated string into 'testFileContent':
                     testFileContent = testFileContent.substr(0, finalPos);
-                    //vector<string> spiltTestString= separateString(testFileContent,"*");
-                    //testFileContent=spiltTestString[0];
-                    cout <<"test after: " <<testFileContent<<endl;
                     break;
                 }
-                cout <<"line 75:"<<testFileContent<<endl;
             }
+            // write the train file content into a temp file:
             string testFile=writeCSV(sharedData, testFileContent, false);
+            // create a db that will hold the train file content:
             ReaderClass read2 = ReaderClass();
             DataBase dbUnclassified = read2.readCsv(testFile, "unclassified");
+            // remove  the temp file created:
             remove(testFile.c_str());
             //if the file is not valid or doesn't match the num of columns in the classified file-return:
             if (!read2.validFile||dbUnclassified.db[0].size+1!=dbClassified.db[0].size) {
-                cout<<"invalid input.\n"<<flush;
                 dio->write("invalid input.\n");
                 return;
             } else {
                 dio->write("Upload complete.\n");
+                // save the new db's in the sharedData struct:
                 sharedData->db_classified = dbClassified;
                 sharedData->db_unclassified = dbUnclassified;
+                // update 'dataUploaded' flag:
                 sharedData->dataUploaded=true;
-                // create an instance of Knn
+                // create an instance of Knn:
                 sharedData->k_model = Knn(sharedData->distanceMetric, sharedData->k, sharedData->db_classified.db);
                 // update that Knn instance have been initialized.
                 sharedData->k_initialized=true;
@@ -204,7 +224,7 @@ void DisplayResults::execute(SharedData *sharedData) {
         }
     }
 }
-
+/*This function sends the results of classification(if exists) to the client.*/
 void Download::sendFile(SharedData* sharedData){
         string fileContent="";
         // Create variable to store the classified rows inside.
@@ -219,8 +239,10 @@ void Download::sendFile(SharedData* sharedData){
             // Send the data to the client through socketIO.
             dio->write(classifiedData);
         }
-
+/*This function executes command number 5.
+ it sends the results of classification(if exists) to the client.*/
 void Download::execute(SharedData* sharedData) {
+    // check if data is uploaded and classified:
     if(!sharedData->dataUploaded){
         dio->write("please upload data\n*END!");
         return;
@@ -228,14 +250,16 @@ void Download::execute(SharedData* sharedData) {
         dio->write("please classify the data\n*END!");
         return;
     }else {
+        // send the client an identifier of command 5:
         dio->write("#cmd5*END!");
+        // get an update about a valid path from client:
         string message = dio->read();
         if(message.find("*pathInserted")!= string::npos) {
             sendFile(sharedData);
 
-        }//else♥♥
+        }
         return;
     }
 }
-
+/*This function executes the exit command which detouch the server from client*/
 void Exit::execute(SharedData* sharedData){}
