@@ -86,7 +86,7 @@ int Server::createClientSocket(int server_sock) {
 void Server::handleClient(int clientId){
     DefaultIO* sio  = new SocketIO(clientId);
     cout<<"line 73"<< endl;
-    Cli cli(sio);
+    Cli cli(sio, clientId);
     cout<<"line 75"<<endl;
     cli.start();
     cout<<"line 77"<<endl;

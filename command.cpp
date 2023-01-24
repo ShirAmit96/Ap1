@@ -3,10 +3,11 @@
 string UploadCSV::writeCSV(SharedData* sharedData, string fileContent, bool classified){
     string filePath;
     cout << "line 5" << endl;
+    filePath=to_string(sharedData->socket);
     if(classified) {
-        filePath="classified.csv";
+        filePath+="classified.csv";
     }else{
-        filePath="unClassified.csv";
+        filePath+="unClassified.csv";
     }
     std::fstream file;
     file.open(filePath, std::ios::in);
@@ -108,7 +109,8 @@ void Settings::execute(SharedData *sharedData) {
     if (settingsInput.length() != 0){
         string delim = " ";
         if(!(settingsInput.find(" ") != string::npos)){
-            dio->write("invalid input\n");
+            dio->write("invalid input\n*END!");
+            return;
         }
         if(&settingsInput[settingsInput.length()-1] != " ") {
             vector<string> settings = separateString(settingsInput, delim);
@@ -120,6 +122,7 @@ void Settings::execute(SharedData *sharedData) {
                 if (!checkMetric(settings[1])) {
                     dio->write("invalid value for metric\n*END!");
                 }
+                    return;
             } else {
                 cout << k << endl;
                 // check if distance metric is valid.
@@ -128,6 +131,7 @@ void Settings::execute(SharedData *sharedData) {
                 try {
                     if (!checkMetric(settings[1])) {
                         dio->write("invalid value for metric\n*END!");
+                        return;
                     }
                     else {
                         string distanceMetric = settings[1];
@@ -139,7 +143,8 @@ void Settings::execute(SharedData *sharedData) {
                     }
                 }
                 catch (std::out_of_range& e){
-                    dio->write("invalid input\n");
+                    dio->write("invalid input\n*END!");
+                    return;
                 }
                 // change k if it's different from the current setting.
                 if (k != sharedData->k) {

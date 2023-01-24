@@ -1,6 +1,7 @@
 #include "cli.h"
-Cli::Cli(DefaultIO* dio) {
+Cli::Cli(DefaultIO* dio, int socket) {
     this->dio=dio;
+    this->sock=socket;
     commands.push_back(new UploadCSV(dio));
     commands.push_back(new Settings(dio));
     commands.push_back(new Classify(dio));
@@ -11,6 +12,7 @@ Cli::Cli(DefaultIO* dio) {
 
 void Cli::start(){
     SharedData sharedData;
+    sharedData.socket=this->sock;
     while(true){
         cout << "line 15" << endl;
         bool flagBreak = false;
