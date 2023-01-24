@@ -223,6 +223,7 @@ void Client::run(int argc, char** argv) {
                     }
                     else if(command.find("Welcome")==string::npos){
                         cout<<"not welcome :"<<endl;
+                        cout<<command<<flush;
                         //sendToServer(sock, " ");
                         continue;
                     }
