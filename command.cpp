@@ -84,7 +84,8 @@ void UploadCSV::execute(SharedData *sharedData) {
             DataBase dbUnclassified = read2.readCsv(testFile, "unclassified");
             remove(testFile.c_str());
             //if the file is not valid or doesn't match the num of columns in the classified file-return:
-            if (!read2.validFile||dbUnclassified.db.size()!=dbClassified.db.size()) {
+            if (!read2.validFile||dbUnclassified.db[0].size+1!=dbClassified.db[0].size) {
+                cout<<"invalid input.\n"<<flush;
                 dio->write("invalid input.\n");
                 return;
             } else {

@@ -24,6 +24,6 @@ public:
     void handleCmd1(int sock);
     void handleCmd2(int sock, string message);
     void handleCmd5(int sock);
-    void writeCSV(string results, string filePath);
+    void writeResults(string results, string filePath);
 };
 #endif //AP1_CLIENT_H
