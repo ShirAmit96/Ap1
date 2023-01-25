@@ -15,7 +15,9 @@ void *handleClient(void* clientId) {
     cout << "client handled" << endl;
     DefaultIO* sio  = new SocketIO(*client_sock);
     cout<<"line 73"<< endl;
+    std::this_thread::sleep_for(std::chrono::milliseconds(120));
     Cli cli(sio, *client_sock);
+    std::this_thread::sleep_for(std::chrono::milliseconds(120));
     cout<<"line 75"<<endl;
     cli.start();
     cout<<"line 77"<<endl;
@@ -86,9 +88,9 @@ void Server::run(char** argv){
                 continue;
             }
             pthread_detach(pthread_client);
-             //create a new thread for the client
+            // create a new thread for the client
             cout << "Detached" << endl;
-            clientHandler(client_sock);
+            //clientHandler(client_sock);
         }
 
         while (true) {

@@ -35,7 +35,7 @@ void Cli::start(){
         // write the menu to the client using dio:
         cout << "I WANTED TO PRINT THE MENU IN CLI LINE 36"<< endl;
         dio->write(menu);
-        std::this_thread::sleep_for(std::chrono::milliseconds(120));
+        //std::this_thread::sleep_for(std::chrono::milliseconds(120));
         cout << "MENU SENT FROM CLI" << endl;
         //cout<<menu<<endl;
         // read the inserted command from the client using dio:
