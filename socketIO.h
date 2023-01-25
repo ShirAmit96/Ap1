@@ -4,7 +4,7 @@
 
 #ifndef AP1_SOCKETIO_H
 #define AP1_SOCKETIO_H
-
+#include <vector>
 #include <string>
 #include <string.h>
 #include <sys/socket.h>
@@ -47,47 +47,43 @@ public:
      * @return - a string representation of the message.
      */
     string read() const {
-        char messageBuffer[4096]; // creates a buffer to receive the message from the client
-        memset(messageBuffer, 0, sizeof(messageBuffer));
+                // Use a vector instead of a fixed-size array
+                std::vector<char> messageBuffer;
 
-        // we want to read the length of the upcoming message
-        // recv can only give us an array of bytes, but we want an integer
+                // we want to read the length of the upcoming message
+                // recv can only give us an array of bytes, but we want an integer
 
-        // a buffer that will hold the bytes that represent the length of the message
-        char lenBuffer[sizeof(unsigned int)]; // 29 --> {29, 0, 0, 0}
-        // read the length of the message
-        recv(sock, lenBuffer, sizeof(unsigned int), 0); /* maximum length of received data */
-        // convert the char* ({29, 0, 0, 0}) to int (29)
-        int expected_data_len = *(unsigned int *)lenBuffer;
-        cout<<"data length: " <<expected_data_len<<endl;
+                // a buffer that will hold the bytes that represent the length of the message
+                char lenBuffer[sizeof(unsigned int)];
+                // read the length of the message
+                recv(sock, lenBuffer, sizeof(unsigned int), 0);
+                // convert the char* ({29, 0, 0, 0}) to int (29)
+                int expected_data_len = *(unsigned int *)lenBuffer;
+                cout<<"data length: " <<expected_data_len<<endl;
 
-        // receive the message from the clients socket into 'messageBuffer'
-        // Problem: recv can potentially return only part of the message (i.e. less than 'expected')
-        // Solution: we will track how many bytes we read so far
-        //           and keep reading until we reach our 'expected' number of bytes
-        int total_bytes = 0;
-        // this is the current position in messageBuffer
-        char *bufferPos = messageBuffer;
-        while (total_bytes < expected_data_len) {
-            cout<< "in while receiving:"<<endl;
-            // recv will write bytes starting from bufferPos (which is the address of first uninitialized byte in the buffer)
-            int read_bytes = recv(sock, bufferPos, expected_data_len - total_bytes, 0);
-            cout<<"read: "<<bufferPos<<endl;
-            if (read_bytes <= 0) {
-                return "";
-            }
-            // track the number of bytes we read so far
-            total_bytes += read_bytes;
-            // 'jump over' the bytes that recv wrote, i.e. point to the first uninitialized byte
-            bufferPos += read_bytes;
-        }
-        string output = messageBuffer;
-        cout<<"Output: "<<output<<endl;
-        size_t finalPos = output.find("@@");
-        string finalOutput = output.substr(0,finalPos);
-        cout << "THE FINAL OUTPUT" << finalOutput << endl;
+                // Resize the vector to the expected size
+                messageBuffer.resize(expected_data_len);
 
-        return finalOutput;
+                // receive the message from the clients socket into 'messageBuffer'
+                int total_bytes = 0;
+                char *bufferPos = messageBuffer.data();
+                while (total_bytes < expected_data_len) {
+                    int read_bytes = recv(sock, bufferPos, expected_data_len - total_bytes, 0);
+                    if (read_bytes <= 0) {
+                        return "";
+                    }
+                    // track the number of bytes we read so far
+                    total_bytes += read_bytes;
+                    // 'jump over' the bytes that recv wrote, i.e. point to the first uninitialized byte
+                    bufferPos += read_bytes;
+                }
+
+                string output(messageBuffer.begin(), messageBuffer.end());
+                size_t finalPos = output.find("@@");
+                string finalOutput = output.substr(0,finalPos);
+                cout << "THE FINAL OUTPUT" << finalOutput << endl;
+
+                return finalOutput;
     };
 
 
