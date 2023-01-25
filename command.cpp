@@ -131,6 +131,11 @@ void Settings::execute(SharedData *sharedData) {
         }
         if(&settingsInput[settingsInput.length()-1] != " ") {
             vector<string> settings = separateString(settingsInput, delim);
+            // This case means that the user insert more than 2 parameters.
+            if(settings.size() > 2){
+                dio->write("invalid input\n@@");
+                return;
+            }
             // assign and check if k is valid.
             int k = checkPositiveInt(settings[0]);
             if (k == 0) {
