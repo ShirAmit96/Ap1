@@ -3,15 +3,27 @@
 #include "cli.h"
 
 // This function handles and create a Cli for each client.
-void Server::handleClient(int clientId) {
+void Server::clientHandler(int clientId) {
     DefaultIO* sio  = new SocketIO(clientId);
-    cout<<"line 73"<< endl;
     Cli cli(sio, clientId);
+    cli.start();
+    close(clientId);
+    delete sio;
+}
+void *handleClient(void* clientId) {
+    int* client_sock = (int*)clientId;
+    cout << "client handled" << endl;
+    DefaultIO* sio  = new SocketIO(*client_sock);
+    cout<<"line 73"<< endl;
+    Cli cli(sio, *client_sock);
     cout<<"line 75"<<endl;
     cli.start();
     cout<<"line 77"<<endl;
-    close(clientId);
+    close(*client_sock);
+    cout << "Client Socked Closed" << endl;
     delete sio;
+    delete client_sock;
+    cout << "SIO deleted" << endl;
 }
 
 void Server::run(char** argv){
@@ -61,11 +73,22 @@ void Server::run(char** argv){
             cout<<"error accepting client"<<endl;
         }
         else{
-            // create a new thread for the client
-           //thread t(handleClient, client_sock);
-            // detach the thread so that it can run independently
-            //t.detach();
-            handleClient(client_sock);
+            cout << "OPEN THREAD" << endl;
+            pthread_t pthread_client;
+            pthread_attr_t attr;
+            pthread_attr_init(&attr);
+            int* client_sock_ptr = new int(client_sock);
+            int new_thread = pthread_create(&pthread_client, &attr, reinterpret_cast<void *(*)(void *)>(handleClient), (void *) client_sock_ptr);
+            if (new_thread!=0){
+                cout << "Error creating thread" << endl;
+                close(client_sock);
+                delete client_sock_ptr;
+                continue;
+            }
+            pthread_detach(pthread_client);
+             //create a new thread for the client
+            cout << "Detached" << endl;
+            clientHandler(client_sock);
         }
 
         while (true) {
