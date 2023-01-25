@@ -13,6 +13,7 @@
 #include <string.h>
 #include <vector>
 #include <thread>
+#include <pthread.h>
 #include "input_validation.h"
 
 using namespace std;
@@ -21,8 +22,9 @@ public:
 
 
     void run(char** argv);
-    static void handleClient(int clientId);
+    //static void handleClient(int clientId);
     bool extractFromBuffer(char* buffer, vector<double>& vec, int &k,string& distanceMetric);
+    void clientHandler(int clientId);
 
 };
 

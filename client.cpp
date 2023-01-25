@@ -11,7 +11,9 @@ using namespace std;
 
 /*This function handles the receiving process from the server and returns its message.*/
 string Client::receiveFromServer(int sock) {
+    cout << "START RECIEVE FROM SERVER" << endl;
     char buffer[4096];
+    memset(buffer, 0, 4096);
     int expected_data_len = sizeof(buffer);
     //receive the response of the server:
     int read_bytes = recv(sock, buffer, expected_data_len, 0);
@@ -29,13 +31,17 @@ string Client::receiveFromServer(int sock) {
     } else {
         //if everything is ok return the message received:
         string received (buffer);
+        cout << "GOT THIS FROM SERVER:::" << received<< endl;
         return received;
     }
 }
 /*This function handles the sending process to the server.*/
 void Client::sendToServer(int sock, string message){
     //send the message to the server:
+    message +="@@";
+    cout << "FROM CLIENT SEND TO SERVER::" << message<< endl;
     int sent_bytes = send(sock, message.c_str(),message.length()+1, 0);
+    cout << "FROM CLIENT SEND TO SERVER second time::" << message<< endl;
     //Check if an error occurred while sending to the server:
     if (sent_bytes < 0) {
         //If an error occurred-print a message and close the client:
@@ -62,17 +68,16 @@ void Client::handleCmd1(int sock){
         trainBuffer << trainStream.rdbuf();
         trainString = trainBuffer.str();
         //add a sign for the server that the file is ended:
-        trainString+="*END!";
         //Send the data to the server:
         sendToServer(sock, trainString);
     }else{
         //if the file path is not valid-print an error:
         cout<<"Unable to open the file"<<endl;
         //send a fail message to the server:
-        sendToServer(sock, "failed*END!");
+        sendToServer(sock, "failed");
         return;
     }
-    std::this_thread::sleep_for(std::chrono::milliseconds(40));
+    //std::this_thread::sleep_for(std::chrono::milliseconds(40));
     //receive from the server an update about uploading:
     string serverUpdate1= receiveFromServer(sock);
     //print update from server:
@@ -92,7 +97,6 @@ void Client::handleCmd1(int sock){
         testBuffer << testStream.rdbuf();
         string testString = testBuffer.str();
         //add a sign for the server that the file is ended:
-        testString += "*END!";
         //Send the content of the file to the server:
         sendToServer(sock, testString);
         // get update from the server and print it:
@@ -102,7 +106,7 @@ void Client::handleCmd1(int sock){
     }else{
         //return if the server says that the input is invalid and send the server a fail message:
         cout<<"Unable to open the file"<<endl;
-        sendToServer(sock, "failed*END!");
+        sendToServer(sock, "failed");
         return;
     }
 
@@ -211,9 +215,10 @@ void Client::run(int argc, char** argv) {
             currentBuffer = receiveFromServer(sock);
             bufferString+=currentBuffer;
             //check if message is complete:
-            if(currentBuffer.find("*END!")!= string::npos){
+            if(currentBuffer.find("@")!= string::npos){
+                cout << "FOUND @@ IN LINE 216" << endl;
                 // separate the message from the "END"" sign:
-                vector<string> sepBuffer= separateString(bufferString,"*");
+                vector<string> sepBuffer= separateString(bufferString,"@");
                 //clean the buffer:
                 bufferString="";
                 string separatedCmd= sepBuffer[0];

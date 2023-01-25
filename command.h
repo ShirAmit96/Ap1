@@ -61,7 +61,7 @@ public:
 };
 class Exit:public Command {
 public:
-    Exit(DefaultIO* dio):Command(dio,"exit\n*END!"){};
+    Exit(DefaultIO* dio):Command(dio,"exit\n@@"){};
     virtual void execute(SharedData* sharedData);
 };
 
