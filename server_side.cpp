@@ -4,7 +4,7 @@
 
 // This function handles and create a Cli for each client.
 void Server::clientHandler(int clientId) {
-    DefaultIO* sio  = new SocketIO(clientId);
+    SocketIO* sio  = new SocketIO(clientId);
     Cli cli(sio, clientId);
     cli.start();
     close(clientId);
@@ -13,7 +13,7 @@ void Server::clientHandler(int clientId) {
 void *handleClient(void* clientId) {
     int* client_sock = (int*)clientId;
     cout << "client handled" << endl;
-    DefaultIO* sio  = new SocketIO(*client_sock);
+    SocketIO* sio  = new SocketIO(*client_sock);
     cout<<"line 73"<< endl;
     std::this_thread::sleep_for(std::chrono::milliseconds(120));
     Cli cli(sio, *client_sock);

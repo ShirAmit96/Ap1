@@ -1,7 +1,7 @@
 #include "cli.h"
 /*The constructor of the cli.
  initializes a vector of all the commands */
-Cli::Cli(DefaultIO* dio, int socket) {
+Cli::Cli(SocketIO* dio, int socket) {
     this->dio=dio;
     this->sock=socket;
     commands.push_back(new UploadCSV(dio));

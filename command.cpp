@@ -97,6 +97,7 @@ void UploadCSV::execute(SharedData *sharedData) {
             DataBase dbUnclassified = read2.readCsv(testFile, "unclassified");
             // remove  the temp file created:
             remove(testFile.c_str());
+            cout << "CREATED THE UNCLASSIFIED DB" << endl;
             //if the file is not valid or doesn't match the num of columns in the classified file-return:
             if (!read2.validFile || dbUnclassified.db[0].size + 1 != dbClassified.db[0].size) {
                 dio->write("invalid input.\n@@");

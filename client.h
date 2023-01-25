@@ -16,7 +16,10 @@
 #include <vector>
 #include <sstream>
 #include <thread>
+#include "defaultIO.h"
+#include "socketIO.h"
 class Client{
+    DefaultIO* sio;
 public:
     void run(int argc, char** argv);
     string receiveFromServer(int sock);

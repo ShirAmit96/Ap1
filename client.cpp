@@ -9,6 +9,7 @@ int main(int argc, char* argv[]){
 }
 using namespace std;
 
+
 /*This function handles the receiving process from the server and returns its message.*/
 string Client::receiveFromServer(int sock) {
     cout << "START RECIEVE FROM SERVER" << endl;
@@ -66,20 +67,23 @@ void Client::handleCmd1(int sock){
         //convert the file content into a string:
         stringstream trainBuffer;
         trainBuffer << trainStream.rdbuf();
-        trainString = trainBuffer.str();
+        trainString = trainBuffer.str() +"@@";
         //add a sign for the server that the file is ended:
         //Send the data to the server:
-        sendToServer(sock, trainString);
+        sio->write(trainString);
+        //sendToServer(sock, trainString);
     }else{
         //if the file path is not valid-print an error:
         cout<<"Unable to open the file"<<endl;
         //send a fail message to the server:
-        sendToServer(sock, "failed");
+        sio->write("failed@@");
+        //sendToServer(sock, "failed");
         return;
     }
     //std::this_thread::sleep_for(std::chrono::milliseconds(40));
     //receive from the server an update about uploading:
-    string serverUpdate1= receiveFromServer(sock);
+    string serverUpdate1= sio->read();
+    //string serverUpdate1= receiveFromServer(sock);
     //print update from server:
     cout<<serverUpdate1<<flush;
     //return if the server says that the input is invalid:
@@ -95,18 +99,21 @@ void Client::handleCmd1(int sock){
     if(testStream.is_open()) {
         stringstream testBuffer;
         testBuffer << testStream.rdbuf();
-        string testString = testBuffer.str();
+        string testString = testBuffer.str()+"@@";
         //add a sign for the server that the file is ended:
         //Send the content of the file to the server:
-        sendToServer(sock, testString);
+        sio->write(testString);
+        //sendToServer(sock, testString);
         // get update from the server and print it:
-        string serverUpdate2= receiveFromServer(sock);
+        string serverUpdate2= sio->read();
+       //string serverUpdate2= receiveFromServer(sock);
         cout<<serverUpdate2<<flush;
         cout<<"line 101"<<endl;
     }else{
         //return if the server says that the input is invalid and send the server a fail message:
         cout<<"Unable to open the file"<<endl;
-        sendToServer(sock, "failed");
+        sio->write("failed@@");
+        //sendToServer(sock, "failed");
         return;
     }
 
@@ -173,20 +180,21 @@ void Client::handleCmd5(int sock) {
 void Client::run(int argc, char** argv) {
     //create a vector from args in order to send it to a validation check:
     vector<string> inputVec{};
-    for(int i=0;i<argc;i++){
+    for (int i = 0; i < argc; i++) {
         inputVec.push_back(argv[i]);
     }
     //check if the command line input is valid(the program will be terminated if not):
     checkFirstInput(inputVec);
     //initialize the given port and ip:
-    const char* ip_address = argv[1];
+    const char *ip_address = argv[1];
     const int port_no = stoi(argv[2]);
     // AF_INET - defines working on Ipv4
     //SOCK_STREAM- Defines TCP:
     int sock = socket(AF_INET, SOCK_STREAM, 0);
+    this->sio = new SocketIO(sock);
     // if an error occurred while creating the socket-a negative number will be returned:
     if (sock < 0) {
-        cout<<"error creating socket";
+        cout << "error creating socket";
         close(sock);
         exit(-1);
     }
@@ -201,74 +209,75 @@ void Client::run(int argc, char** argv) {
     //convert port's number from how it represented in our computer memory to how the network is going to present it:
     sin.sin_port = htons(port_no);
     // connect the socket to the data that is in the struct:
-    if(connect(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
-        cout<<"Error connecting to server"<<endl;
+    if (connect(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
+        cout << "Error connecting to server" << endl;
         //close(sock);
         //exit(-1);
     }
     //in buffer string we will put the messages from server:
-    string bufferString="";
+    string bufferString = "";
     //Run in an infinite loop to allow continuous communication with the server:
     while (true) {
-            //'currentBuffer' is used for cases in which the buffer is too long for one iteration:
-            string currentBuffer="";
-            currentBuffer = receiveFromServer(sock);
-            bufferString+=currentBuffer;
-            //check if message is complete:
-            if(currentBuffer.find("@")!= string::npos){
-                cout << "FOUND @@ IN LINE 216" << endl;
-                // separate the message from the "END"" sign:
-                vector<string> sepBuffer= separateString(bufferString,"@");
-                //clean the buffer:
-                bufferString="";
-                string separatedCmd= sepBuffer[0];
-                //handle command #1:
-                if(separatedCmd.find("#cmd1")!= string::npos){
-                    handleCmd1(sock);
-                    separatedCmd="";
-                    //handle command #5:
-                }else if(separatedCmd.find("#cmd5")!= string::npos){
-                    handleCmd5(sock);
-                    separatedCmd="";
-                    //handle command #2:
-                }else if(separatedCmd.find("#cmd2")!= string::npos){
-                    handleCmd2(sock, separatedCmd);
-                    separatedCmd="";
-                }else{
-                    string output= separatedCmd;
-                    separatedCmd="";
-                    //handle commands 3 or 4:
-                    if(output.find("#cmd3")!= string::npos|| output.find("#cmd4")!= string::npos){
-                        //separate the "cmd" sign from the string:
-                        vector<string> sepCmd= separateString(output,"#");
-                        output=sepCmd[0];
-                        //print the output of the server:
-                        cout<<output<<flush;
-                        separatedCmd="";
-                        continue;
-                    }
-                    // if the message is not the menu, print it and continue receiving:
-                    else if(output.find("Welcome")==string::npos){
-                        cout<<output<<flush;
-                        continue;
-                    }
-                    // Print menu:
-                    cout<<output<<flush;
-                    // get command number from the user:
-                    string commandNum;
-                    getline(cin, commandNum);
-                    // send he command to server:
-                    sendToServer(sock,commandNum);
-                    // check if the user wants to exit:
-                    if(commandNum=="8"){
-                        exit(-1);
-                    }
-                    commandNum ="";
-                }
-                }else{
-                //the message didn't end yet:
+        //'currentBuffer' is used for cases in which the buffer is too long for one iteration:
+        string currentBuffer = "";
+        currentBuffer = sio->read();
+        bufferString += currentBuffer;
+        cout << "THIS IS WHAT THE CLIENT READ" << currentBuffer << endl;
+        //check if message is complete:
+        cout << "FOUND @@ IN LINE 216" << endl;
+        // separate the message from the "END"" sign:
+        //clean the buffer:
+        //bufferString = "";
+        string separatedCmd = bufferString;
+        bufferString = "";
+        //handle command #1:
+        if (separatedCmd.find("#cmd1") != string::npos) {
+            handleCmd1(sock);
+            separatedCmd = "";
+            //handle command #5:
+        } else if (separatedCmd.find("#cmd5") != string::npos) {
+            handleCmd5(sock);
+            separatedCmd = "";
+            //handle command #2:
+        } else if (separatedCmd.find("#cmd2") != string::npos) {
+            handleCmd2(sock, separatedCmd);
+            separatedCmd = "";
+        } else {
+            cout << "GOT TO LINE 245" <<separatedCmd<< endl;
+            string output = separatedCmd;
+            separatedCmd = "";
+            //handle commands 3 or 4:
+            if (output.find("#cmd3") != string::npos || output.find("#cmd4") != string::npos) {
+                //separate the "cmd" sign from the string:
+                vector<string> sepCmd = separateString(output, "#");
+                output = sepCmd[0];
+                //print the output of the server:
+                cout << output << flush;
+                separatedCmd = "";
                 continue;
             }
+                // if the message is not the menu, print it and continue receiving:
+            else if (output.find("Welcome") == string::npos) {
+                cout << output << flush;
+                continue;
             }
-    }
+            // Print menu:
+            cout << output << flush;
+            // get command number from the user:
+            string commandNum;
+            getline(cin, commandNum);
+            commandNum+="@@";
+            // send he command to server:
+            sio->write(commandNum);
+            //sendToServer(sock,commandNum);
+            // check if the user wants to exit:
+            if (commandNum == "8") {
+                exit(-1);
+            }
+            commandNum = "";
+        }
 
+        continue;
+
+    }
+}

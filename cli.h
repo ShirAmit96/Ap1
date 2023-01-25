@@ -13,10 +13,10 @@ using namespace std;
 
 class Cli {
     vector<Command*> commands;
-    DefaultIO* dio;
+    SocketIO* dio;
     int sock;
 public:
-    Cli(DefaultIO* dio, int scoket);
+    Cli(SocketIO* dio, int scoket);
     void start();
     virtual ~Cli();
 

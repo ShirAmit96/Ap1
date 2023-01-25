@@ -2,6 +2,7 @@
 #ifndef AP1_COMMAND_H
 #define AP1_COMMAND_H
 #include "defaultIO.h"
+#include "socketIO.h"
 #include "database.h"
 #include "knn.h"
 #include "reader_class.h"
@@ -22,46 +23,46 @@ struct SharedData{
 
 class Command{
 protected:
-    DefaultIO* dio;
+    SocketIO* dio;
 public:
     const string description;
-    Command(DefaultIO* dio,const string description):dio(dio),description(description){}
+    Command(SocketIO* dio,const string description):dio(dio),description(description){}
     virtual void execute(SharedData* sharedData)=0;
     virtual ~Command(){}
 };
 class UploadCSV:public Command {
 public:
-    UploadCSV(DefaultIO* dio):Command(dio,"upload an unclassified csv data file\n"){}
+    UploadCSV(SocketIO* dio):Command(dio,"upload an unclassified csv data file\n"){}
     virtual void execute(SharedData* sharedData);
     string writeCSV(SharedData* sharedData, string fileContent, bool classified);
 };
 class Settings:public Command{
 public:
-    Settings(DefaultIO* dio):Command(dio,"algorithm settings\n"){}
+    Settings(SocketIO* dio):Command(dio,"algorithm settings\n"){}
     virtual void execute(SharedData* sharedData);
     virtual ~Settings(){}
 };
 class Classify:public Command{
 public:
-    Classify(DefaultIO* dio):Command(dio,"classify data\n"){}
+    Classify(SocketIO* dio):Command(dio,"classify data\n"){}
     virtual void execute(SharedData* sharedData);
     virtual ~Classify(){}
 };
 class DisplayResults:public Command{
 public:
-    DisplayResults(DefaultIO* dio):Command(dio,"display results\n"){}
+    DisplayResults(SocketIO* dio):Command(dio,"display results\n"){}
     virtual void execute(SharedData* sharedData);
 };
 class Download:public Command{
 public:
-    Download(DefaultIO* dio):Command(dio,"download results\n"){}
+    Download(SocketIO* dio):Command(dio,"download results\n"){}
     virtual void execute(SharedData* sharedData);
     void sendFile(SharedData* sharedData);
 
 };
 class Exit:public Command {
 public:
-    Exit(DefaultIO* dio):Command(dio,"exit\n@@"){};
+    Exit(SocketIO* dio):Command(dio,"exit\n@@"){};
     virtual void execute(SharedData* sharedData);
 };
 
