@@ -34,6 +34,7 @@ string UploadCSV::writeCSV(SharedData* sharedData, string fileContent, bool clas
         }
     }
     cout << "ARRIVED TO LINE 35 IM IN UPLOAD CSV"<<endl;
+    cout<<filePath<<endl;
     return filePath;
 }
 /*This function executes command #1.It gets a classified file content, check if it valid and saves it in db.
@@ -50,15 +51,15 @@ void UploadCSV::execute(SharedData *sharedData) {
     //add the received string to 'trainFileContent' string:
     // check if the message is complete:
     // separate the '*END!' flag from the string:
-    vector<string> spiltString = separateString(trainSubFile, "@");
+    //vector<string> spiltString = separateString(trainSubFile, "@");
     // If the uploading in the client failed - return:
     cout << "LINE 53 SEG?" << endl;
 
-    if (spiltString[0].find("failed") != string::npos) {
+    if (trainSubFile.find("failed") != string::npos) {
         return;
     }
     // put the separated string into 'trainFileContent':
-    trainFileContent = spiltString[0];
+    trainFileContent = trainSubFile;
 
 
     // write the train file content into a temp file:
@@ -89,7 +90,6 @@ void UploadCSV::execute(SharedData *sharedData) {
             if (testFileContent.find("failed") != string::npos) {
                 return;
             }
-
             // write the train file content into a temp file:
             string testFile = writeCSV(sharedData, testFileContent, false);
             // create a db that will hold the train file content:

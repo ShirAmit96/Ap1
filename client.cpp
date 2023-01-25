@@ -105,7 +105,9 @@ void Client::handleCmd1(int sock){
         sio->write(testString);
         //sendToServer(sock, testString);
         // get update from the server and print it:
+        cout<<"reading test file:"<<endl;
         string serverUpdate2= sio->read();
+        cout<<"finished reading"<<endl;
        //string serverUpdate2= receiveFromServer(sock);
         cout<<serverUpdate2<<flush;
         cout<<"line 101"<<endl;
@@ -130,7 +132,7 @@ void Client::handleCmd2(int sock, string message){
     string newSettings;
     getline(cin, newSettings);
     //send the new settings to the server:
-    sendToServer(sock,newSettings);
+    sio->write(newSettings);
 }
 /*This function gets a string and a file path and write the string into the given file.*/
 void Client::writeResults(string results, string filePath){
@@ -155,11 +157,12 @@ void Client::handleCmd5(int sock) {
     getline(cin, filePath);
     // update the server that a path has been inserted:
     string updateServer="*pathInserted";
-    sendToServer(sock, updateServer);
+    sio->write(updateServer);
+    //sendToServer(sock, updateServer);
     string bufferString;
     while (true) {
         //get the results of classification from the server:
-        string currentBuffer= receiveFromServer(sock);
+        string currentBuffer= sio->read();
         bufferString+=currentBuffer;
         //look for "EOF" in order to stop receiving:
         if(currentBuffer.find("#EOF")!= string::npos) {

@@ -59,6 +59,7 @@ public:
         recv(sock, lenBuffer, sizeof(unsigned int), 0); /* maximum length of received data */
         // convert the char* ({29, 0, 0, 0}) to int (29)
         int expected_data_len = *(unsigned int *)lenBuffer;
+        cout<<"data length: " <<expected_data_len<<endl;
 
         // receive the message from the clients socket into 'messageBuffer'
         // Problem: recv can potentially return only part of the message (i.e. less than 'expected')
@@ -68,8 +69,10 @@ public:
         // this is the current position in messageBuffer
         char *bufferPos = messageBuffer;
         while (total_bytes < expected_data_len) {
+            cout<< "in while receiving:"<<endl;
             // recv will write bytes starting from bufferPos (which is the address of first uninitialized byte in the buffer)
             int read_bytes = recv(sock, bufferPos, expected_data_len - total_bytes, 0);
+            cout<<"read: "<<bufferPos<<endl;
             if (read_bytes <= 0) {
                 return "";
             }
@@ -79,6 +82,7 @@ public:
             bufferPos += read_bytes;
         }
         string output = messageBuffer;
+        cout<<"Output: "<<output<<endl;
         size_t finalPos = output.find("@@");
         string finalOutput = output.substr(0,finalPos);
         cout << "THE FINAL OUTPUT" << finalOutput << endl;
@@ -99,8 +103,11 @@ public:
         char *sizeBytes = (char *)&sizeOfMessage;
         // send the length of the message to "prepare" server for what's coming
         send(sock, sizeBytes, sizeof(unsigned int), 0);
+        cout<<"Message 1 sended:"<< sizeof(unsigned int)<<endl;
         // send the actual message (of that length)
-        int sent_bytes = send(sock, input.c_str(), sizeOfMessage, 0);
+        send(sock, input.c_str(), sizeOfMessage, 0);
+        cout<<"Message 2 sended:"<< input<<endl;
+
     };
 };
 

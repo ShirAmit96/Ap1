@@ -10,7 +10,7 @@ void Server::clientHandler(int clientId) {
     close(clientId);
     delete sio;
 }
-void *handleClient(void* clientId) {
+static void handleClient(void* clientId) {
     int* client_sock = (int*)clientId;
     cout << "client handled" << endl;
     SocketIO* sio  = new SocketIO(*client_sock);
@@ -75,39 +75,44 @@ void Server::run(char** argv){
             cout<<"error accepting client"<<endl;
         }
         else{
-            cout << "OPEN THREAD" << endl;
-            pthread_t pthread_client;
-            pthread_attr_t attr;
-            pthread_attr_init(&attr);
-            int* client_sock_ptr = new int(client_sock);
-            int new_thread = pthread_create(&pthread_client, &attr, reinterpret_cast<void *(*)(void *)>(handleClient), (void *) client_sock_ptr);
-            if (new_thread!=0){
-                cout << "Error creating thread" << endl;
-                close(client_sock);
-                delete client_sock_ptr;
-                continue;
-            }
-            pthread_detach(pthread_client);
+//            cout << "OPEN THREAD" << endl;
+//            pthread_t pthread_client;
+//            pthread_attr_t attr;
+//            pthread_attr_init(&attr);
+//            int* client_sock_ptr = new int(client_sock);
+//            int new_thread = pthread_create(&pthread_client, &attr, reinterpret_cast<void *(*)(void *)>(handleClient), (void *) client_sock_ptr);
+//            if (new_thread!=0){
+//                cout << "Error creating thread" << endl;
+//                close(client_sock);
+//                delete client_sock_ptr;
+//                continue;
+//            }
+//            pthread_detach(pthread_client);
             // create a new thread for the client
+            // create a new thread for the client
+            int* client_sock_ptr = new int(client_sock);
+            thread t(handleClient, client_sock_ptr);
+            // detach the thread so that it can run independently
+            t.detach();
             cout << "Detached" << endl;
             //clientHandler(client_sock);
         }
 
-        while (true) {
-            char buffer[4096];
-            // define the maximum length of data to receive:
-            int expected_data_len = sizeof(buffer);
-            int read_bytes = recv(client_sock, buffer, expected_data_len, 0);
-            if (expected_data_len<read_bytes){
-                break;
-            }
-            if (read_bytes == 0) {
-                break;
-            } else if (read_bytes < 0) {
-                break;
-            }
-
-        }
+//        while (true) {
+//            char buffer[4096];
+//            // define the maximum length of data to receive:
+//            int expected_data_len = sizeof(buffer);
+//            int read_bytes = recv(client_sock, buffer, expected_data_len, 0);
+//            if (expected_data_len<read_bytes){
+//                break;
+//            }
+//            if (read_bytes == 0) {
+//                break;
+//            } else if (read_bytes < 0) {
+//                break;
+//            }
+//
+//        }
 
     }
     close(server_sock);
