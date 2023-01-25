@@ -5,6 +5,7 @@ string SocketIO::read() {
     // read using receive function:
     string output ="";
     while(true) {
+        cout << "SOCKET IO STARTED TO READ" << endl;
         char *buffer = new char[4096];
         memset(buffer, 0, 4096);
         int read_bytes = recv(sock, buffer, 4096, 0);
@@ -35,6 +36,7 @@ string SocketIO::read() {
 
 /*This function gets a string and send it using the socket. */
 void SocketIO::write(string str) {
+    cout << "SOCKETIO GOT THIS TO WRITE:::" << str << endl;
     // if the string is too long, send it in a loop
     if (str.length() > 4095){
         int init_index = 0;
@@ -61,7 +63,9 @@ void SocketIO::write(string str) {
     } else { // send the string
         char str_to_char_arr[(str).length()];
         strcpy(str_to_char_arr, str.c_str());
+        cout << "SOCKET IO WROTE THIS::::" << str_to_char_arr<< endl;
         int sent_bytes = send(sock, str_to_char_arr, sizeof(str_to_char_arr), 0);
+        cout << "SOCKET IO FINISHED SENDING" << endl;
         if (sent_bytes < 0) {
             perror("error sending to client");
         }

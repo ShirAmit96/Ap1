@@ -118,7 +118,7 @@ void UploadCSV::execute(SharedData *sharedData) {
 }
 
 void Settings::execute(SharedData *sharedData) {
-    string setting = "The current KNN parameters are: K = " + to_string(sharedData->k)+", distance metric = " + sharedData->distanceMetric+"\n#cmd2*END!";
+    string setting = "The current KNN parameters are: K = " + to_string(sharedData->k)+", distance metric = " + sharedData->distanceMetric+"\n#cmd2@@";
     dio->write(setting);
     string settingsInput=dio->read();
     // it means that user didn't press only "enter".
@@ -178,6 +178,7 @@ void Settings::execute(SharedData *sharedData) {
         }
 
     }
+    cout << "NO CHANGE IN KNN PARARMETERS SETTINGS" << endl;
 
 }
 void Classify::execute(SharedData *sharedData) {
