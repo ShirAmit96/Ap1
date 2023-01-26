@@ -194,9 +194,9 @@ void Classify::execute(SharedData *sharedData) {
         return;
     }
     else{
-        dio->write("classifying data complete\n#cmd3@@");
         // classifying the data.
         sharedData->k_model.predict(sharedData->db_unclassified);
+        dio->write("classifying data complete\n#cmd3@@");
         // set the flag to true.
         sharedData->dataClassified=true;
         cout << "classify" << endl;
