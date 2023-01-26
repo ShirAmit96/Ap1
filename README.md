@@ -1,8 +1,10 @@
 # Ap1
 Important notes:
-if you are checking ex2 go to branch ex2: git clone -b ex2 https://github.com/ShirAmit96/Ap1.git
+if you are checking ex2 go to branch "ex2": git clone -b ex2 https://github.com/ShirAmit96/Ap1.git
 
-if you are checking ex3 go to branch ex3 : git clone -b ex3 https://github.com/ShirAmit96/Ap1.git
+if you are checking ex3 go to branch "ex3" : git clone -b ex3 https://github.com/ShirAmit96/Ap1.git
+
+if you are checking ex4 go to branch "ex4" : git clone -b ex4 https://github.com/ShirAmit96/Ap1.git
 
 when working on ex2 we accidentley made a merge to the main, we reverted the merge but you can still see that the last commit was recent. We are putting this note here as insturcted to us by the instructor Erel. 
 
