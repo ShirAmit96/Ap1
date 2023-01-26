@@ -97,6 +97,7 @@ void Settings::execute(SharedData *sharedData) {
     string setting = "The current KNN parameters are: K = " + to_string(sharedData->k)+", distance metric = " + sharedData->distanceMetric+"\n#cmd2@@";
     dio->write(setting);
     string settingsInput=dio->read();
+    settingsInput=settingsInput.substr(0,settingsInput.length()-1);
     // it means that user didn't press only "enter".
     if (settingsInput.length() != 0){
         string delim = " ";
