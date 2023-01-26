@@ -158,6 +158,7 @@ void Settings::execute(SharedData *sharedData) {
 
     }
 }
+
 /*This function executes command #3. it performs classification of the test file if the
  * 2 files are uploaded*/
 void Classify::execute(SharedData *sharedData) {

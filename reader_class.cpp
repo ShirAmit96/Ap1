@@ -10,6 +10,7 @@ bool ReaderClass::isClassified(string fileType){
         return true;
     }
     return false;
+
 }
 DataBase ReaderClass::readCsv(string fileName, string fileType){
     classifiedFlag=isClassified(fileType);
