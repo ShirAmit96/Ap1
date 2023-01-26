@@ -13,8 +13,8 @@ Log in to "planet" server and run the following commands:
 
 
 our code includes 10 files: 
-1. client.cpp - This file contains a client class. The client connects a server using an inserted ip and port. The client prints the information from the server and sends  updatesfrom the user to server using "socketIo" class.
-2. server_side.cpp - this file contains a server class. The server gets as input port number. The server also creates the client socket and connect to the client using the CLI component and it is waiting for an input from the client.If the input is valid, the server performs the commands the client requested and send the client the output using "socketIO" class. If the input from the client is not valid the server sends a "invalid input" message to the client.
+1. client.cpp - This file contains a client class. The client connects a server using an inserted ip and port. The client prints the information from the server and sends updates from the user to server using "socketIo" class.
+2. server_side.cpp - this file contains a server class. The server gets as input port number. The server also creates the client socket and connect to the client using the CLI component and it is waiting for an input from the client. If the input is valid, the server performs the commands the client requested and send the client the output using "socketIO" class. If the input from the client is not valid the server sends a "invalid input" message to the client.
 3. input_validation.cpp -This file contains the functions which perform valdiation checks on the inserted data. 
 4. distance_metric.cpp - This class represent a distance metric object, the object can calculate distance between two vectors in 5 different distance metrics: Eucldiean, Manhattan, Minkowsky, Chevyshev and Canberra. The choosen metric is given by the an abbreviation given by the user.
 5. database.cpp-This class represents a database that holds a vector of structs and each struct contains size(=numbers of columns), vector of numbers and a matching label.
