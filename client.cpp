@@ -207,8 +207,8 @@ void Client::run(int argc, char** argv) {
     // connect the socket to the data that is in the struct:
     if (connect(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
         cout << "Error connecting to server" << endl;
-        //close(sock);
-        //exit(-1);
+        close(sock);
+        exit(-1);
     }
     //in buffer string we will put the messages from server:
     string bufferString = "";
