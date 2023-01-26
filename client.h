@@ -17,7 +17,6 @@
 #include <sstream>
 #include <thread>
 #include "defaultIO.h"
-#include "socketIO.h"
 class Client{
     DefaultIO* sio;
 public:

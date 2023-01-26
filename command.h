@@ -2,7 +2,6 @@
 #ifndef AP1_COMMAND_H
 #define AP1_COMMAND_H
 #include "defaultIO.h"
-#include "socketIO.h"
 #include "database.h"
 #include "knn.h"
 #include "reader_class.h"
