@@ -12,7 +12,6 @@ using namespace std;
 
 /*This function handles the receiving process from the server and returns its message.*/
 string Client::receiveFromServer(int sock) {
-    cout << "START RECIEVE FROM SERVER" << endl;
     char buffer[4096];
     memset(buffer, 0, 4096);
     int expected_data_len = sizeof(buffer);
@@ -32,7 +31,6 @@ string Client::receiveFromServer(int sock) {
     } else {
         //if everything is ok return the message received:
         string received (buffer);
-        cout << "GOT THIS FROM SERVER:::" << received<< endl;
         return received;
     }
 }
@@ -40,9 +38,7 @@ string Client::receiveFromServer(int sock) {
 void Client::sendToServer(int sock, string message){
     //send the message to the server:
     message +="@@";
-    cout << "FROM CLIENT SEND TO SERVER::" << message<< endl;
     int sent_bytes = send(sock, message.c_str(),message.length()+1, 0);
-    cout << "FROM CLIENT SEND TO SERVER second time::" << message<< endl;
     //Check if an error occurred while sending to the server:
     if (sent_bytes < 0) {
         //If an error occurred-print a message and close the client:
@@ -105,12 +101,9 @@ void Client::handleCmd1(int sock){
         sio->write(testString);
         //sendToServer(sock, testString);
         // get update from the server and print it:
-        cout<<"reading test file:"<<endl;
         string serverUpdate2= sio->read();
-        cout<<"finished reading"<<endl;
        //string serverUpdate2= receiveFromServer(sock);
         cout<<serverUpdate2<<flush;
-        cout<<"line 101"<<endl;
     }else{
         //return if the server says that the input is invalid and send the server a fail message:
         cout<<"Unable to open the file"<<endl;
@@ -225,13 +218,8 @@ void Client::run(int argc, char** argv) {
         string currentBuffer = "";
         currentBuffer = sio->read();
         bufferString += currentBuffer;
-        cout << "THIS IS WHAT THE CLIENT READ" << currentBuffer << endl;
-        //check if message is complete:
-        cout << "FOUND @@ IN LINE 216" << endl;
-        // separate the message from the "END"" sign:
-        //clean the buffer:
-        //bufferString = "";
         string separatedCmd = bufferString;
+        //clean the buffer:
         bufferString = "";
         //handle command #1:
         if (separatedCmd.find("#cmd1") != string::npos) {
@@ -246,7 +234,6 @@ void Client::run(int argc, char** argv) {
             handleCmd2(sock, separatedCmd);
             separatedCmd = "";
         } else {
-            cout << "GOT TO LINE 245" <<separatedCmd<< endl;
             string output = separatedCmd;
             separatedCmd = "";
             //handle commands 3 or 4:
