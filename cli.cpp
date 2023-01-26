@@ -33,19 +33,12 @@ void Cli::start(){
             }
         }
         // write the menu to the client using dio:
-        cout << "I WANTED TO PRINT THE MENU IN CLI LINE 36"<< endl;
         dio->write(menu);
-        //std::this_thread::sleep_for(std::chrono::milliseconds(120));
-        cout << "MENU SENT FROM CLI" << endl;
-        //cout<<menu<<endl;
         // read the inserted command from the client using dio:
         string input = dio->read();
-        cout<<"input is:::"<<input<<endl;
         // choose the relevant command and execute it:
         if (input == "1"){
-            cout<<"line 44"<<endl;
             commands[0]->execute(&sharedData);
-            cout << "I FINISHED COMMAND 1 NOW IN CLI"<< endl;
         }
         else if (input == "2"){
             commands[1]->execute(&sharedData);
@@ -55,7 +48,6 @@ void Cli::start(){
         }
         else if (input == "4"){
             commands[3]->execute(&sharedData);
-            cout << "I FINISHED COMMAND 4 AND IM IN CLI" << endl;
         }
         else if (input == "5"){
             commands[4]->execute(&sharedData);
@@ -66,7 +58,6 @@ void Cli::start(){
         }else{
             dio->write("invalid input.\n@@");
         }
-       //std::this_thread::sleep_for(std::chrono::milliseconds(30));
     }
 }
 
