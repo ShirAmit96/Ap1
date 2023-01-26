@@ -38,11 +38,7 @@ void DataBase::createDataBase(vector<vector<string> > readOutput,bool validFile,
                     obj.label = readOutput[i][j];
                     obj.size = j;
                     db.push_back(obj);
-                }else{
-                    //check if the file indeed doesn't include label:
-                    if(!doubleValidation(readOutput[i][j])){
-                        isValid=false;
-                    }else {
+                }else {
                         double num = stod(readOutput[i][j]);
                         //push the number into the values vector:
                         obj.values.push_back(num);
@@ -56,5 +52,4 @@ void DataBase::createDataBase(vector<vector<string> > readOutput,bool validFile,
         }
 
     }
-}
 
