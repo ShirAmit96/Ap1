@@ -56,7 +56,6 @@ void Server::run(char** argv){
         unsigned int addr_len = sizeof(client_sin);
         // create a new socket for the client using accept command:
         int client_sock = accept(server_sock, (struct sockaddr *) &client_sin,&addr_len);
-        cout << client_sock<< endl;
         // check if the creation of the socket for the client failed:
         if (client_sock < 0) {
             cout<<"error accepting client"<<endl;
