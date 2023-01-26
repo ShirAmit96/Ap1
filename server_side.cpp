@@ -46,8 +46,8 @@ void Server::run(char** argv){
         cout<<"error binding socket"<<endl;
     }
     //listen command tells the server to wait for a message from the client.
-    // "1" is the max number of clients
-    if (listen(server_sock, 1) < 0) {
+    // 5 is the max number of clients
+    if (listen(server_sock, 5) < 0) {
         cout<<"error listening to a socket"<<endl;
     }
     while(true) {
