@@ -39,12 +39,21 @@ void DataBase::createDataBase(vector<vector<string> > readOutput,bool validFile,
                     obj.size = j;
                     db.push_back(obj);
                 }else {
+                    try {
                         double num = stod(readOutput[i][j]);
                         //push the number into the values vector:
                         obj.values.push_back(num);
                         obj.label = "None";
                         obj.size = j;
                         db.push_back(obj);
+                    }catch(...){
+                        isValid=false;
+                        obj.values.push_back(0);
+                        obj.label = "None";
+                        obj.size = j;
+                        db.push_back(obj);
+
+                    }
                     }
                 }
 
