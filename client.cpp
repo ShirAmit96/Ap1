@@ -261,7 +261,7 @@ void Client::run(int argc, char** argv) {
             sio->write(commandNum);
             //sendToServer(sock,commandNum);
             // check if the user wants to exit:
-            if (commandNum == "8") {
+            if (commandNum == "8@@") {
                 exit(-1);
             }
             commandNum = "";
