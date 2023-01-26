@@ -3,6 +3,7 @@
 
 /*contractor:*/
 
+
 /*This function create the class's members:  */
 void DataBase::createDataBase(vector<vector<string> > readOutput,bool validFile,bool  classifiedFlag) {
     isClassified=classifiedFlag;
