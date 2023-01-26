@@ -208,10 +208,6 @@ void DisplayResults::execute(SharedData *sharedData) {
     if(!sharedData->dataUploaded){
         std::this_thread::sleep_for(std::chrono::milliseconds(20));
         dio->write("please upload data\n#cmd4@@");
-        // check if also data is not classified - which it will not be because the data have not been uploaded yet.
-        if(!sharedData->dataClassified){
-            dio->write("please classify the data\n#cmd4@@");
-        }
         return;
     }
 

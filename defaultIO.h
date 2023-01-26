@@ -1,16 +1,29 @@
-//#ifndef AP1_DEFAULTIO_H
-//#define AP1_DEFAULTIO_H
-//#include <string>
-//#include <iostream>
-//#include <fstream>
-//using namespace std;
-///*This class is an abstract class that has virtual read and write functions*/
-//class DefaultIO{
-//public:
-//    virtual string read()=0;
-//    virtual void write(string text)=0;
-//    virtual ~DefaultIO(){}
-//};
-//
-//
-//#endif //AP1_DEFAULTIO_H
+#ifndef AP1_DEFAULTIO_H
+#define AP1_DEFAULTIO_H
+#include <vector>
+#include <string>
+#include <string.h>
+#include <sys/socket.h>
+#include <iostream>
+
+using namespace std;
+
+
+class DefaultIO {
+public:
+    virtual string read() const = 0;
+    virtual void write(string input) = 0;
+};
+
+// A declaration for the SokcetIO class, which will handle the communication through socket.
+class SocketIO : public DefaultIO {
+    int sock;
+public:
+    SocketIO(int sock) { this->sock = sock; }
+    string read() const;
+    void write(string input);
+
+};
+
+
+#endif //AP1_DEFAULTIO_H
