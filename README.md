@@ -8,8 +8,8 @@ Log in to "planet" server and run the following commands:
 3. cd Ap1 
 4. make
 5. open two terminals- one for the server and one for the client.(or more terminals for other clients)
-6. in the first terminal run the command: ./server.out <port>
-7. in the others  terminals run the command: ./client.out <ip> <port>
+6. in the first terminal run the command: ./server.out port
+7. in the others  terminals run the command: ./client.out ip port
 
 
 our code includes 10 files: 
