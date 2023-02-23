@@ -51,14 +51,6 @@ vector<string> stringsValidation( vector<string> inputVec){
         cout<<"Error: k value is invalid, exiting program..."<<endl;
         exit(-1);
     }
-    //check if the inserted file name is valid:
-    if(file=="iris_classified.csv"||file=="beans_Classified.csv"||file=="wine_Classified.csv"){
-        finalVec.push_back(file);
-    }else{
-        //if file name is not valid-terminate program:
-        cout<<"Error: file name is invalid,exiting program..."<<endl;
-        exit(-1);
-    }
     //check if the inserted distance metric is valid:
     if(distanceMet=="AUC"||distanceMet=="CHB"||distanceMet=="MAN"
        ||distanceMet=="CAN"||distanceMet=="MIN"){
