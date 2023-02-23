@@ -51,6 +51,8 @@ vector<string> stringsValidation( vector<string> inputVec){
         cout<<"Error: k value is invalid, exiting program..."<<endl;
         exit(-1);
     }
+    //push file name:
+    finalVec.push_back(file);
     //check if the inserted distance metric is valid:
     if(distanceMet=="AUC"||distanceMet=="CHB"||distanceMet=="MAN"
        ||distanceMet=="CAN"||distanceMet=="MIN"){
